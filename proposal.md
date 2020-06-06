@@ -13,11 +13,11 @@ The data resource used for this site will be NASA's Exoplanet API. Extensive exo
 **Outline**  
 First of all, the data schema will consist of a table of host stars, each with solar property columns and a relationship to one or many exoplanets. A table for exoplanets will contain planetary property columns for each exoplanet, including a host star column. A user will be able to search the database for stars or exoplanets. Example queries include:
 
-Search for stars by solar property(if available), such as mass, luminosity, size, distance
-Search for exoplanets by planetary property(if available), such as size, mass, orbit
-Search for stars by number of exoplanets in the system
-Search for stars and exoplanets within a given distance
-Search for exoplanets with a given star property, such as sun-like stars with a G2 spectral class
+* Search for stars by solar property(if available), such as mass, luminosity, size, distance
+* Search for exoplanets by planetary property(if available), such as size, mass, orbit
+* Search for stars by number of exoplanets in the system
+* Search for stars and exoplanets within a given distance
+* Search for exoplanets with a given star property, such as sun-like stars with a G2 spectral class
 
 Each individual star or exoplanet result will include a chart/graphic showing how it compares with our system. A visual simulation of the star/planet size comparison using the returned radius, or star color comparison using B-V index would be nice to have, although these could be challenging to implement.  
 
