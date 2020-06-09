@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+   
+    <h1>{{ user.username }}'s page</h1>
+
+    <h3>My Lists</h3>
+    <ul>
+        {% for list in user.lists %}
+          <li>{{ list.name }}</li>
+        {% endfor %}  
+    </ul>
+
+  {% endblock %}  
+    
+    

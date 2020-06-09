@@ -8,8 +8,21 @@
 <body>
     page 2
     <a href="/">home</a>
-    {% for star in stars %}
-      <li>{{ star.pl_hostname }}</li>
-    {% endfor %}
+    <h3>{{ planet['pl_name'] }}</h3>
+    <ul>
+        <li>Orbit(semi-major axis): {{ planet['pl_orbsmax'] }}</li>
+        <li>Radius(as compared to Earth): {{ planet['pl_rade'] }}</li>
+        <li>Mass: {{ planet['pl_masse'] }}</li>
+    </ul>
+    <h4>Host Star: {{ planet['pl_hostname'] }}</h4>
+    <ul>
+        <li>Opical Magnitude: {{ planet['st_optmag'] }}</li>
+        <li>Distance: {{ planet['st_dist'] }}</li>
+        <li>Spectral-type: {{ planet['st_spstr'] }}</li>
+        <li>Mass: {{ planet['st_mass'] }}</li>
+        <li>Radius: {{ planet['st_rad'] }}</li>
+        <li>Temperature: {{ planet['st_teff'] }}</li>
+        <li>Color Index(B-V): {{ planet['st_bmvj'] }}</li>
+    </ul>
 </body>
 </html>

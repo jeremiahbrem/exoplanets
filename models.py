@@ -59,9 +59,11 @@ class List(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id",
+    user_id = db.Column(db.Integer, db.ForeignKey(
+                                        "users.id",
                                         ondelete="cascade"),
-                                        nullable=False)
+                                        nullable=False
+                                        )
 
     user = db.relationship("User", backref="lists")
 
@@ -74,9 +76,13 @@ class Favorite(db.Model):
     __tablename__ = "favorites"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    list_id = db.Column(db.Integer, db.ForeignKey("lists.id",
-                                        ondelete="cascade"), 
-                                        nullable=False)
+    list_id = db.Column(db.Integer, db.ForeignKey(
+                                        "lists.id",
+                                        ondelete="cascade"
+                                        ), 
+                                        nullable=False
+                                        )
+
     planet_name = db.Column(db.Text, nullable=False)
     photo = db.Column(db.Text)
 

@@ -24,8 +24,13 @@ class UserListModelsTestCase(TestCase):
 
         self.client = app.test_client()          
 
-        user = User(username="testuser", first_name="Test", last_name="User", 
-                    email="test@test.com", password="password")
+        user = User(
+                    username="testuser", 
+                    first_name="Test", 
+                    last_name="User", 
+                    email="test@test.com", 
+                    password="password"
+                    )
         db.session.add(user)
         self.user = User.query.filter_by(username="testuser").first()
 
@@ -71,8 +76,13 @@ class UserListModelsTestCase(TestCase):
     def test_signup(self):
         """Testing user signup method"""
 
-        user = User.signup(username="jbrem", email="jb@testing.com", password="testpwd",
-                           first_name="Jeremiah", last_name="Brem")
+        user = User.signup(
+                        username="jbrem", 
+                        email="jb@testing.com", 
+                        password="testpwd",
+                        first_name="Jeremiah", 
+                        last_name="Brem"
+                        )
 
         self.assertIsInstance(user, User)
         self.assertEqual(user.username, "jbrem")
@@ -83,29 +93,51 @@ class UserListModelsTestCase(TestCase):
         """Testing invalid user signup"""
 
         with self.assertRaises(IntegrityError):
-            user = User.signup(username=None, email="jb@test.com", password="testpwd",
-                              first_name="Jeremiah", last_name="Brem")   
+            user = User.signup(
+                            username=None, 
+                            email="jb@test.com", 
+                            password="testpwd",
+                            first_name="Jeremiah", 
+                            last_name="Brem"
+                            )   
             db.session.commit()                               
             
         db.session.rollback()
 
         with self.assertRaises(IntegrityError):
-            user = User.signup(username="jbrem", email=self.user.email, password="testpwd",
-                              first_name="Jeremiah", last_name="Brem")   
+            user = User.signup(
+                            username="jbrem", 
+                            email=self.user.email, 
+                            password="testpwd",
+                            first_name="Jeremiah", 
+                            last_name="Brem"
+                            )  
+
             db.session.commit()                               
         
         db.session.rollback()
 
         with self.assertRaises(IntegrityError):
-            user = User.signup(username=self.user.username, email="jb@test.com", password="testpwd",
-                              first_name="Jeremiah", last_name="Brem")   
+            user = User.signup(
+                            username=self.user.username, 
+                            email="jb@test.com", 
+                            password="testpwd",
+                            first_name="Jeremiah", 
+                            last_name="Brem"
+                            )
+
             db.session.commit()                               
 
     def test_authenticate(self):
         """Testing User authenticate method for user login"""
 
-        user = User.signup(username="jbrem", email="jb@testing.com", password="testpwd",
-                           first_name="Jeremiah", last_name="Brem")
+        user = User.signup(
+                        username="jbrem", 
+                        email="jb@testing.com", 
+                        password="testpwd",
+                        first_name="Jeremiah", 
+                        last_name="Brem"
+                        )
 
         db.session.commit()    
         check_user = User.authenticate(username="jbrem", password="testpwd")
@@ -115,8 +147,13 @@ class UserListModelsTestCase(TestCase):
     def test_invalid_authenticate(self):
         """Testing User authenticate method for ivalid login"""
 
-        user = User.signup(username="jbrem", email="jb@testing.com", password="testpwd",
-                           first_name="Jeremiah", last_name="Brem")
+        user = User.signup(
+                        username="jbrem", 
+                        email="jb@testing.com", 
+                        password="testpwd",
+                        first_name="Jeremiah", 
+                        last_name="Brem"
+                        )
 
         db.session.commit()    
         check_user = User.authenticate(username="jbrem", password="testpd")
