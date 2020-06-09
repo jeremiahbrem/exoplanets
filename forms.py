@@ -32,6 +32,12 @@ class SignUpForm(FlaskForm):
     first_name = StringField("First Name", validators=[InputRequired()])
     last_name = StringField("First Name", validators=[InputRequired()])
 
+class LoginForm(FlaskForm):
+    """Form for logging in"""
+
+    username = StringField("Username", validators=[InputRequired()])
+    password = StringField("Password", validators=[InputRequired()])
+
 class SearchForm(FlaskForm):
     """Form for searching planets by parameter."""
 

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, session, flash, request, g
 from models import db, connect_db, User, Favorite, List
 from habitable_zone import HabitableZoneCheck
-from forms import SearchForm, SignUpForm
+from forms import SearchForm, SignUpForm, LoginForm
 import requests
 
 app = Flask(__name__)
@@ -69,7 +69,35 @@ def show_user_details(username):
     
     user = User.query.filter_by(username=username).first()
 
-    return render_template("user.html", user=user)    
+    return render_template("user.html", user=user)
+
+@app.route("/login", methods=["GET", "POST"])
+def show_login():
+    """Renders login page and processes login form"""
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.authenticate(
+                           username=form.username.data,
+                           password=form.password.data,
+                           ) 
+
+        if user:
+            session["USERNAME"] = user.username
+
+            return redirect(f"/users/{user.username}")
+
+    return render_template("login.html", form=form)
+
+@app.route("/logout")
+def logout():
+    """Logs out user and clears session"""
+
+    if "USERNAME" in session:
+        del session["USERNAME"]
+
+    return redirect("/")    
 
 @app.route("/habitable")
 def get_habitable():
@@ -107,4 +135,5 @@ def search_planets():
     form = SearchForm()
 
     return render_template("form.html", form=form)                   
+        
         

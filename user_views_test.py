@@ -81,7 +81,7 @@ class UserViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("testuser", html)
             self.assertIn("testplanets", html)
-            change_session.pop("USERNAME")
+            del session["USERNAME"]
 
 
     def test_signup_page_post(self):
@@ -141,3 +141,51 @@ class UserViewsTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Welcome to the Exoplanet App", html)
+
+    def test_show_login(self):
+        """Testing login page rendering"""
+
+        with app.test_client() as client:
+            resp = client.get("/login")
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Login to your account", html)
+
+    def test_login(self):
+        """Testing user login"""
+        
+        with app.test_client() as client:
+            data = {"username": "testuser", "password": "testpassword"}
+            resp = client.post("/login", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("testuser's page", html)
+
+    def test_invalid_login(self):
+        """Testing invalid username or password login"""
+
+        with app.test_client() as client:
+            data = {"username": "testuser", "password": "testpassword2"}
+            resp = client.post("/login", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Login to your account", html)
+
+    def test_logout(self):
+        """Testing logout and redirect to signup/signin page"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+            resp = client.get("/logout", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn("testuser", html)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            del session["USERNAME"]
+                
+        
