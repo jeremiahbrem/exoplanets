@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+   
+    <h1>{{ user_list.name }}</h1>
+
+    <h3>Planets</h3>
+    <h5>{{ user_list.description }}</h5>
+    <ul>
+        {% for planet in user_list.planets %}
+          <li><a href="/planets/{{ planet.pl_name }}">{{ planet.pl_name }}</a>
+           
+          </li>
+
+        {% endfor %}  
+    </ul>
+    <a href="/logout"></a>
+
+  {% endblock %}  
+    
+    

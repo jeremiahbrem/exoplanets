@@ -1,7 +1,7 @@
 """Forms for playlist app."""
 
 from flask import g
-from wtforms import FloatField, SelectField, StringField
+from wtforms import FloatField, SelectField, StringField, PasswordField
 from flask_wtf import FlaskForm
 from wtforms.validators import InputRequired, Optional, ValidationError, Length, Email
 from models import User
@@ -22,7 +22,7 @@ class SignUpForm(FlaskForm):
     """Form for new user signup"""
 
     username = StringField("Username", validators=[InputRequired(), check_unique_username])
-    password = StringField("Password", validators=[InputRequired(), Length(
+    password = PasswordField("Password", validators=[InputRequired(), Length(
                                                                 min=8, 
                                                                 message="Minimum password length is 8 characters."
                                                                 )
@@ -36,19 +36,35 @@ class LoginForm(FlaskForm):
     """Form for logging in"""
 
     username = StringField("Username", validators=[InputRequired()])
-    password = StringField("Password", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
+
+def check_unique_list(form, field):
+    """Checks for unique user list name
+    NOTE: Only needs to be unique to user; other users can have same list name"""
+
+    lists = g.user.lists
+    for user_list in g.user.lists:
+        if user_list.name == field.data:
+            raise ValidationError("List name already exists.")
+
+class CreateListForm(FlaskForm):
+    """Form for creating new list"""    
+
+    name = StringField("List Name", validators=[InputRequired(), check_unique_list])
+    description = StringField("Description", validators=[Optional()])
 
 class SearchForm(FlaskForm):
     """Form for searching planets by parameter."""
 
-    parameters = SelectField('Parameters',
-        choices=[('all', 'All'), ('pl_masse', 'Planet mass'), ('pl_rade', 'Planet radius'),
-            ('pl_orbsmax', 'Planet orbit'), ('st_dist', 'Distance'), ('st_spstr', 'Spectral-type'),
-            ('st_mass', 'Solar mass'), ('st_rad', 'Solar radius'), ('st_teff', 'Solar temp'),
-            ('st_bmvj', 'Solar color'), ('st_optmag', 'Solar magnitude')]
+    parameter = SelectField('Search by',
+        choices=[('all', 'All'), ('habitable', 'Habitable zone'), ('pl_masse', 'Planet mass'), 
+            ('pl_pnum', 'Number of planets in system'), ('pl_rade', 'Planet radius'), 
+            ('pl_orbsmax', 'Planet orbit'), ('pl_name', 'Planet name'), ('pl_hostname', 'Star name'),
+            ('st_dist', 'Distance'), ('st_spstr', 'Spectral-type'), ('st_mass', 'Solar mass'), 
+            ('st_rad', 'Solar radius'), ('st_teff', 'Solar temp'), ('st_bmvj', 'Solar color'), 
+            ('st_optmag', 'Solar magnitude')]
         )
 
-    min = FloatField("Min")
-    max = FloatField("Max")
-
-        
+    search_input = StringField("Search input")
+    min_num = FloatField("Min", validators=[Optional()])
+    max_num = FloatField("Max", validators=[Optional()])

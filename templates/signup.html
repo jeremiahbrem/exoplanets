@@ -4,6 +4,9 @@
 
     <h1>Welcome to the Exoplanet App</h1>
     <h3>Sign Up to Search Other Worlds</h3>
+    {% for message in get_flashed_messages() %}
+      <h4>{{ message }}</h4>
+    {% endfor %}  
     <form id="signup_form" method="POST"> 
       {{ form.hidden_tag() }}
 

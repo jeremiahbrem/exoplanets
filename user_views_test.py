@@ -49,7 +49,7 @@ class UserViewsTestCase(TestCase):
 
         db.session.rollback()
 
-    def test__home_page(self):
+    def test_home_page(self):
         """testing home page redirect to signup page"""
 
         with app.test_client() as client:
@@ -163,11 +163,22 @@ class UserViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("testuser's page", html)
 
-    def test_invalid_login(self):
-        """Testing invalid username or password login"""
+    def test_invalid_password(self):
+        """Testing invalid password login"""
 
         with app.test_client() as client:
             data = {"username": "testuser", "password": "testpassword2"}
+            resp = client.post("/login", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Login to your account", html)
+    
+    def test_invalid_username(self):
+        """Testing invalid password login"""
+
+        with app.test_client() as client:
+            data = {"username": "testuser5", "password": "testpassword"}
             resp = client.post("/login", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -186,6 +197,71 @@ class UserViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertNotIn("testuser", html)
             self.assertIn("Welcome to the Exoplanet App", html)
-            del session["USERNAME"]
-                
+            del change_session["USERNAME"]
+
+    def test_unauthorized_logout(self):
+        """Testing logout if already logged out"""
+
+        with app.test_client() as client:
+            resp = client.get("/logout", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            self.assertIn("You must be logged in.", html)
+
+    def test_show_user(self):
+        """Testing rendering of user details page"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+            resp = client.get("/users/testuser", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("testuser's page", html)
+            self.assertIn("testplanets", html)
+            del change_session["USERNAME"]
+
+    def test_show_user_not_logged_in(self):
+        """Testing user page attempt when not logged in"""
+
+        with app.test_client() as client:
+            resp = client.get("/users/testuser", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            self.assertIn("Unauthorized access", html)
+
+    def test_show_user_unauthorized(self):
+        """Testing unauthorized access of another user's page"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            user2 = User.signup(
+                    username="testuser2", 
+                    first_name="Test2", 
+                    last_name="User2", 
+                    email="test2@test.com", 
+                    password="testpassword2"
+                    )
+
+            db.session.commit()
         
+            resp = client.get("/users/testuser2", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("testuser's page", html)
+            self.assertIn("testplanets", html)
+            self.assertIn("Unauthorized access", html)
+            del change_session["USERNAME"]
+        
+        
+
+
+         

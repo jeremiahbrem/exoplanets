@@ -2,24 +2,24 @@
 
   {% block content %}
 
-    <h1>Search</h1>
-    <form id="new_playlist_form" method="POST"> 
+    <h3>Create New Planet List</h3>  
+    <form id="create_list.html" method="POST"> 
       {{ form.hidden_tag() }}
-  
+
       {% for field in form
         if field.widget.input_type != 'hidden' %}
-  
+
           <p>
             {{ field.label }} 
             {{ field }}     
-         
+       
             {% for error in field.errors %}
               {{ error }}
             {% endfor %}
           </p>
-  
-    {% endfor %}
-    <button class="btn btn-success btn-sm" type="submit">Add</button>
-  </form>
 
-{% endblock %}
+       {% endfor %}
+       <button class="btn btn-success btn-sm" type="submit">Add</button>
+     </form>
+     <a href="/login">Login</a>
+  {% endblock %}

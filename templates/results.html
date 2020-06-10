@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+
+    <h3>Planet Search Results</h3>
+    <ul>
+        <h6>count: {{ planets | length }}</h6>
+        {% for planet in planets %}
+          <li><a href="/planets/{{ planet.pl_name }}">{{ planet.pl_name }}</a>
+           
+          </li>
+
+        {% endfor %}  
+    </ul>
+    <a href="/logout"></a>
+
+  {% endblock %}  
+    
+    

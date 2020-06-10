@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    page 2
-    <a href="/">home</a>
+{% extends 'base.html' %}
+
+  {% block content %}
+    
     <h3>{{ planet['pl_name'] }}</h3>
     <ul>
         <li>Orbit(semi-major axis): {{ planet['pl_orbsmax'] }}</li>
@@ -16,7 +10,7 @@
     </ul>
     <h4>Host Star: {{ planet['pl_hostname'] }}</h4>
     <ul>
-        <li>Opical Magnitude: {{ planet['st_optmag'] }}</li>
+        <li>Optical Magnitude: {{ planet['st_optmag'] }}</li>
         <li>Distance: {{ planet['st_dist'] }}</li>
         <li>Spectral-type: {{ planet['st_spstr'] }}</li>
         <li>Mass: {{ planet['st_mass'] }}</li>
@@ -24,5 +18,5 @@
         <li>Temperature: {{ planet['st_teff'] }}</li>
         <li>Color Index(B-V): {{ planet['st_bmvj'] }}</li>
     </ul>
-</body>
-</html>
+
+  {% endblock %}  
