@@ -61,8 +61,8 @@ class SearchForm(FlaskForm):
             ('pl_pnum', 'Number of planets in system'), ('pl_rade', 'Planet radius'), 
             ('pl_orbsmax', 'Planet orbit'), ('pl_name', 'Planet name'), ('pl_hostname', 'Star name'),
             ('st_dist', 'Distance'), ('st_spstr', 'Spectral-type'), ('st_mass', 'Solar mass'), 
-            ('st_rad', 'Solar radius'), ('st_teff', 'Solar temp'), ('st_bmvj', 'Solar color'), 
-            ('st_optmag', 'Solar magnitude')]
+            ('st_rad', 'Solar radius'), ('st_teff', 'Solar surface temp'), ('st_bmvj', 'Solar color index'), 
+            ('st_optmag', 'Star optical magnitude')]
         )
 
     search_input = StringField("Search input")
