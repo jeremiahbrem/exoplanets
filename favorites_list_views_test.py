@@ -3,7 +3,7 @@ from unittest import TestCase
 from flask import session
 from models import db, User, List, Favorite
 
-os.environ['DATABASE_URL'] = "postgresql:///exoplanet-test"
+os.environ['DATABASE_URL'] = "postgresql:///exoplanet_test"
 
 from app import app
 
@@ -12,7 +12,6 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['WTF_CSRF_ENABLED'] = False
 app.config['TESTING'] = True
 
-db.drop_all()
 db.create_all()
 
 class FavoriteListViewsTestCase(TestCase):
@@ -185,7 +184,8 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("GJ 876 c", html)
             self.assertIn("Host Star: GJ 876", html)
-            del change_session["USERNAME"]
+            self.assertIn("Potentially Habitable: True", html)
+            del change_session["USERNAME"]      
 
     def test_show_planet_not_logged_in(self):
         """Testing planet detail access if not logged in"""
@@ -198,14 +198,62 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertIn("Welcome to the Exoplanet App", html)
             self.assertIn("You must be logged in.", html)
 
-    # def test_add_planet(self):
-    #     """Testing adding a planet to a user's list"""
+    def test_add_planet(self):
+        """Testing adding a planet to a user's list"""
 
-    #     with app.test_client() as client:  
-    #         data = {"pl_name": "11 Com b"}
-    #         resp = client.post(f"/users/{self.user.username}/lists/{self.list.id}/add", data=data, follow_redirects=True)
-    #         html = resp.get_data(as_text=True)
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
 
-    #         self.assertEqual(resp.status_code, 200)
-    #         self.assertIn("testplanets", html)
-    #         self.assertIn("11 Com b ", html)   
+            db.session.add(self.list)
+
+            data = {"planet": "11 Com b"}
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", json=data, follow_redirects=True)
+            favorite = resp.json["new_favorite"]
+            self.assertEqual(resp.status_code, 201)
+            self.assertEqual(favorite['list'], "testplanets")
+            self.assertEqual(favorite['planet'], "11 Com b")
+            self.assertEqual
+
+    def test_add_planet_unauthorized(self):
+        """Testing adding a planet to another user's list"""
+
+        with app.test_client() as client:
+
+            user2 = User.signup(
+                    username="testuser2", 
+                    first_name="Test2", 
+                    last_name="User2", 
+                    email="test2@test.com", 
+                    password="testpassword2"
+                    )
+
+            db.session.commit()
+
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser2"
+
+            db.session.add(self.list)    
+
+            data = {"planet": "11 Com b"}
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", json=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("testuser2's page", html)
+            self.assertIn("Unauthorized access", html)
+
+    def test_add_planet_not_logged_in(self):
+        """Testing adding a planet to a user's list while not logged in"""
+
+        with app.test_client() as client:
+
+            db.session.add(self.list)
+
+            data = {"pl_name": "11 Com b"}
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            self.assertIn("Unauthorized access", html)                   

@@ -53,18 +53,23 @@ class CreateListForm(FlaskForm):
     name = StringField("List Name", validators=[InputRequired(), check_unique_list])
     description = StringField("Description", validators=[Optional()])
 
+class SelectListForm(FlaskForm):
+    """Form for creating new list"""    
+
+    lists = SelectField("Select List", coerce=int)
+
 class SearchForm(FlaskForm):
     """Form for searching planets by parameter."""
 
     parameter = SelectField('Search by',
-        choices=[('all', 'All'), ('habitable', 'Habitable zone'), ('pl_masse', 'Planet mass'), 
-            ('pl_pnum', 'Number of planets in system'), ('pl_rade', 'Planet radius'), 
-            ('pl_orbsmax', 'Planet orbit'), ('pl_name', 'Planet name'), ('pl_hostname', 'Star name'),
-            ('st_dist', 'Distance'), ('st_spstr', 'Spectral-type'), ('st_mass', 'Solar mass'), 
-            ('st_rad', 'Solar radius'), ('st_teff', 'Solar surface temp'), ('st_bmvj', 'Solar color index'), 
-            ('st_optmag', 'Star optical magnitude')]
+        choices=[('all', 'All'), ('habitable', 'Habitable Zone'), ('pl_masse', 'Planet Mass'), 
+            ('pl_pnum', 'Number of Planets in System'), ('pl_rade', 'Planet Radius'), 
+            ('pl_orbsmax', 'Planet Orbit'), ('pl_name', 'Planet Name'), ('pl_hostname', 'Star Name'),
+            ('st_dist', 'Distance'), ('st_spstr', 'Spectral-Type'), ('st_mass', 'Solar Mass'), 
+            ('st_rad', 'Solar Radius'), ('st_teff', 'Solar Surface Temp'), ('st_bmvj', 'Solar B-V Color Index'), 
+            ('st_optmag', 'Star Optical Magnitude')]
         )
 
-    search_input = StringField("Search input")
+    search_input = StringField("Search input", validators=[Optional()])
     min_num = FloatField("Min", validators=[Optional()])
     max_num = FloatField("Max", validators=[Optional()])

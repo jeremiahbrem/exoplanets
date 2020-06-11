@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, session, flash, request, g
+import os
+from flask import Flask, render_template, redirect, session, flash, request, g, jsonify
 from models import db, connect_db, User, Favorite, List
 from habitable_zone import HabitableZoneCheck
 from process_search import ProcessSearch
@@ -9,7 +10,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///exoplanets"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
-app.config["SECRET_KEY"] = "s8t64h5gs3h1sdf35h4s"
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 
 connect_db(app)
 
@@ -88,7 +89,8 @@ def show_login():
 
             return redirect(f"/users/{user.username}")
 
-    flash("Invalid username or password.")
+        else: 
+            flash("Invalid username or password.")
 
     return render_template("login.html", form=form)
 
@@ -152,9 +154,28 @@ def show_list(username, list_id):
 
     return render_template("list.html", user_list=user_list)  
 
-# @app.route("/users/<username>/lists/<int:list_id>/add", methods=["GET","POST"]) 
-# def add_planet(username, list_id):
-#     """Adds a planet to a user list and redirects to search results page"""
+@app.route("/users/<username>/lists/<int:list_id>/add", methods=["POST"]) 
+def add_planet(username, list_id):
+    """Adds a planet to a user list and redirects to search results page"""
+
+    if not g.user or g.user.username != username:
+        flash("Unauthorized access.")
+        return redirect("/")
+
+    user_list = List.query.get(list_id)
+    user = user_list.user
+
+    planet_name = request.json["planet"]
+    favorite = Favorite(planet_name=planet_name, list_id=user_list.id)
+
+    response = {
+                 "new_favorite": {
+                   "list" : user_list.name,
+                   "planet": planet_name
+                 }
+               }
+
+    return (jsonify(response), 201)           
 
 @app.route("/planets/<planet_name>")
 def get_details(planet_name):
@@ -163,12 +184,23 @@ def get_details(planet_name):
         flash("You must be logged in.")
         return redirect("/")
 
-    resp = requests.get("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
-                         "table=exoplanets&select=pl_name,pl_orbsmax,pl_rade, pl_masse,pl_hostname," +
-                         "st_optmag,st_dist,st_spstr,st_mass,st_rad,st_teff,st_bmvj&" +
-                         f"where=pl_name like '{planet_name}%25'&format=json")
+    # resp = requests.get("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
+    #                      "table=exoplanets&select=pl_name,pl_orbsmax,pl_rade, pl_masse,pl_hostname," +
+    #                      "st_optmag,st_dist,st_spstr,st_mass,st_rad,st_teff,st_bmvj&" +
+    #                      f"where=pl_name like '{planet_name}%25'&format=json")
+    search =  ProcessSearch('pl_name', planet_name, None, None)
+    resp = requests.get(search.create_api_query())
+
+
+    planet = resp.json()[0]
+    check_zone = HabitableZoneCheck(
+                                    planet['st_optmag'], 
+                                    planet['st_dist'], 
+                                    planet['st_spstr'],
+                                    planet['pl_orbsmax']
+                                    )
    
-    return render_template("planet.html", planet=resp.json()[0]) 
+    return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone()) 
 
 @app.route("/planets/search", methods=["GET","POST"])
 def search_planets():
@@ -193,6 +225,7 @@ def search_planets():
 
         search = ProcessSearch(select, search_input, min_num, max_num)
         session["SEARCH"] = search.create_api_query()
+        session["SELECT"] = select
         
         return redirect("/planets/results")
 
@@ -203,9 +236,11 @@ def get_search_results():
     """Render search results"""
 
     query = session["SEARCH"]
+    parameter = session["SELECT"]
+
     resp = requests.get(f"{query}")
 
-    return render_template("results.html", planets = resp.json())
+    return render_template("results.html", planets = resp.json(), parameter=parameter)
 
 @app.route("/planets/habitable")
 def get_habitable_results():

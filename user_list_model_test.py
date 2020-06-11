@@ -3,7 +3,7 @@ from unittest import TestCase
 from models import db, User, List, Favorite
 from sqlalchemy.exc import IntegrityError
 
-os.environ['DATABASE_URL'] = "postgresql:///exoplanet-test"
+os.environ['DATABASE_URL'] = "postgresql:///exoplanet_test"
 
 from app import app
 

@@ -3,7 +3,7 @@ from unittest import TestCase
 from flask import session
 from models import db, User, List, Favorite
 
-os.environ['DATABASE_URL'] = "postgresql:///exoplanet-test"
+os.environ['DATABASE_URL'] = "postgresql:///exoplanet_test"
 
 from app import app
 
@@ -12,7 +12,6 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['WTF_CSRF_ENABLED'] = False
 app.config['TESTING'] = True
 
-db.drop_all()
 db.create_all()
 
 class UserViewsTestCase(TestCase):

@@ -3,7 +3,7 @@ from unittest import TestCase
 from flask import session
 from models import db, User, List, Favorite
 
-os.environ['DATABASE_URL'] = "postgresql:///exoplanet-test"
+os.environ['DATABASE_URL'] = "postgresql:///exoplanet_test"
 
 from app import app
 
@@ -12,7 +12,6 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['WTF_CSRF_ENABLED'] = False
 app.config['TESTING'] = True
 
-db.drop_all()
 db.create_all()
 
 class SearchViewsTestCase(TestCase):
@@ -63,6 +62,17 @@ class SearchViewsTestCase(TestCase):
             self.assertIn("Search Exoplanets", html)
             del change_session['USERNAME']
 
+    def test_show_search_form_unauthorized(self):
+        """Testing show search page while not logged in"""
+
+        with app.test_client() as client:
+            resp = client.get("/planets/search", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)      
+            self.assertIn("You must be logged in.", html)     
+
     def test_search_results_all(self):
         """Testing search results for all exoplanets"""
 
@@ -95,6 +105,7 @@ class SearchViewsTestCase(TestCase):
             self.assertIn("Planet Search Results", html)
             self.assertIn("count: 1589", html)
             self.assertIn("Kepler-94 b", html)
+            self.assertIn("0.81", html)
             del change_session['USERNAME']
     
     def test_search_results_st_rad(self):
@@ -316,4 +327,16 @@ class SearchViewsTestCase(TestCase):
             self.assertIn("Planet Search Results", html)
             self.assertIn("count: 68", html)
             self.assertIn("16 Cyg B b", html)
-            del change_session['USERNAME']                                                                                     
+            del change_session['USERNAME']
+
+    def test_search_unauthorized(self):
+        """Testing search post attempt not logged in"""
+
+        with app.test_client() as client:
+            data = {"parameter": "habitable"}
+            resp = client.post("planets/search", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet", html)
+            self.assertIn("You must be logged in.", html)

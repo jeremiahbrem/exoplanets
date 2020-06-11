@@ -1,7 +1,8 @@
 import math
 
 class HabitableZoneCheck:
-    """Class instance methods for calculating if planet is in habitable zone"""
+    """Class instance methods for calculating if planet is in habitable zone
+       Thank you to planetarybiology.com for the formulas"""
 
     def __init__(self, opt_mag, distance, spec_type, orbit):
         "Creates instance for checking habitable zone."
@@ -62,8 +63,11 @@ class HabitableZoneCheck:
             outer_bound = math.sqrt(luminosity / 0.53)
 
             if self.orbit >= inner_bound and self.orbit <= outer_bound:
+                # enums
                 return True
-            else:
-                return False    
+            elif self.orbit < inner_bound:
+                return "Too hot"
+            elif self.orbit > outer_bound:
+                return "Too cold"        
 
         return "Unknown"                 

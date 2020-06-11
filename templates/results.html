@@ -3,15 +3,22 @@
   {% block content %}
 
     <h3>Planet Search Results</h3>
-    <ul>
-        <h6>count: {{ planets | length }}</h6>
-        {% for planet in planets %}
-          <li><a href="/planets/{{ planet.pl_name }}">{{ planet.pl_name }}</a>
-           
-          </li>
 
-        {% endfor %}  
-    </ul>
+        <h6>count: {{ planets | length }}</h6>
+        <table>
+          {% for planet in planets %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td><a href="/planets/{{ planet.pl_name }}">{{ planet.pl_name }}</a></td>
+              <td class="pl-4">
+                {% if planet[parameter] and parameter != 'pl_name' %}
+                  {{ planet[parameter] }}
+                {% endif %}
+              </td>
+          </tr>
+          {% endfor %}  
+        </table>        
+  
     <a href="/logout"></a>
 
   {% endblock %}  

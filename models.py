@@ -86,7 +86,7 @@ class Favorite(db.Model):
     planet_name = db.Column(db.Text, nullable=False)
     photo = db.Column(db.Text)
 
-    list = db.relationship("List", backref="favorites")
+    fav_list = db.relationship("List", backref="favorites")
 
 def connect_db(app):
     """Connect this database to provided Flask app."""

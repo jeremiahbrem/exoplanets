@@ -8,11 +8,24 @@
       rel="stylesheet"
       href="https://unpkg.com/bootstrap/dist/css/bootstrap.css"
     />
+    <link 
+      rel="stylesheet"
+      href="https://unpkg.com/jasmine-core/lib/jasmine-core/jasmine.css" />
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://unpkg.com/popper"></script>
     <script src="https://unpkg.com/bootstrap"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
   </head>
   <body>      
+    {% if g.user %}
+      <h6>{{ g.user.username }}</h6>
+    {% endif %}  
     {% block content %}{% endblock %}
+
+    <script src="https://unpkg.com/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+    <script src="https://unpkg.com/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+    <script src= "https://unpkg.com/jasmine-core/lib/jasmine-core/boot.js"></script>
+    <script src="/static/test_script.js"></script>
+    <script src="/static/script.js"></script>
   </body>
 </html>
