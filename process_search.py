@@ -1,39 +1,48 @@
 class ProcessSearch:
     """Class for processing search form input data"""
 
-    def __init__(self, parameter, search_input, min_num, max_num):
+    def __init__(self, parameters):
         "Creates instance for processing search inputs."
         
-        self.parameter = parameter
-        self.search_input = search_input
-        self.min_num = min_num   
-        self.max_num = max_num
+        self.parameters = parameters
         self.base_query = ("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
-                           "table=exoplanets&select=pl_name, pl_hostname, st_dist, st_spstr, pl_orbsmax," +
-                           "pl_rade, pl_masse, st_rad, st_mass, st_bmvj, st_teff, st_optmag")
+                           "table=exoplanets&select=pl_name,pl_hostname,st_dist,st_spstr,pl_orbsmax," +
+                           "pl_rade,pl_masse,st_rad,st_mass,st_bmvj,st_teff,st_optmag")
 
     def create_api_query(self):
         """Processes input data and returns a query for the api"""
-
-        where = ""
+       
+        where = "&where="
         
-        if self.parameter == 'all':
+        if self.parameters.get('all', None):
             return (f"{self.base_query}&format=json")
 
-        if self.parameter == 'pl_name':
-            return (f"{self.base_query}&where=pl_name like '{self.search_input}%25'&order={self.parameter}&format=json")
+        if self.parameters.get('pl_name', None):
+            return (f"{self.base_query}&where=pl_name like '{self.parameters['pl_name']}%25'&order=pl_name&format=json")
 
-        if self.parameter == 'pl_hostname':
-            return (f"{self.base_query}&where=pl_hostname like '{self.search_input}%25'&order={self.parameter}&format=json")
+        if self.parameters.get('pl_hostname', None):
+            return (f"{self.base_query}&where=pl_hostname like '{self.parameters['pl_hostname']}%25'&order=pl_hostname&format=json")
 
-        if self.parameter == 'st_spstr':
-            return (f"{self.base_query}&where=st_spstr like '{self.search_input}%25'&order={self.parameter}&format=json")        
+        count = 1
+        for key,value in self.parameters.items():
+            min_value = self.parameters.get(f"{key}_min", None)
+            max_value = self.parameters.get(f"{key}_max", None)
+            
+            if key != "habitable":
+                if value == 'on' and key == 'st_spstr':
+                    if count > 1:
+                        where = where + " and "
+                    where = where + f"st_spstr like '{self.parameters['st_spstr_type']}%25'"
+                if value == 'on' and (min_value or max_value):
+                    if count > 1:
+                        where = where + " and "
+                    where = where + f"{key}"
+                    if min_value and max_value:
+                        where = where + f">{min_value} and {key}<{max_value}"
+                    elif min_value:
+                        where = where + f">{min_value}" 
+                    elif max_value:
+                        where = where + f"<{max_value}"
+                count += 1        
 
-        if self.min_num and self.max_num:
-            where = f"&where={self.parameter}>{self.min_num} and {self.parameter}<{self.max_num}"
-        elif self.min_num:
-            where = f"&where={self.parameter}>{self.min_num}"
-        elif self.max_num:
-            where = f"&where={self.parameter}<{self.max_num}"
-
-        return (f"{self.base_query}{where}&order={self.parameter}&format=json")    
+        return f"{self.base_query}{where}&order=pl_name&format=json" 

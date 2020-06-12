@@ -2,16 +2,15 @@ import os
 from unittest import TestCase
 from flask import session
 from models import db, User, List, Favorite
-
-os.environ['DATABASE_URL'] = "postgresql:///exoplanet_test"
-
 from app import app
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///exoplanets_test"
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['WTF_CSRF_ENABLED'] = False
 app.config['TESTING'] = True
 
+db.drop_all()
 db.create_all()
 
 class UserViewsTestCase(TestCase):

@@ -2,14 +2,13 @@ import os
 from unittest import TestCase
 from models import db, User, List, Favorite
 from sqlalchemy.exc import IntegrityError
-
-os.environ['DATABASE_URL'] = "postgresql:///exoplanet_test"
-
 from app import app
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///exoplanets_test"
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['TESTING'] = True
 
+db.drop_all()
 db.create_all()
 
 class UserListModelsTestCase(TestCase):
