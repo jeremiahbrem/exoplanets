@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, redirect, session, flash, request, g, jsonify
+from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Favorite, List
 from habitable_zone import HabitableZoneCheck
 from process_search import ProcessSearch
@@ -15,6 +16,9 @@ app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 connect_db(app)
 
 db.create_all()
+
+debug = DebugToolbarExtension(app)
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 @app.before_request
 def add_user_to_g():
@@ -184,12 +188,12 @@ def get_details(planet_name):
         flash("You must be logged in.")
         return redirect("/")
 
-    # resp = requests.get("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
-    #                      "table=exoplanets&select=pl_name,pl_orbsmax,pl_rade, pl_masse,pl_hostname," +
-    #                      "st_optmag,st_dist,st_spstr,st_mass,st_rad,st_teff,st_bmvj&" +
-    #                      f"where=pl_name like '{planet_name}%25'&format=json")
-    search =  ProcessSearch('pl_name', planet_name, None, None)
-    resp = requests.get(search.create_api_query())
+    resp = requests.get("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
+                         "table=exoplanets&select=pl_name,pl_orbsmax,pl_rade, pl_masse,pl_hostname," +
+                         "st_optmag,st_dist,st_spstr,st_mass,st_rad,st_teff,st_bmvj&" +
+                         f"where=pl_name like '{planet_name}%25'&format=json")
+    # search =  ProcessSearch({'pl_name': "planet_name"})
+    # resp = requests.get(search.create_api_query())
 
 
     planet = resp.json()[0]
@@ -202,6 +206,14 @@ def get_details(planet_name):
    
     return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone()) 
 
+@app.route("/planets/search/form")
+def show_search():
+    if not g.user:
+        flash("You must be logged in.")
+        return redirect("/")
+
+    return render_template("search.html")
+
 @app.route("/planets/search", methods=["GET","POST"])
 def search_planets():
     """Renders search form page and processes form"""
@@ -210,49 +222,59 @@ def search_planets():
         flash("You must be logged in.")
         return redirect("/")
 
-    form = SearchForm()
-
-    if form.validate_on_submit():
-        select = form.parameter.data
-        search_input = form.search_input.data
-        min_num = form.min_num.data
-        max_num = form.max_num.data
-
-        if select == 'habitable':
+    if request.form:
+        resp = request.form
+        parameters = {}
+        if resp.get("all", None):
+            parameters["all"] = "on"
+        elif resp.get('pl_name', None):
+            parameters["pl_name"] = resp["pl_name"]
+        elif resp.get('pl_hostname', None):
+            parameters["pl_hostname"] = resp["pl_hostname"] 
+        else:
+            for key,value in request.form.items():
+                parameters[key] = value
+        
+        session["PARAMETERS"] = parameters
+    
+        if resp.get('habitable', None):
             return redirect("/planets/habitable")
 
-
-
-        search = ProcessSearch(select, search_input, min_num, max_num)
-        session["SEARCH"] = search.create_api_query()
-        session["SELECT"] = select
+        return redirect("/planets/results")      
         
-        return redirect("/planets/results")
-
-    return render_template("search.html", form=form)
+    return render_template("search.html")
 
 @app.route("/planets/results")
 def get_search_results():
     """Render search results"""
 
-    query = session["SEARCH"]
-    parameter = session["SELECT"]
+    parameters = session["PARAMETERS"]
+    del session["PARAMETERS"]
+    search = ProcessSearch(parameters)
+    print(search.create_api_query())
 
-    resp = requests.get(f"{query}")
+    session["SEARCH"] = search.create_api_query()
+    resp = requests.get(search.create_api_query())
 
-    return render_template("results.html", planets = resp.json(), parameter=parameter)
+    return render_template("results.html", planets = resp.json(), parameters=parameters)
 
 @app.route("/planets/habitable")
 def get_habitable_results():
     """Searches for and returns planets in habitable zone"""
 
     planets = []
-    session["SEARCH"] = ("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
-                        "table=exoplanets&select=pl_name,pl_orbsmax,st_optmag,st_dist,st_spstr" +
-                        "&order=pl_name&format=json") 
+    parameters = {}
+    search = ""
 
-    query = session["SEARCH"]
-    resp = requests.get(f"{query}")                                        
+    if session.get("PARAMETERS", None):
+        parameters = session["PARAMETERS"]
+        del session["PARAMETERS"]
+    else:
+        parameters = {"all": "on"}    
+    
+    search = ProcessSearch(parameters)        
+    session["SEARCH"] = search.create_api_query()
+    resp = requests.get(search.create_api_query())                                 
     
     for planet in resp.json():
         if planet['st_optmag'] and planet['st_dist'] and planet['st_spstr'] and planet['pl_orbsmax']:
@@ -266,4 +288,4 @@ def get_habitable_results():
             if check_zone.in_habitable_zone() == True:
                 planets.append(planet)                        
 
-    return render_template("results.html", planets=planets)
+    return render_template("results.html", planets=planets, parameters=parameters)

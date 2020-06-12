@@ -6,15 +6,20 @@
 
         <h6>count: {{ planets | length }}</h6>
         <table>
+          <th></th>
+          <th>Planet</th>
+          {% for key, value in parameters.items() if value == 'on' and key not in ['pl_name','all','habitable'] %}
+           <th>
+             
+             {{ key }}</th>
+          {% endfor %}
           {% for planet in planets %}
           <tr>
             <td><input type="checkbox"></td>
             <td><a href="/planets/{{ planet.pl_name }}">{{ planet.pl_name }}</a></td>
-              <td class="pl-4">
-                {% if planet[parameter] and parameter != 'pl_name' %}
-                  {{ planet[parameter] }}
-                {% endif %}
-              </td>
+            {% for key, value in parameters.items() if value == 'on' and key not in ['pl_name','all','habitable'] %}
+              <td>{{ planet[key] }}</td>
+            {% endfor %}
           </tr>
           {% endfor %}  
         </table>        

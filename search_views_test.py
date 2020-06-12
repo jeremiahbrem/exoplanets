@@ -2,16 +2,15 @@ import os
 from unittest import TestCase
 from flask import session
 from models import db, User, List, Favorite
-
-os.environ['DATABASE_URL'] = "postgresql:///exoplanet_test"
-
 from app import app
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///exoplanets_test"
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['WTF_CSRF_ENABLED'] = False
 app.config['TESTING'] = True
 
+db.drop_all()
 db.create_all()
 
 class SearchViewsTestCase(TestCase):
@@ -55,7 +54,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
             
-            resp = client.get("planets/search", follow_redirects=True)
+            resp = client.get("planets/search/form", follow_redirects=True)
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -66,7 +65,7 @@ class SearchViewsTestCase(TestCase):
         """Testing show search page while not logged in"""
 
         with app.test_client() as client:
-            resp = client.get("/planets/search", follow_redirects=True)
+            resp = client.get("/planets/search/form", follow_redirects=True)
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -80,8 +79,8 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "all"}
-            resp = client.post("planets/search", data=data, follow_redirects=True)
+            data = {"all": "on"}
+            resp = client.post("/planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -97,8 +96,8 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "st_mass", "min_num": 0.5, "max_num": 1.0}
-            resp = client.post("planets/search", data=data, follow_redirects=True)
+            data = {"st_mass": "on", "st_mass_min": 0.5, "st_mass_max": 1.0}
+            resp = client.post("/planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -115,7 +114,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "st_rad", "min_num": 0.5, "max_num": 1.0}
+            data = {"st_rad": "on", "st_rad_min": 0.5, "st_rad_max": 1.0}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -132,7 +131,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "st_optmag", "max_num": 3.0}
+            data = {"st_optmag": "on", "st_optmag_max": 3.0}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -149,7 +148,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "st_bmvj", "min_num": 3}
+            data = {"st_bmvj": "on", "st_bmvj_min": 3}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -166,7 +165,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "st_teff", "min_num": 10000}
+            data = {"st_teff": "on", "st_teff_min": 10000}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -183,7 +182,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "st_spstr", "search_input": "M5"}
+            data = {"st_spstr": "on", "st_spstr_type": "M5"}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -200,7 +199,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "st_dist", "max_num": 3.0}
+            data = {"st_dist": "on", "st_dist_max": 3.0}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -217,7 +216,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "pl_hostname", "search_input": "TRAPPIST"}
+            data = {"pl_hostname": "TRAPPIST"}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -234,7 +233,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "pl_name", "search_input": "GJ"}
+            data = {"pl_name": "GJ"}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -251,7 +250,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "pl_orbsmax", "min_num": 0.99, "max_num": 1.1}
+            data = {"pl_orbsmax": "on", "pl_orbsmax_min": 0.99, "pl_orbsmax_max": 1.1}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -268,7 +267,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "pl_rade", "min_num": 20.0}
+            data = {"pl_rade": "on", "pl_rade_min": 20.0}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -285,7 +284,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "pl_pnum", "min_num": 6.0}
+            data = {"pl_pnum": "on", "pl_pnum_min": 6.0}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -302,7 +301,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "pl_masse", "min_num": 0.99, "max_num": 1.1}
+            data = {"pl_masse": "on", "pl_masse_min": 0.99, "pl_masse_max": 1.1}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -319,7 +318,7 @@ class SearchViewsTestCase(TestCase):
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser"
 
-            data = {"parameter": "habitable"}
+            data = {"habitable": "on"}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
@@ -329,14 +328,105 @@ class SearchViewsTestCase(TestCase):
             self.assertIn("16 Cyg B b", html)
             del change_session['USERNAME']
 
+    def test_search_results_habitable_st_mass(self):
+        """Testing search results habitable zone and star mass"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            data = {"habitable": "on", "st_mass": "on", "st_mass_min": 0.5, "st_mass_max": 1}
+            resp = client.post("planets/search", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Planet Search Results", html)
+            self.assertIn("count: 14", html)
+            self.assertIn("HD 43197 b", html)
+            del change_session['USERNAME']       
+    
+    def test_search_results_st_mass_habitable(self):
+        """Testing search results star mass and habitable zone"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            data = {"st_mass": "on", "st_mass_min": 0.5, "st_mass_max": 1, "habitable": "on"}
+            resp = client.post("planets/search", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Planet Search Results", html)
+            self.assertIn("count: 14", html)
+            self.assertIn("HD 43197 b", html)
+            del change_session['USERNAME']       
+    
+    def test_search_results_st_mass_spectral_type(self):
+        """Testing search results star mass and spectral type"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            data = {"st_mass": "on", "st_mass_min": 0.1, "st_mass_max": 0.5, "st_spstr": "on", "st_spstr_type": "M5"}
+            resp = client.post("planets/search", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Planet Search Results", html)
+            self.assertIn("count: 6", html)
+            self.assertIn("GJ 1061 d", html)
+            del change_session['USERNAME']       
+    
+    def test_search_results_spectral_type_st_mass(self):
+        """Testing search results spectral type and star mass"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            data = {"st_spstr": "on", "st_spstr_type": "M5", "st_mass": "on", "st_mass_min": 0.1, "st_mass_max": 0.5}
+            resp = client.post("planets/search", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Planet Search Results", html)
+            self.assertIn("count: 6", html)
+            self.assertIn("GJ 1061 d", html)
+            del change_session['USERNAME']       
+    
+    def test_search_results_pl_radius_pl_mass_st_teff(self):
+        """Testing search results planet mass, radius and star temp"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            data = {"pl_masse": "on", "pl_masse_min": 0.5, "pl_masse_max": 1, "pl_rade": "on",
+                    "pl_rade_min": 0.5, "pl_rade_max": 1, "st_teff": "on", "st_teff_min": 5000}
+            resp = client.post("planets/search", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Planet Search Results", html)
+            self.assertIn("count: 1", html)
+            self.assertIn("KOI-55 c", html)
+            self.assertIn("0.655", html)
+            self.assertIn("0.867", html)
+            del change_session['USERNAME']       
+
     def test_search_unauthorized(self):
         """Testing search post attempt not logged in"""
 
         with app.test_client() as client:
-            data = {"parameter": "habitable"}
+            data = {"habitable": "on"}
             resp = client.post("planets/search", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Welcome to the Exoplanet", html)
             self.assertIn("You must be logged in.", html)
+
+
+

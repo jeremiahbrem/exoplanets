@@ -3,23 +3,32 @@
   {% block content %}
 
     <h1>Search Exoplanets</h1>
-    <form id="search_form" method="POST"> 
-      {{ form.hidden_tag() }}
-  
-      {% for field in form
-        if field.widget.input_type != 'hidden' %}
-  
-          <p>
-            {{ field.label }} 
-            {{ field }}     
-         
-            {% for error in field.errors %}
-              {{ error }}
-            {% endfor %}
-          </p>
-  
-    {% endfor %}
-    <button class="btn btn-success btn-sm" type="submit">Search</button>
-  </form>
+    <form action="/planets/search" name="planet-name-form" method="POST">
+      <label for="planet-name">Planet Name</label>
+      <input type="text" name="pl_name" id="planet-name">
+      <button>Search</button>
+    </form>
+    <hr>
+    <form action="/planets/search" name="star-name" method="POST">
+      <label for="pl_hostname">Host Star Name</label>
+      <input type="text" name="pl_hostname" id="st-name">
+      <button>Search</button>
+    </form>
+    <hr>
+    <h4>Search by One or Multiple Parameters</h4>
+    <form action="/planets/search" name="parameters" method="POST">
+      <input type="checkbox" name="pl_masse" id="pl_masse">
+      <label>Planet Mass</label>
+      <input class="pl_masse" type="number" name="pl_masse_min" step="0.0001" placeholder="min" disabled>
+      <input class="pl_masse" type="number" name="pl_masse_max" step="0.0001" placeholder="max" disabled>
+      <button class="pl_masse" >Search</button><br>
 
-{% endblock %}
+      <input type="checkbox" name="st_mass" id="st-mass">
+      <label>Host Star Mass</label>
+   
+      <input class="st_mass" type="number" name="st_mass_min" step="0.0001" placeholder="min" >
+      <input class="st_mass" type="number" name="st_mass_max" step="0.0001" placeholder="max" >
+      <button class="st_mass" disabled>Search</button>
+    </form>
+
+  {% endblock %}
