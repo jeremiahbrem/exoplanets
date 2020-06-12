@@ -259,7 +259,6 @@ def get_habitable_results():
 
     planets = []
     parameters = {}
-    search = ""
 
     if session.get("PARAMETERS", None):
         parameters = session["PARAMETERS"]

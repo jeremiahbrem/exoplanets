@@ -1,0 +1,26 @@
+CREATE TABLE "favorites" (
+  "id" SERIAL PRIMARY KEY,
+  "list_id" int,
+  "planet_name" text,
+  "photo" text
+);
+
+CREATE TABLE "lists" (
+  "id" SERIAL PRIMARY KEY,
+  "name" text,
+  "description" text,
+  "user_id" int
+);
+
+CREATE TABLE "users" (
+  "id" SERIAL PRIMARY KEY,
+  "first_name" text,
+  "last_name" text,
+  "email" text,
+  "username" text,
+  "password" text
+);
+
+ALTER TABLE "lists" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "favorites" ADD FOREIGN KEY ("list_id") REFERENCES "lists" ("id");
