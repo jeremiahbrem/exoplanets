@@ -1,4 +1,12 @@
 import math
+from enum import Enum
+class Zone(Enum):
+    "Enumerations for returning 'if habitable' values"
+
+    HOT = "Too hot"
+    COLD = "Too cold"
+    HABITABLE = "Habitable"
+    UNKNOWN = "Unknown"
 
 class HabitableZoneCheck:
     """Class instance methods for calculating if planet is in habitable zone
@@ -63,11 +71,10 @@ class HabitableZoneCheck:
             outer_bound = math.sqrt(luminosity / 0.53)
 
             if self.orbit >= inner_bound and self.orbit <= outer_bound:
-                # enums
-                return True
+                return Zone.HABITABLE
             elif self.orbit < inner_bound:
-                return "Too hot"
+                return Zone.HOT
             elif self.orbit > outer_bound:
-                return "Too cold"        
+                return Zone.COLD       
 
-        return "Unknown"                 
+        return Zone.UNKNOWN        

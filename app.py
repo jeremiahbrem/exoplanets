@@ -188,12 +188,8 @@ def get_details(planet_name):
         flash("You must be logged in.")
         return redirect("/")
 
-    resp = requests.get("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
-                         "table=exoplanets&select=pl_name,pl_orbsmax,pl_rade, pl_masse,pl_hostname," +
-                         "st_optmag,st_dist,st_spstr,st_mass,st_rad,st_teff,st_bmvj&" +
-                         f"where=pl_name like '{planet_name}%25'&format=json")
-    # search =  ProcessSearch({'pl_name': "planet_name"})
-    # resp = requests.get(search.create_api_query())
+    search =  ProcessSearch({'pl_name': planet_name})
+    resp = requests.get(search.create_api_query())
 
 
     planet = resp.json()[0]
@@ -204,7 +200,7 @@ def get_details(planet_name):
                                     planet['pl_orbsmax']
                                     )
    
-    return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone()) 
+    return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone().value) 
 
 @app.route("/planets/search/form")
 def show_search():
@@ -251,7 +247,6 @@ def get_search_results():
     parameters = session["PARAMETERS"]
     del session["PARAMETERS"]
     search = ProcessSearch(parameters)
-    print(search.create_api_query())
 
     session["SEARCH"] = search.create_api_query()
     resp = requests.get(search.create_api_query())
@@ -275,7 +270,7 @@ def get_habitable_results():
     search = ProcessSearch(parameters)        
     session["SEARCH"] = search.create_api_query()
     resp = requests.get(search.create_api_query())                                 
-    
+
     for planet in resp.json():
         if planet['st_optmag'] and planet['st_dist'] and planet['st_spstr'] and planet['pl_orbsmax']:
             check_zone = HabitableZoneCheck(
@@ -285,7 +280,7 @@ def get_habitable_results():
                                         planet['pl_orbsmax']
                                         )
 
-            if check_zone.in_habitable_zone() == True:
+            if check_zone.in_habitable_zone().value == "Habitable":
                 planets.append(planet)                        
 
     return render_template("results.html", planets=planets, parameters=parameters)
