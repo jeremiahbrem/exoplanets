@@ -22,7 +22,8 @@
           {% endfor %}  
         </table>
   
-    <div id="pages">pages: </div>
+    <div id="pages">pages: <a id="previous" href=""></a></div>
+    <a id="next" href=""></a>
 
     <input type="hidden" id="page-num" value="{{ page }}">
     <input type="hidden" id="result-length" value="{{ planets | length }}">   
