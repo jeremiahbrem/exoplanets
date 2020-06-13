@@ -236,22 +236,21 @@ def search_planets():
         if resp.get('habitable', None):
             return redirect("/planets/habitable")
 
-        return redirect("/planets/results")      
+        return redirect("/planets/results/1")      
         
     return render_template("search.html")
 
-@app.route("/planets/results")
-def get_search_results():
+@app.route("/planets/results/<int:page>")
+def get_search_results(page):
     """Render search results"""
 
     parameters = session["PARAMETERS"]
-    del session["PARAMETERS"]
     search = ProcessSearch(parameters)
 
     session["SEARCH"] = search.create_api_query()
     resp = requests.get(search.create_api_query())
 
-    return render_template("results.html", planets = resp.json(), parameters=parameters)
+    return render_template("results.html", planets = resp.json(), parameters=parameters, page=page)
 
 @app.route("/planets/habitable")
 def get_habitable_results():
@@ -262,7 +261,6 @@ def get_habitable_results():
 
     if session.get("PARAMETERS", None):
         parameters = session["PARAMETERS"]
-        del session["PARAMETERS"]
     else:
         parameters = {"all": "on"}    
     
@@ -282,4 +280,4 @@ def get_habitable_results():
             if check_zone.in_habitable_zone().value == "Habitable":
                 planets.append(planet)                        
 
-    return render_template("results.html", planets=planets, parameters=parameters)
+    return render_template("results.html", planets=planets, parameters=parameters, page=1)

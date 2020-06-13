@@ -4,27 +4,29 @@
 
     <h3>Planet Search Results</h3>
 
-        <h6>count: {{ planets | length }}</h6>
+        <h6>result count: {{ planets | length }}</h6>
         <table>
           <th></th>
           <th>Planet</th>
           {% for key, value in parameters.items() if value == 'on' and key not in ['pl_name','all','habitable'] %}
-           <th>
-             
-             {{ key }}</th>
+           <th>{{ key }}</th>
           {% endfor %}
-          {% for planet in planets %}
-          <tr>
-            <td><input type="checkbox"></td>
-            <td><a href="/planets/{{ planet.pl_name }}">{{ planet.pl_name }}</a></td>
-            {% for key, value in parameters.items() if value == 'on' and key not in ['pl_name','all','habitable'] %}
-              <td>{{ planet[key] }}</td>
-            {% endfor %}
-          </tr>
+          {% for num in range((page*100-100), (page*100 if ((planets | length) >= page*100) else (planets | length))) %}
+            <tr>
+              <td><input type="checkbox"></td>
+              <td><a href="/planets/{{ planets[num].pl_name }}">{{ planets[num].pl_name }}</a></td>
+              {% for key, value in parameters.items() if value == 'on' and key not in ['pl_name','all','habitable'] %}
+                <td>{{ planets[num][key] }}</td>
+              {% endfor %}
+            </tr>
           {% endfor %}  
-        </table>        
+        </table>
   
-    <a href="/logout"></a>
+    <div id="pages">pages: </div>
+
+    <input type="hidden" id="page-num" value="{{ page }}">
+    <input type="hidden" id="result-length" value="{{ planets | length }}">   
+    
 
   {% endblock %}  
     

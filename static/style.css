@@ -1,0 +1,10 @@
+.page-buttons {
+    width: 27px;
+    border: solid 1px black;
+    padding: 2px;
+    text-align: center;
+}
+
+#pages {
+    display: flex;
+}
