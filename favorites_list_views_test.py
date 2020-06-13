@@ -183,7 +183,7 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("GJ 876 c", html)
             self.assertIn("Host Star: GJ 876", html)
-            self.assertIn("Potentially Habitable: True", html)
+            self.assertIn("Potentially Habitable: Habitable", html)
             del change_session["USERNAME"]      
 
     def test_show_planet_not_logged_in(self):
@@ -206,13 +206,34 @@ class FavoriteListViewsTestCase(TestCase):
 
             db.session.add(self.list)
 
-            data = {"planet": "11 Com b"}
+            data = [{"planet": "11 Com b"}]
             resp = client.post(f"/users/testuser/lists/{self.list.id}/add", json=data, follow_redirects=True)
-            favorite = resp.json["new_favorite"]
+            favorites = resp.json["new_favorites"]
+            
             self.assertEqual(resp.status_code, 201)
-            self.assertEqual(favorite['list'], "testplanets")
-            self.assertEqual(favorite['planet'], "11 Com b")
-            self.assertEqual
+            self.assertEqual(favorites['list'], "testplanets")
+            self.assertIn("11 Com b", favorites['planets'])
+            self.assertEqual(len(self.list.favorites), 2)
+
+    def test_add_planets(self):
+        """Testing adding multiple planets to a user's list"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            db.session.add(self.list)
+
+            data = [{"planet": "11 Com b"}, {"planet": "16 Cyg B b"}, {"planet": "GJ 229 A c"}]
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", json=data, follow_redirects=True)
+            favorites = resp.json["new_favorites"]
+        
+            self.assertEqual(resp.status_code, 201)
+            self.assertEqual(favorites['list'], "testplanets")
+            self.assertIn("11 Com b", favorites['planets'])         
+            self.assertIn("16 Cyg B b", favorites['planets'])         
+            self.assertIn("GJ 229 A c", favorites['planets'])
+            self.assertEqual(len(self.list.favorites), 4)     
 
     def test_add_planet_unauthorized(self):
         """Testing adding a planet to another user's list"""

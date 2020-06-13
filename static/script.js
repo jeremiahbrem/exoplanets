@@ -1,3 +1,17 @@
+async function addFavorite(listID, planetNames) {
+  const data = []
+  for (let planetName of planetNames) {
+    data.push({"planet": planetName})
+  }
+  const resp = await axios.post(`http://localhost:5000/users/${$('#username').text()}/lists/${listID}/add`, data);
+  const list = resp.data.new_favorites.list;
+  const planets = resp.data.new_favorites.planets;
+  
+  return {"list": list, "planets": planets}
+}
+
+
+
 const pageNum = parseInt($("#page-num").val());
 const resultTotal = parseInt($("#result-length").val());
 
@@ -7,7 +21,7 @@ paginate(pageNum, resultTotal);
 function paginate(pageNum, resultTotal) {
   const totalPages = getTotalPages(resultTotal);
   const start = getPageStart(totalPages, pageNum);
-  const end = getPageEnd(totalPages, start);
+  let end = getPageEnd(totalPages, start);
   const next = getNextPageSet(totalPages, end);
   const previous = getPreviousPageSet(next);
 

@@ -168,14 +168,21 @@ def add_planet(username, list_id):
 
     user_list = List.query.get(list_id)
     user = user_list.user
+    favorites = []
 
-    planet_name = request.json["planet"]
-    favorite = Favorite(planet_name=planet_name, list_id=user_list.id)
+    planets = request.json
+ 
+    for planet in planets:
+        favorite = (Favorite(planet_name=planet['planet'], list_id=user_list.id))
+        db.session.add(favorite)
+        favorites.append(planet['planet'])
+
+    db.session.commit()    
 
     response = {
-                 "new_favorite": {
+                 "new_favorites": {
                    "list" : user_list.name,
-                   "planet": planet_name
+                   "planets" : favorites
                  }
                }
 
@@ -204,6 +211,8 @@ def get_details(planet_name):
 
 @app.route("/planets/search/form")
 def show_search():
+    """Displays search form page"""
+
     if not g.user:
         flash("You must be logged in.")
         return redirect("/")
@@ -244,6 +253,10 @@ def search_planets():
 def get_search_results(page):
     """Render search results"""
 
+    if not g.user:
+        flash("You must be logged in.")
+        return redirect("/")
+
     parameters = session["PARAMETERS"]
     search = ProcessSearch(parameters)
 
@@ -255,6 +268,10 @@ def get_search_results(page):
 @app.route("/planets/habitable")
 def get_habitable_results():
     """Searches for and returns planets in habitable zone"""
+
+    if not g.user:
+        flash("You must be logged in.")
+        return redirect("/")
 
     planets = []
     parameters = {}

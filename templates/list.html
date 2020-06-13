@@ -7,9 +7,9 @@
     <h3>Planets</h3>
     <h5>{{ user_list.description }}</h5>
     <ul>
-        {% for planet in user_list.planets %}
-          <li><a href="/planets/{{ planet.pl_name }}">{{ planet.pl_name }}</a>
-           
+        {% for favorite in user_list.favorites %}
+          <li><a href="/planets/{{ favorite.planet_name }}">{{ favorite.planet_name }}</a>
+          <button>x</button>
           </li>
 
         {% endfor %}  

@@ -1,12 +1,25 @@
 describe ("Testing functions for exoplanet app", () => {
 
-    // it ("should submit new favorite planet to user list and receive response with addPlanet", async function() {
-    //     resp = await addPlanet("testuser", 1, "11 Com b");
+    // There must be a list added to user's list for testing
+    it ("should submit new favorite planet to user list and receive response with addPlanet", async function() {
+        const listID =parseInt($('.listIDs')[0].value);
+        const listName = $('.listIDs')[0].text;
+        const resp = await addFavorite(listID, ["testPlanet"]);
+        
+        expect(resp.list).toEqual(listName);
+        expect(resp.planets).toEqual(["testPlanet"]);
+    })
 
-    //     expect(resp.data.new_favorite.list).toEqual("testplanets");
-    //     expect(resp.data.new_favorite.planet).toEqual("11 Com b");
-    // })
-    
+    // There must be a list added to user's list for testing
+    it ("should submit multiple favorite planets to user list and receive response with addPlanet", async function() {
+        const listID =parseInt($('.listIDs')[0].value);
+        const listName = $('.listIDs')[0].text;
+        resp = await addFavorite(listID, ["testPlanet1", "testPlanet2"]);
+
+        expect(resp.list).toEqual(listName);
+        expect(resp.planets).toEqual(["testPlanet1", "testPlanet2"]);
+    })
+
     it ("should return total number of result pages with getTotalPages", () => {
         expect(getTotalPages(4164)).toEqual(42);
         expect(getTotalPages(9)).toEqual(1);
