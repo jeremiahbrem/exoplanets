@@ -1,4 +1,3 @@
-import os
 from unittest import TestCase
 from flask import session
 from models import db, User, List, Favorite
@@ -27,7 +26,7 @@ class FavoriteListViewsTestCase(TestCase):
                     username="testuser", 
                     first_name="Test", 
                     last_name="User", 
-                    email="test@test.com", 
+                    email="test@example.com", 
                     password="testpassword"
                     )
 
@@ -206,10 +205,10 @@ class FavoriteListViewsTestCase(TestCase):
 
             db.session.add(self.list)
 
-            data = [{"planet": "11 Com b"}]
-            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", json=data, follow_redirects=True)
+            data = {"list_id": self.list.id, "planets": ["11 Com b"]}
+            resp = client.post(f"/users/testuser/favorites/add", json=data, follow_redirects=True)
             favorites = resp.json["new_favorites"]
-            
+
             self.assertEqual(resp.status_code, 201)
             self.assertEqual(favorites['list'], "testplanets")
             self.assertIn("11 Com b", favorites['planets'])
@@ -224,8 +223,8 @@ class FavoriteListViewsTestCase(TestCase):
 
             db.session.add(self.list)
 
-            data = [{"planet": "11 Com b"}, {"planet": "16 Cyg B b"}, {"planet": "GJ 229 A c"}]
-            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", json=data, follow_redirects=True)
+            data = {"list_id": self.list.id, "planets": ["11 Com b", "16 Cyg B b", "GJ 229 A c"]}
+            resp = client.post(f"/users/testuser/favorites/add", json=data, follow_redirects=True)
             favorites = resp.json["new_favorites"]
         
             self.assertEqual(resp.status_code, 201)
@@ -255,8 +254,8 @@ class FavoriteListViewsTestCase(TestCase):
 
             db.session.add(self.list)    
 
-            data = {"planet": "11 Com b"}
-            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", json=data, follow_redirects=True)
+            data = {"list_id": self.list.id, "planets": ["11 Com b"]}
+            resp = client.post(f"/users/testuser/favorites/add", json=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -270,10 +269,55 @@ class FavoriteListViewsTestCase(TestCase):
 
             db.session.add(self.list)
 
-            data = {"pl_name": "11 Com b"}
-            resp = client.post(f"/users/testuser/lists/{self.list.id}/add", data=data, follow_redirects=True)
+            data = {"list_id": self.list.id, "planets": ["11 Com b"]}
+            resp = client.post(f"/users/testuser/favorites/add", data=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Welcome to the Exoplanet App", html)
-            self.assertIn("Unauthorized access", html)                   
+            self.assertIn("Unauthorized access", html)  
+
+    def test_delete_favorite(self):
+        """Testing deletion of favorite from list"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            db.session.add(self.list)
+
+            data = {"list_id": self.list.id, "planet": "GJ 876 c"}
+            resp = client.delete(f"/users/testuser/favorites/delete", json=data, follow_redirects=True)
+            message = resp.json
+        
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(message, "GJ 876 c deleted from list.")
+            self.assertEqual(len(self.list.favorites), 0)
+
+    def test_delete_favorite_unauthorized(self):
+        """Testing deleting a planet from another user's list"""
+
+        with app.test_client() as client:
+
+            user2 = User.signup(
+                    username="testuser2", 
+                    first_name="Test2", 
+                    last_name="User2", 
+                    email="test2@test.com", 
+                    password="testpassword2"
+                    )
+
+            db.session.commit()
+
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser2"
+
+            db.session.add(self.list)    
+
+            data = {"list_id": self.list.id, "planet": "GJ 876 c"}
+            resp = client.delete(f"/users/testuser/favorites/delete", json=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+        
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("testuser2's page", html)
+            self.assertIn("Unauthorized access", html)

@@ -18,6 +18,8 @@ class User(db.Model):
     last_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
 
+    lists = db.relationship("List", cascade="delete", single_parent=True)
+
     def __repr__(self):
         return f"<User #{self.id}: {self.username}>"
 
@@ -65,7 +67,7 @@ class List(db.Model):
                                         nullable=False
                                         )
 
-    user = db.relationship("User", backref="lists")
+    user = db.relationship("User")
 
     def __repr__(self):
         return f"<List #{self.id}: {self.name}>"
@@ -78,7 +80,7 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     list_id = db.Column(db.Integer, db.ForeignKey(
                                         "lists.id",
-                                        ondelete="cascade"
+                                        ondelete="cascade, delete-orphan"
                                         ), 
                                         nullable=False
                                         )

@@ -158,24 +158,24 @@ def show_list(username, list_id):
 
     return render_template("list.html", user_list=user_list)  
 
-@app.route("/users/<username>/lists/<int:list_id>/add", methods=["POST"]) 
-def add_planet(username, list_id):
+@app.route("/users/<username>/favorites/add", methods=["POST"]) 
+def add_planet(username):
     """Adds a planet to a user list and redirects to search results page"""
 
     if not g.user or g.user.username != username:
         flash("Unauthorized access.")
         return redirect("/")
 
+    favorites = []
+    list_id = request.json["list_id"]
+    planets = request.json["planets"]
     user_list = List.query.get(list_id)
     user = user_list.user
-    favorites = []
-
-    planets = request.json
  
     for planet in planets:
-        favorite = (Favorite(planet_name=planet['planet'], list_id=user_list.id))
+        favorite = (Favorite(planet_name=planet, list_id=list_id))
         db.session.add(favorite)
-        favorites.append(planet['planet'])
+        favorites.append(planet)
 
     db.session.commit()    
 
@@ -186,7 +186,26 @@ def add_planet(username, list_id):
                  }
                }
 
-    return (jsonify(response), 201)           
+    return (jsonify(response), 201)   
+
+@app.route("/users/<username>/favorites/delete", methods=["DELETE"])          
+def delete_planet(username):
+    """Deletes planet from user list"""
+
+    if not g.user or g.user.username != username:
+        flash("Unauthorized access.")
+        return redirect("/")
+
+    list_id = request.json["list_id"]
+    planet_name = request.json["planet"]
+    favorite = Favorite.query.filter_by(list_id=list_id, planet_name=planet_name).first()
+    db.session.delete(favorite)
+    db.session.commit()
+
+    message = f"{planet_name} deleted from list."  
+
+    return (jsonify(message), 200)
+    
 
 @app.route("/planets/<planet_name>")
 def get_details(planet_name):

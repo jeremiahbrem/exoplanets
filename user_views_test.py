@@ -1,4 +1,3 @@
-import os
 from unittest import TestCase
 from flask import session
 from models import db, User, List, Favorite
@@ -27,7 +26,7 @@ class UserViewsTestCase(TestCase):
                     username="testuser", 
                     first_name="Test", 
                     last_name="User", 
-                    email="test@test.com", 
+                    email="test@example.com", 
                     password="testpassword"
                     )
 

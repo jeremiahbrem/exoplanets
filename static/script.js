@@ -10,7 +10,32 @@ async function addFavorite(listID, planetNames) {
   return {"list": list, "planets": planets}
 }
 
+$(".check").change(enableSearchOption);
 
+function enableSearchOption(evt) {
+  const id = evt.target.id;
+  if ($(`#${id}`).prop("checked") == true) {
+    $(`.${id}`).prop("disabled", false);
+  }
+  else if ($(`#${id}`).prop("checked") == false) {
+    $(`.${id}`).prop("disabled", true);
+  }
+}
+
+async function handleDelete(evt) {
+  evt.preventDefault();
+  const planet = evt.previousElementSibling.text;
+  evt.parentElement.remove();
+  const message = await deleteFavorite(planet);
+  console.log(message);
+}
+
+async function deleteFavorite(planet) {
+  const listID = $('#lists').val();
+  data = {"list_id": listID, "planet": planet}
+  const resp = await axio.delete(`http://localhost:5000/${$('#username').text()}/favorites/delete`, data=data);
+  return resp.data;
+}
 
 const pageNum = parseInt($("#page-num").val());
 const resultTotal = parseInt($("#result-length").val());

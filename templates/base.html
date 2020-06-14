@@ -17,7 +17,7 @@
     <script src="https://unpkg.com/bootstrap"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
   </head>
-  <body>      
+  <body class="style={background-color: black}">      
     {% if g.user %}
       <h6 id="username">{{ g.user.username }}</h6>
     {% endif %}  
@@ -26,7 +26,7 @@
     <script src="https://unpkg.com/jasmine-core/lib/jasmine-core/jasmine.js"></script>
     <script src="https://unpkg.com/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
     <script src= "https://unpkg.com/jasmine-core/lib/jasmine-core/boot.js"></script>
-    <script src="/static/test_script.js"></script>
+    {% block tests %}{% endblock %}
     <script src="/static/script.js"></script>
   </body>
 </html>

@@ -9,12 +9,13 @@
     <ul>
         {% for favorite in user_list.favorites %}
           <li><a href="/planets/{{ favorite.planet_name }}">{{ favorite.planet_name }}</a>
-          <button>x</button>
+          <button class="delete-planet">x</button>
           </li>
 
         {% endfor %}  
     </ul>
     <a href="/logout"></a>
+    <input type="hidden" id="list-id" value="{{ user_list.id }}">
 
   {% endblock %}  
     

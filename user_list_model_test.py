@@ -1,4 +1,3 @@
-import os
 from unittest import TestCase
 from models import db, User, List, Favorite
 from sqlalchemy.exc import IntegrityError
@@ -27,7 +26,7 @@ class UserListModelsTestCase(TestCase):
                     username="testuser", 
                     first_name="Test", 
                     last_name="User", 
-                    email="test@test.com", 
+                    email="test@example.com", 
                     password="password"
                     )
         db.session.add(user)
@@ -159,3 +158,4 @@ class UserListModelsTestCase(TestCase):
 
         self.assertFalse(check_user)    
 
+  

@@ -1,5 +1,7 @@
 describe ("Testing functions for exoplanet app", () => {
 
+    
+
     // There must be a list added to user's list for testing
     it ("should submit new favorite planet to user list and receive response with addPlanet", async function() {
         const listID =parseInt($('.listIDs')[0].value);
@@ -18,6 +20,11 @@ describe ("Testing functions for exoplanet app", () => {
 
         expect(resp.list).toEqual(listName);
         expect(resp.planets).toEqual(["testPlanet1", "testPlanet2"]);
+    })
+
+    // There must be a created list with an added favorite for testing
+    it ("should delete favorite from user list and receive response with deleteFavorite", async function() {
+
     })
 
     it ("should return total number of result pages with getTotalPages", () => {
