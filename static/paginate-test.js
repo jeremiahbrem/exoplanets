@@ -1,31 +1,4 @@
-describe ("Testing functions for exoplanet app", () => {
-
-    
-
-    // There must be a list added to user's list for testing
-    it ("should submit new favorite planet to user list and receive response with addPlanet", async function() {
-        const listID =parseInt($('.listIDs')[0].value);
-        const listName = $('.listIDs')[0].text;
-        const resp = await addFavorite(listID, ["testPlanet"]);
-        
-        expect(resp.list).toEqual(listName);
-        expect(resp.planets).toEqual(["testPlanet"]);
-    })
-
-    // There must be a list added to user's list for testing
-    it ("should submit multiple favorite planets to user list and receive response with addPlanet", async function() {
-        const listID =parseInt($('.listIDs')[0].value);
-        const listName = $('.listIDs')[0].text;
-        resp = await addFavorite(listID, ["testPlanet1", "testPlanet2"]);
-
-        expect(resp.list).toEqual(listName);
-        expect(resp.planets).toEqual(["testPlanet1", "testPlanet2"]);
-    })
-
-    // There must be a created list with an added favorite for testing
-    it ("should delete favorite from user list and receive response with deleteFavorite", async function() {
-
-    })
+describe ("Testing pagination functions", () => {
 
     it ("should return total number of result pages with getTotalPages", () => {
         expect(getTotalPages(4164)).toEqual(42);
@@ -56,5 +29,6 @@ describe ("Testing functions for exoplanet app", () => {
         expect(getPreviousPageSet(20)).toEqual(1);        
         expect(getPreviousPageSet(10)).toBeUndefined();        
         expect(getPreviousPageSet(40)).toEqual(20);        
-    })
+    })    
+    
 })

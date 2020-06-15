@@ -6,6 +6,7 @@ from habitable_zone import HabitableZoneCheck
 from process_search import ProcessSearch
 from forms import SearchForm, SignUpForm, LoginForm, CreateListForm
 import requests
+from requests import ConnectionError
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///exoplanets"
@@ -188,7 +189,7 @@ def add_planet(username):
 
     return (jsonify(response), 201)   
 
-@app.route("/users/<username>/favorites/delete", methods=["DELETE"])          
+@app.route("/users/<username>/favorites/delete", methods=["POST"])       
 def delete_planet(username):
     """Deletes planet from user list"""
 
@@ -204,7 +205,7 @@ def delete_planet(username):
 
     message = f"{planet_name} deleted from list."  
 
-    return (jsonify(message), 200)
+    return (jsonify(message), 201)
     
 
 @app.route("/planets/<planet_name>")
@@ -227,16 +228,6 @@ def get_details(planet_name):
                                     )
    
     return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone().value) 
-
-@app.route("/planets/search/form")
-def show_search():
-    """Displays search form page"""
-
-    if not g.user:
-        flash("You must be logged in.")
-        return redirect("/")
-
-    return render_template("search.html")
 
 @app.route("/planets/search", methods=["GET","POST"])
 def search_planets():
@@ -280,7 +271,12 @@ def get_search_results(page):
     search = ProcessSearch(parameters)
 
     session["SEARCH"] = search.create_api_query()
-    resp = requests.get(search.create_api_query())
+    try:
+        resp = requests.get(search.create_api_query())
+    except ConnectionError:
+        flash("There seems to be a problem accessing the NASA database.")
+        return redirect("/planets/search")
+
 
     return render_template("results.html", planets = resp.json(), parameters=parameters, page=page)
 
@@ -302,7 +298,11 @@ def get_habitable_results():
     
     search = ProcessSearch(parameters)        
     session["SEARCH"] = search.create_api_query()
-    resp = requests.get(search.create_api_query())                                 
+    try:
+        resp = requests.get(search.create_api_query())
+    except ConnectionError:
+        flash("There seems to be a problem accessing the NASA database.")
+        return redirect("/planets/search")                                       
 
     for planet in resp.json():
         if planet['st_optmag'] and planet['st_dist'] and planet['st_spstr'] and planet['pl_orbsmax']:

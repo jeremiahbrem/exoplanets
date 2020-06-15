@@ -3,24 +3,29 @@
   {% block content %}
 
     <h1>Search Exoplanets</h1>
+    {% for message in get_flashed_messages() %}  
+      <h4>{{ message }}</h4>
+    {% endfor %}
     <h4>Search by Name</h4>
     <form action="/planets/search" name="planet-name-form" method="POST">
       <label for="planet-name">Planet Name</label>
-      <input type="text" name="pl_name" id="planet-name">
+      <input type="text" name="pl_name" id="planet-name" required>
       <button>Search</button>
     </form>
     <hr>
     <form action="/planets/search" name="star-name" method="POST">
       <label for="pl_hostname">Host Star Name</label>
-      <input type="text" name="pl_hostname" id="st-name">
+      <input type="text" name="pl_hostname" id="st-name" required>
       <button>Search</button>
     </form>
     <hr>
     <h4>Search by One or Multiple Parameters</h4>
-    <form action="/planets/search" name="parameters" method="POST">
+    <form action="/planets/search" id="parameters" name="parameters" method="POST">
+      <input type="checkbox" name="all" id="all">
+      <label>Search All</label><button>Search</button>
+      <hr>
       <input type="checkbox" name="habitable" id="habitable">
       <label>In Habitable Zone</label>
-      
       <br>
       <input type="checkbox" class="check" name="pl_masse" id="pl_masse">
       <label>Planet Mass</label>
@@ -51,7 +56,6 @@
       <label>Host Star Mass</label>
       <input class="st_mass" type="number" name="st_mass_min" step="0.0001" placeholder="min" disabled>
       <input class="st_mass" type="number" name="st_mass_max" step="0.0001" placeholder="max" disabled>
-      <button class="st_mass">Search</button>
       <br>
       <input type="checkbox" class="check" name="st_rad" id="st_rad">
       <label>Host Star Radius</label>
@@ -77,6 +81,10 @@
       <input class="st_optmag" type="number" name="st_optmag_min" step="0.0001" placeholder="min" disabled>
       <input class="st_optmag" type="number" name="st_optmag_max" step="0.0001" placeholder="max" disabled>
       <br>
+      <button>Search</button>
     </form>
 
+  {% endblock %}
+  {% block scripts %}
+    <script src="/static/test-search.js"></script>
   {% endblock %}

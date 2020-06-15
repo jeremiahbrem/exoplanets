@@ -11,7 +11,7 @@
     <ul>
         {% for list in user.lists %}
           <li><a href="/users/{{ user.username }}/lists/{{ list.id }}">{{ list.name }}</a>
-            <p>{{ list.description }}</p>
+            <p id="{{ list.name }}">{{ list.description }}</p>
           </li>
         {% endfor %}  
     </ul>
@@ -19,6 +19,7 @@
     <a href="/planets/search">Search Planets</a><br>
     <a href="/logout">logout</a>
 
-  {% endblock %}  
+  {% endblock %}
+  {% block tests %}<script src="/static/create-test-list.js"></script>{% endblock %}
     
     

@@ -68,6 +68,7 @@ class List(db.Model):
                                         )
 
     user = db.relationship("User")
+    favorites = db.relationship("Favorite", cascade="delete", single_parent=True)
 
     def __repr__(self):
         return f"<List #{self.id}: {self.name}>"
@@ -80,7 +81,7 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     list_id = db.Column(db.Integer, db.ForeignKey(
                                         "lists.id",
-                                        ondelete="cascade, delete-orphan"
+                                        ondelete="cascade"
                                         ), 
                                         nullable=False
                                         )
@@ -88,7 +89,7 @@ class Favorite(db.Model):
     planet_name = db.Column(db.Text, nullable=False)
     photo = db.Column(db.Text)
 
-    fav_list = db.relationship("List", backref="favorites")
+    fav_list = db.relationship("List")
 
 def connect_db(app):
     """Connect this database to provided Flask app."""

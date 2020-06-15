@@ -287,10 +287,10 @@ class FavoriteListViewsTestCase(TestCase):
             db.session.add(self.list)
 
             data = {"list_id": self.list.id, "planet": "GJ 876 c"}
-            resp = client.delete(f"/users/testuser/favorites/delete", json=data, follow_redirects=True)
+            resp = client.post(f"/users/testuser/favorites/delete", json=data, follow_redirects=True)
             message = resp.json
         
-            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.status_code, 201)
             self.assertEqual(message, "GJ 876 c deleted from list.")
             self.assertEqual(len(self.list.favorites), 0)
 
@@ -315,7 +315,7 @@ class FavoriteListViewsTestCase(TestCase):
             db.session.add(self.list)    
 
             data = {"list_id": self.list.id, "planet": "GJ 876 c"}
-            resp = client.delete(f"/users/testuser/favorites/delete", json=data, follow_redirects=True)
+            resp = client.post(f"/users/testuser/favorites/delete", json=data, follow_redirects=True)
             html = resp.get_data(as_text=True)
         
             self.assertEqual(resp.status_code, 200)

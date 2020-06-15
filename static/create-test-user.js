@@ -1,6 +1,5 @@
 describe ("Creating test user for unittests", () => {
 
-   
     $('#username').val("testuser");
     $('#password').val("testpassword");
     $('#email').val("test@example.com");

@@ -2,34 +2,37 @@
 
 <h3>Planet Search Results</h3>
 <label for="lists">Add to List:</label>
+<h5 id="message"></h5>
 
 <select name="lists" id="lists">
   {% for list in g.user.lists %}
     <option class="listIDs" value="{{ list.id }}">{{ list.name }}</option>
   {% endfor %}  
 </select>
+<button id="add-planets">Add</button>
 
 <h6>result count: {{ planets | length }}</h6>
 <table>
   <th></th>
   <th>Planet</th>
   {% for key, value in parameters.items() if value == 'on' and key not in
-  ['pl_name','all','habitable'] %}
-    <th>{{ key }}</th>
-  {% endfor %} {% for num in range((page*100-100), (page*100 if ((planets |
-  length) >= page*100) else (planets | length))) %}
-  <tr>
-    <td><input class="checkboxes" type="checkbox"/></td>
-    <td>
-      <a href="/planets/{{ planets[num].pl_name }}"
-        >{{ planets[num].pl_name }}</a
-      >
-    </td>
-    {% for key, value in parameters.items() if value == 'on' and key not in
     ['pl_name','all','habitable'] %}
-      <td>{{ planets[num][key] }}</td>
-    {% endfor %}
-  </tr>
+    <th>{{ key }}</th>
+  {% endfor %} 
+  {% for num in range((page*100-100), (page*100 if ((planets |
+    length) >= page*100) else (planets | length))) %}
+    <tr>
+      <td><input id="{{ planets[num].pl_name }}" class="checkboxes" type="checkbox"/></td>
+      <td>
+        <a href="/planets/{{ planets[num].pl_name }}"
+          >{{ planets[num].pl_name }}</a
+        >
+      </td>
+      {% for key, value in parameters.items() if value == 'on' and key not in
+        ['pl_name','all','habitable'] %}
+        <td>{{ planets[num][key] }}</td>
+      {% endfor %}
+    </tr>
   {% endfor %}
 </table>
 
@@ -39,4 +42,10 @@
 <input type="hidden" id="page-num" value="{{ page }}" />
 <input type="hidden" id="result-length" value="{{ planets | length }}" />
 
+{% endblock %}
+{% block scripts %}
+  <script src="/static/paginate-test.js"></script>
+  <script src="/static/favorites-test.js"></script>
+  <script src="/static/paginate.js"></script>
+  <script src="/static/favorites.js"></script>
 {% endblock %}

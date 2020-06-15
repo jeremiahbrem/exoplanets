@@ -6,7 +6,8 @@ class ProcessSearch:
         
         self.parameters = parameters
         self.base_query = ("https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?" +
-                           "table=exoplanets&select=pl_name,pl_hostname,st_dist,st_spstr,pl_orbsmax," +
+                           "api_key=9GxYHa5XdrMcw1czzRmM7xtWyxHrEUS8dxHyNiK7&table=exoplanets" + 
+                           "&select=pl_name,pl_hostname,st_dist,st_spstr,pl_orbsmax," +
                            "pl_rade,pl_masse,pl_pnum,st_rad,st_mass,st_bmvj,st_teff,st_optmag")
 
     def create_api_query(self):
