@@ -17,6 +17,7 @@ class User(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
+    password_reset = db.Column(db.Text)
 
     lists = db.relationship("List", cascade="delete", single_parent=True)
 
@@ -51,7 +52,13 @@ class User(db.Model):
             if is_auth:
                 return user
 
-        return False    
+        return False
+
+    @classmethod
+    def change_password(cls, new_password):
+        """Hashes and updates new password"""
+
+        return bcrypt.generate_password_hash(new_password).decode('UTF-8')
 
 class List(db.Model):
     """User list data"""

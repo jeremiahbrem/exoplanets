@@ -1,10 +1,11 @@
-import os
+import os, secrets
 from flask import Flask, render_template, redirect, session, flash, request, g, jsonify
+from flask_mail import Mail, Message
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Favorite, List
 from habitable_zone import HabitableZoneCheck
 from process_search import ProcessSearch
-from forms import SearchForm, SignUpForm, LoginForm, CreateListForm
+from forms import SearchForm, SignUpForm, LoginForm, CreateListForm, EditAccountForm, ResetPasswordForm, EnterEmailForm
 import requests
 from requests import ConnectionError
 
@@ -13,6 +14,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///exoplanets"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
+app.config["MAIL_SERVER"] = 'smtp.gmail.com'
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USERNAME"] = os.environ.get('MAIL_USERNAME', None)
+app.config["MAIL_PASSWORD"] = os.environ.get('MAIL_PASSWORD', None)
+app.config["ADMINS"] = [app.config["MAIL_USERNAME"]]
+
+mail = Mail(app)
 
 connect_db(app)
 
@@ -76,6 +86,76 @@ def show_user_details(username):
     user = User.query.filter_by(username=username).first()
 
     return render_template("user.html", user=user)
+
+@app.route("/users/<username>/edit", methods=["GET", "POST"])
+def get_edit_form(username):
+    """Renders edit form and redirects to user details"""
+
+    if not g.user or g.user.username != username:
+        flash("Unauthorized access.")
+        return redirect("/")
+
+    user = User.query.filter_by(username=username).first()
+    form = EditAccountForm(obj=user)
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        new_password = form.new_password.data
+        email = form.email.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+
+        user_check = User.authenticate(
+                        username=user.username,
+                        password=password,
+                        )
+
+        if user_check:
+            user.username = username
+            if new_password:
+                user.password = User.change_password(new_password)
+            user.email = email
+            user.first_name = first_name
+            user.last_name = last_name                     
+
+        db.session.commit()
+        session["USERNAME"] = user.username
+
+        return redirect(f"/users/{user.username}")
+
+    return render_template("edit_account.html", user=user, form=form)    
+
+@app.route("/users/<username>/delete", methods=["GET","POST"])
+def delete_user_confirm(username):
+    """Renders confirm delete page and processes delete form"""
+
+    if not g.user or g.user.username != username:
+        flash("Unauthorized access.")
+        return redirect("/")
+
+    user = User.query.filter_by(username=username).first()
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.authenticate(
+                           username=form.username.data,
+                           password=form.password.data,
+                           ) 
+
+        if user:
+            db.session.delete(user)    
+            db.session.commit()
+            del session["USERNAME"]
+
+        else:
+            flash("Invalid username or password")
+            return redirect(f"/users/{username}/delete")  
+
+        return redirect("/")
+
+    return render_template("delete_account.html", form=form, user=user)    
 
 @app.route("/login", methods=["GET", "POST"])
 def show_login():
@@ -174,10 +254,13 @@ def add_planet(username):
     user = user_list.user
  
     for planet in planets:
-        favorite = (Favorite(planet_name=planet, list_id=list_id))
-        db.session.add(favorite)
-        favorites.append(planet)
-
+        if Favorite.query.filter_by(list_id=list_id, planet_name=planet).first() == None:
+            favorite = (Favorite(planet_name=planet, list_id=list_id))
+            db.session.add(favorite)
+            favorites.append(planet)
+        else:
+            flash(f"{planet} already in list.")
+    
     db.session.commit()    
 
     response = {
@@ -200,8 +283,9 @@ def delete_planet(username):
     list_id = request.json["list_id"]
     planet_name = request.json["planet"]
     favorite = Favorite.query.filter_by(list_id=list_id, planet_name=planet_name).first()
-    db.session.delete(favorite)
-    db.session.commit()
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
 
     message = f"{planet_name} deleted from list."  
 
@@ -317,3 +401,62 @@ def get_habitable_results():
                 planets.append(planet)                        
 
     return render_template("results.html", planets=planets, parameters=parameters, page=1)
+
+@app.route("/password/email", methods=["GET", "POST"])
+def show_enter_email():
+    """Shows enter email form to reset password"""
+
+    if g.user:
+        return redirect(f"/users/{g.user.username}")
+
+    form = EnterEmailForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            flash("Email address doesn't exist")
+            return redirect("/password/email")
+        token = secrets.token_urlsafe(16)
+        user.password_reset = token
+        db.session.commit()
+
+        msg = Message('Reset Password', sender = 'jeremiahbrem@gmail.com', recipients = [user.email])
+        msg.body = """Cick on the link to reset your password:
+                http://localhost:5000/password/reset?key=""" + token                  
+        mail.send(msg)    
+
+        return redirect(f"/password/check_email")
+
+    return render_template("reset_pwd/enter_email.html", form=form)
+
+@app.route("/password/check_email")    
+def show_check_email():
+    """Displays check email page"""
+
+    if g.user:
+        return redirect(f"/users/{g.user.username}")
+
+    return render_template("reset_pwd/check_email.html")
+
+@app.route("/password/reset", methods=["GET", "POST"])
+def show_reset():
+    """Displays reset password form after user clicks reset link in email"""
+
+    if g.user:
+        return redirect(f"/users/{g.user.username}")
+
+    form = ResetPasswordForm()
+    token = request.args.get("key")
+    user = User.query.filter_by(password_reset=token).first()
+
+    if form.validate_on_submit():
+        password = form.password.data
+        user.password = User.change_password(password)
+        user.password_reset = None
+        db.session.commit()
+        flash("Password reset. Please login.")
+        return redirect("/login")
+
+    else:
+        return render_template("reset_pwd/reset_password.html", form=form)    

@@ -76,7 +76,7 @@ class UserListModelsTestCase(TestCase):
 
         user = User.signup(
                         username="jbrem", 
-                        email="jb@testing.com", 
+                        email="jb@example.com", 
                         password="testpwd",
                         first_name="Jeremiah", 
                         last_name="Brem"
@@ -93,7 +93,7 @@ class UserListModelsTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             user = User.signup(
                             username=None, 
-                            email="jb@test.com", 
+                            email="jb@example.com", 
                             password="testpwd",
                             first_name="Jeremiah", 
                             last_name="Brem"
@@ -118,7 +118,7 @@ class UserListModelsTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             user = User.signup(
                             username=self.user.username, 
-                            email="jb@test.com", 
+                            email="jb@example.com", 
                             password="testpwd",
                             first_name="Jeremiah", 
                             last_name="Brem"
@@ -131,7 +131,7 @@ class UserListModelsTestCase(TestCase):
 
         user = User.signup(
                         username="jbrem", 
-                        email="jb@testing.com", 
+                        email="jb@example.com", 
                         password="testpwd",
                         first_name="Jeremiah", 
                         last_name="Brem"
@@ -147,7 +147,7 @@ class UserListModelsTestCase(TestCase):
 
         user = User.signup(
                         username="jbrem", 
-                        email="jb@testing.com", 
+                        email="jb@example.com", 
                         password="testpwd",
                         first_name="Jeremiah", 
                         last_name="Brem"

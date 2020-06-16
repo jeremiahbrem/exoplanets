@@ -2,13 +2,13 @@
 
   {% block content %}
    
-    <h1>{{ user_list.name }}</h1>
+    <h1 id="list-name">{{ user_list.name }}</h1>
 
     <h3>Planets</h3>
     <h5>{{ user_list.description }}</h5>
     <ul>
         {% for favorite in user_list.favorites %}
-          <li><a href="/planets/{{ favorite.planet_name }}">{{ favorite.planet_name }}</a>
+          <li><a class="planet-list-items" href="/planets/{{ favorite.planet_name }}">{{ favorite.planet_name }}</a>
           <button id="delete-{{ favorite.planet_name }}" class="delete-planet">x</button>
           </li>
 
@@ -19,7 +19,9 @@
 
   {% endblock %}
   {% block scripts %}
-    <script src="/static/jasmine-tests/favorites.js"></script>
+    <!-- <script src="/static/jasmine-tests/favorites-test.js"></script> -->
+    <script src="/static/favorites-class.js"></script>
+    <script src="/static/favorites-events.js"></script>
   {% endblock %}  
     
     

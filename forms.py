@@ -18,6 +18,19 @@ def check_unique_email(form, field):
     if User.query.filter_by(email=field.data).first():
         raise ValidationError("Email already exists.")
 
+def check_unique_username_edit(form, field):
+    """Checks for unique username if username is changed on edit form"""
+
+    if field.data != g.user.username:
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError("Username already exists.")
+def check_unique_email_edit(form, field):
+    """Checks for unique email if email is changed on edit form"""
+
+    if field.data != g.user.email:
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError("Email already exists.")
+
 class SignUpForm(FlaskForm):
     """Form for new user signup"""
 
@@ -30,13 +43,33 @@ class SignUpForm(FlaskForm):
 
     email = StringField("Email", validators=[InputRequired(), Email(), check_unique_email])
     first_name = StringField("First Name", validators=[InputRequired()])
-    last_name = StringField("First Name", validators=[InputRequired()])
+    last_name = StringField("Last Name", validators=[InputRequired()])
 
 class LoginForm(FlaskForm):
     """Form for logging in"""
 
     username = StringField("Username", validators=[InputRequired()])
     password = PasswordField("Password", validators=[InputRequired()])
+
+class EditAccountForm(FlaskForm):
+    """Form for editing account"""
+
+    username = StringField("Username", validators=[InputRequired(), check_unique_username_edit])
+    password = PasswordField("Password", validators=[InputRequired(), Length(
+                                                                min=8, 
+                                                                message="Minimum password length is 8 characters."
+                                                                )
+                                                                ])
+
+    new_password = PasswordField("Change Password", validators=[Optional(), Length(
+                                                                min=8, 
+                                                                message="Minimum password length is 8 characters."
+                                                                )
+                                                                ])
+
+    email = StringField("Email", validators=[InputRequired(), Email(), check_unique_email_edit])
+    first_name = StringField("First Name", validators=[InputRequired()])
+    last_name = StringField("Last Name", validators=[InputRequired()])    
 
 def check_unique_list(form, field):
     """Checks for unique user list name
@@ -73,3 +106,22 @@ class SearchForm(FlaskForm):
     search_input = StringField("Search input", validators=[Optional()])
     min_num = FloatField("Min", validators=[Optional()])
     max_num = FloatField("Max", validators=[Optional()])
+
+def check_password_inputs(form, field):
+        if field.data != form.password.data:
+            raise ValidationError('Password inputs do not match')
+
+class EnterEmailForm(FlaskForm):
+    """Form for entering email to get reset password link"""
+
+    email = StringField("Email", validators=[InputRequired(), Email()])        
+
+class ResetPasswordForm(FlaskForm):
+    """Form for resetting password"""
+
+    password = PasswordField("Password", validators=[InputRequired(), Length(
+                                                                min=8, 
+                                                                message="Minimum password length is 8 characters."
+                                                                )
+                                                                ])
+    confirm_password = PasswordField("Confirm Password", validators=[InputRequired(), check_password_inputs])

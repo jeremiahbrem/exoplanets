@@ -2,12 +2,11 @@
 
   {% block content %}
 
-    <h1>Welcome to the Exoplanet App</h1>
-    <h3>Sign Up to Search Other Worlds</h3>
+    <h1>Edit Your Account</h1>
     {% for message in get_flashed_messages() %}
       <h4>{{ message }}</h4>
     {% endfor %}  
-    <form id="signup_form" method="POST"> 
+    <form id="edit_form" method="POST"> 
       {{ form.hidden_tag() }}
 
       {% for field in form
@@ -23,10 +22,7 @@
           </p>
 
        {% endfor %}
-       <button class="btn btn-success btn-sm" type="submit">Add</button>
+       <button class="btn btn-success btn-sm" type="submit">Save</button>
      </form>
-     <a href="/login">Login</a>
-  {% endblock %}
-  {% block tests %}
-    <!-- <script src="/static/jasmine-tests/create-test-user.js"></script> -->
+     <a href="/users/{{ user.username }}/delete">Delete Account</a>
   {% endblock %}
