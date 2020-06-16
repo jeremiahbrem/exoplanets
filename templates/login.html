@@ -1,28 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-  {% block content %}
+<h1 class="font-weight-light mt-4">Login to your account</h1>
+{% for message in get_flashed_messages() %}
+<h4>{{ message }}</h4>
+{% endfor %}
+<div class="col-sm-6 col-md-8 mb-2">
+  <form id="login_form" method="POST">
+    {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+    'hidden' %}
 
-    <h1>Login to your account</h1>
-    {% for message in get_flashed_messages() %}
-      <h4>{{ message }}</h4>
+    <p>
+      {{ field.label }} {{ field (class="form-control form-control-sm")}} {% for
+      error in field.errors %} {{ error }} {% endfor %}
+    </p>
+
     {% endfor %}
-    <form id="login_form" method="POST"> 
-      {{ form.hidden_tag() }}
-  
-      {% for field in form
-        if field.widget.input_type != 'hidden' %}
-  
-          <p>
-            {{ field.label }} 
-            {{ field }}     
-         
-            {% for error in field.errors %}
-              {{ error }}
-            {% endfor %}
-          </p>
-  
-    {% endfor %}
-    <button class="btn btn-success btn-sm" type="submit">Add</button>
+    <button class="btn btn-primary btn-sm" type="submit">Login</button>
   </form>
+</div>
 
 {% endblock %}
