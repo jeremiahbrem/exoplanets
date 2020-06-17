@@ -10,3 +10,8 @@ function enableSearchOption(evt) {
       $(`.${id}`).prop("disabled", true);
     }
   }
+
+  console.log(location)
+if (location.href == "http://localhost:5000/planets/search") {
+  $('#nav-search').addClass("active");
+}

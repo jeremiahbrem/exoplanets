@@ -1,11 +1,12 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1 class="font-weight-light mt-4">Login to your account</h1>
+<h1 id="welcome" class="font-weight-lighter mb-5">Welcome to the Exoplanet App</h1>
+<h3 id="login-head" class="font-weight-light ml-3">Login to your account</h1>
 {% for message in get_flashed_messages() %}
 <h4>{{ message }}</h4>
 {% endfor %}
 <div class="col-sm-6 col-md-8 mb-2">
-  <form id="login_form" method="POST">
+  <form id="login-form" method="POST">
     {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
     'hidden' %}
 

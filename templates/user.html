@@ -1,26 +1,36 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
-  {% block content %}
-   
-    <h1>{{ user.username }}'s page</h1>
-    {% for message in get_flashed_messages() %}
-      <h4>{{ message }}</h4>
-    {% endfor %}
+{% block navbar %} 
+  {% include "nav-bar.html" %} 
+{% endblock %} 
 
-    <h3>My Lists</h3>
-    <ul>
-        {% for list in user.lists %}
-          <li><a href="/users/{{ user.username }}/lists/{{ list.id }}">{{ list.name }}</a>
-            <p id="{{ list.name }}">{{ list.description }}</p>
-          </li>
-        {% endfor %}  
-    </ul>
-    <a href="/users/{{ user.username }}/lists/create">Create List</a><br>
-    <a href="/planets/search">Search Planets</a><br>
-    <a href="/users/{{ user.username }}/edit">Edit Account</a><br>
-    <a href="/logout">logout</a>
+{% block content %}
 
-  {% endblock %}
-  {% block tests %}<script src="/static/jasmine-tests/create-test-list.js"></script>{% endblock %}
-    
-    
+<h3 class="font-weight-light mt-1 ml-5">{{ user.first_name }}'s page</h3>
+{% for message in get_flashed_messages() %}
+  <h4>{{ message }}</h4>
+{% endfor %}
+
+  <div id="user-lists" class="text-center">
+    <h3 class="font-weight-light">My Lists</h3>
+  
+      {% for list in user.lists %}
+
+          <a href="/users/{{ user.username }}/lists/{{ list.id }}">{{ list.name }}</a>
+          <p id="{{ list.name }}">{{ list.description }}</p>
+  
+      {% endfor %}  
+  </div>
+  <div id="user-buttons">
+    <a id="user-search-button" class="btn btn-outline-primary" href="/planets/search">Search Planets</a><br>
+    <a id="user-create-button" class="btn btn-outline-primary" href="/users/{{ user.username }}/lists/create">Create List</a><br>
+    <a id="user-edit-button" class="btn btn-outline-primary" href="/users/{{ user.username }}/edit">Edit Account</a>
+  </div>
+  
+
+
+{% endblock %} 
+
+{% block scripts %}
+  <script src="/static/jasmine-tests/create-test-list.js"></script>
+{% endblock %}

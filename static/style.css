@@ -14,6 +14,58 @@ body {
     display: flex;
 }
 
+ul {
+    list-style-type: none;
+}
+
+#user-buttons {
+    position: absolute;
+    top: 200px;
+    right: 500px;
+    text-align: center;
+}
+
+#user-search-button {
+    color: rgb(148, 12, 148);
+    border-color: rgb(148, 12, 148);
+    box-shadow: 0 0 5px 5px rgb(148, 12, 148);
+    width: 200px;
+    margin-bottom: 30px;
+}
+
+#user-create-button, #user-edit-button {
+    box-shadow: 0 0 5px 5px rgb(68, 164, 228);
+    width: 200px;
+    margin-bottom: 30px;
+}
+
+#user-search-button:hover {
+    background-color: rgb(148, 12, 148);
+    color: white;
+}
+
+#page-links > a {
+    color: white;
+}
+
+#user-lists {
+    position: absolute;
+    top: 200px;
+    width: 200px;
+    border: 1px solid rgb(68, 164, 228);
+    padding: 10px;
+    box-shadow:
+        0 0 10px 10px rgb(68, 164, 228);
+}
+
+#login-head {
+    margin-top: 100px;
+}
+
+a {
+    color:rgb(68, 164, 228);
+}
+
 #sun-glow {
     width: 80px;
     height: 80px;
@@ -27,9 +79,13 @@ body {
         0 0 200px 120px rgb(109, 18, 18),
         0 0 280px 180px rgb(59, 10, 10);
     z-index: -1;
-    position: fixed;
+    position: absolute;
     right: 50px;
     top: 100px;
+}
+
+input > checkbox {
+    margin-left: 5px;
 }
 
 #planet-glow {
@@ -45,14 +101,21 @@ body {
         inset -10px 0 150px rgb(7, 126, 126),
         0 0 10px white,
         -5px 0 20px rgb(131, 4, 131);
-    position: fixed;
+    position: absolute;
     right: 200px;
     top: 150px;    
     z-index: -1;
 }
 
+#word-def {
+    position: absolute;
+    right: 100px;
+    top: 400px;
+    text-shadow: 0 0 1.75px white;
+    color:transparent;
+}
+
 #login {
-    color: white;
     margin-left: 20px;
     font-size: 20px;
 }
@@ -65,3 +128,70 @@ footer {
 #nasa {
     width: 60px;
 }
+
+#parameters > input {
+    width: 100px;
+}
+
+#parameters > label {
+    margin-right: 10px;
+}
+
+#signup-form, #login-form  {
+    width: 300px;
+}
+
+#search-form {
+    position: absolute;
+    top: 400px;
+}
+
+@media only screen and (max-width: 625px) {
+    #word-def {
+        top: 200px;
+        right: 10px;
+    }
+  }
+
+@media only screen and (max-width: 350px) {
+    #signup-head {
+        font-size:25px;
+    }
+
+    #signup-form, #login-form {
+        width: 270px;
+    }
+}  
+
+@media only screen and (max-width: 1000px) {
+    #user-lists {
+        position: absolute;
+        top: 500px;
+        right: 500px;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    #user-buttons {
+        position: absolute;
+        top: 400px;
+        left: 80px;
+    }
+
+    #user-lists {
+        top: 640px;
+        left: 80px;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    #welcome {
+        font-size: 35px;
+        text-align: center;
+        margin-top: 5px;
+    }
+     #signup-head, #login-head {
+         margin-top: 300px;
+     }
+}  
+  

@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Favorite, List
 from habitable_zone import HabitableZoneCheck
 from process_search import ProcessSearch
-from forms import SearchForm, SignUpForm, LoginForm, CreateListForm, EditAccountForm, ResetPasswordForm, EnterEmailForm
+from forms import SearchForm, SignUpForm, LoginForm, CreateListForm, EditAccountForm, ResetPasswordForm, EnterEmailForm, EditListForm
 import requests
 from requests import ConnectionError
 
@@ -226,6 +226,29 @@ def show_create_list(username):
         return redirect(f"/users/{user.username}")
 
     return render_template("create_list.html", form=form)
+
+@app.route("/users/<username>/lists/<int:list_id>/edit", methods=["GET", "POST"])  
+def show_edit_list(username, list_id):
+    """Displays edit list form and processes form submission"""
+
+    if not g.user or g.user.username != username:
+        flash("Unauthorized access.")
+        return redirect("/")
+
+    user_list = List.query.get(list_id)
+    user = user_list.user
+    
+    form = EditListForm(obj=user_list)
+
+    if form.validate_on_submit():
+        user_list.name=form.name.data,
+        user_list.description=form.description.data,
+        
+        db.session.commit()
+
+        return redirect(f"/users/{user.username}/lists/{user_list.id}")
+
+    return render_template("edit_list.html", form=form)
 
 @app.route("/users/<username>/lists/<int:list_id>")
 def show_list(username, list_id):

@@ -1,4 +1,10 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+
+{% block navbar %} 
+  {% include "nav-bar.html" %} 
+{% endblock %}
+
+{% block content %}
 
 <h3>Planet Search Results</h3>
 <label for="lists">Add to List:</label>

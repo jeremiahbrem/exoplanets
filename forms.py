@@ -31,6 +31,13 @@ def check_unique_email_edit(form, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError("Email already exists.")
 
+def check_unique_list_name(form, field):
+    """Checks for unique user list name on create list (only unique to user)"""
+
+    if List.query.filter_by(user_id=g.user.id, name=field.data).first():
+        raise ValidationError("You already have a list by this name.")
+
+
 class SignUpForm(FlaskForm):
     """Form for new user signup"""
 
@@ -84,6 +91,12 @@ class CreateListForm(FlaskForm):
     """Form for creating new list"""    
 
     name = StringField("List Name", validators=[InputRequired(), check_unique_list])
+    description = StringField("Description", validators=[Optional()])
+
+class EditListForm(FlaskForm):
+    """Form for creating new list"""    
+
+    name = StringField("List Name", validators=[InputRequired()])
     description = StringField("Description", validators=[Optional()])
 
 class SelectListForm(FlaskForm):

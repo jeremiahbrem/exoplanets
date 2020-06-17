@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
+{% block navbar %} 
+  {% include "nav-bar.html" %} 
+{% endblock %}
+
   {% block content %}
    
-    <h1 id="list-name">{{ user_list.name }}</h1>
+    <h1 class="font-weight-light" id="list-name">{{ user_list.name }}</h1>
+    <h5 class="font-weight-light">{{ user_list.description }}</h5>
 
     <h3>Planets</h3>
-    <h5>{{ user_list.description }}</h5>
     <ul>
         {% for favorite in user_list.favorites %}
           <li><a class="planet-list-items" href="/planets/{{ favorite.planet_name }}">{{ favorite.planet_name }}</a>

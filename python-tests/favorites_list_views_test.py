@@ -47,7 +47,7 @@ class FavoriteListViewsTestCase(TestCase):
         db.session.rollback()
 
     def test_show_create_list(self):
-        """Testing home page redirect to signup page"""
+        """Testing display of create new list form page"""
 
         with app.test_client() as client:
             with client.session_transaction() as change_session:
@@ -91,7 +91,7 @@ class FavoriteListViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
             self.assertIn("Unauthorized access.", html)
             del change_session["USERNAME"]
 
@@ -107,7 +107,7 @@ class FavoriteListViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
             self.assertIn("testplanets2", html)
             del change_session["USERNAME"]
     
@@ -124,6 +124,95 @@ class FavoriteListViewsTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Create New Planet List", html)
+            del change_session["USERNAME"]
+    def test_show_edit_list(self):
+        """Testing display of edit list form page"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            db.session.add(self.list)    
+            resp = client.get(f"/users/testuser/lists/{self.list.id}/edit", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Edit List", html)
+            del change_session['USERNAME']
+
+    def test_show_edit_list_not_logged_in(self): 
+        """Testing access to edit list when not logged in"""
+
+        with app.test_client() as client:
+            resp = client.get(f"/users/testuser/lists/{self.list.id}/edit", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            self.assertIn("Unauthorized access.", html)
+    
+    def test_show_edit_list_unauthorized(self): 
+        """Testing access to edit list on another users page"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            user2 = User.signup(
+                    username="testuser2", 
+                    first_name="Test2", 
+                    last_name="User2", 
+                    email="test2@test.com", 
+                    password="testpassword2"
+                    )  
+            user = User.query.filter_by(username="testuser2").first()
+            user2_list = List(name="testplanets2", description="my testplanets2", user_id=user.id)
+            db.session.add(user2_list)        
+            db.session.commit()
+
+            get_list = List.query.filter_by(name="testplanets2").first()
+
+            resp = client.get(f"/users/testuser2/lists/{get_list.id}/edit", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Test's page", html)
+            self.assertIn("Unauthorized access.", html)
+            del change_session["USERNAME"]
+
+    def test_edit_list_post(self):
+        """Testing edit list from form"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser" 
+
+            db.session.add(self.list)      
+
+            data = {"name": "testplanets2", "description": "my testplanets 2"}
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/edit", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("GJ 876 c", html)
+            self.assertIn("testplanets2", html)
+            del change_session["USERNAME"]
+    
+    def test_edit_list_invalid(self):
+        """Testing edit list from invalid inputs"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser" 
+
+            db.session.add(self.list)      
+
+            data = {"name": "", "description": "my testplanets 2"}
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/edit", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Edit List", html)
             del change_session["USERNAME"]
 
     def test_show_list(self):
@@ -165,7 +254,7 @@ class FavoriteListViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser2's page", html)
+            self.assertIn("Test2's page", html)
             self.assertIn("Unauthorized access.", html)
             del change_session["USERNAME"]
 
@@ -259,7 +348,7 @@ class FavoriteListViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser2's page", html)
+            self.assertIn("Test2's page", html)
             self.assertIn("Unauthorized access", html)
 
     def test_add_planet_not_logged_in(self):
@@ -319,5 +408,5 @@ class FavoriteListViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
         
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser2's page", html)
+            self.assertIn("Test2's page", html)
             self.assertIn("Unauthorized access", html)

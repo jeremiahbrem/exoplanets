@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block navbar %} 
+  {% include "nav-bar.html" %} 
+{% endblock %}
+
   {% block content %}
     
     <h3>{{ planet['pl_name'] }}</h3>
