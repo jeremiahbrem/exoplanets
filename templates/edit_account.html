@@ -6,11 +6,11 @@
 
   {% block content %}
 
-    <h1>Edit Your Account</h1>
+    <h1 id="user-edit-head" class="font-weight-light">Edit Your Account</h1>
     {% for message in get_flashed_messages() %}
       <h4>{{ message }}</h4>
     {% endfor %}  
-    <form id="edit_form" method="POST"> 
+    <form class="ml-4 mb-4" id="user-edit-form" method="POST"> 
       {{ form.hidden_tag() }}
 
       {% for field in form
@@ -18,7 +18,7 @@
 
           <p>
             {{ field.label }} 
-            {{ field }}     
+            {{ field (class="form-control form-control-sm")}}     
        
             {% for error in field.errors %}
               {{ error }}
@@ -26,7 +26,9 @@
           </p>
 
        {% endfor %}
-       <button class="btn btn-success btn-sm" type="submit">Save</button>
+       <button class="btn btn-outline-primary" type="submit">Save</button>
+       <a class="text-danger ml-4 mb-5" href="/users/{{ user.username }}/delete">Delete Account</a>
+       <a class="ml-4" href="/users/{{ user.username }}">Cancel</a>
      </form>
-     <a href="/users/{{ user.username }}/delete">Delete Account</a>
+     
   {% endblock %}

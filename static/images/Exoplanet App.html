@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://localhost:5000/planets/search -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exoplanet App</title>
+    <link rel="stylesheet" href="./Exoplanet App_files/jasmine.css">
+    <link rel="stylesheet" href="./Exoplanet App_files/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="./Exoplanet App_files/style.css">
+    <script src="./Exoplanet App_files/axios.js.download"></script>
+  <link rel="stylesheet" href="./Exoplanet App_files/toolbar.css" type="text/css"></head>
+  <body class="font-weight-light">
+     
+  <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: transparent">
+    <a class="navbar-brand" href="http://localhost:5000/">Exoplanet App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:5000/users/jbrem">Home</a>
+        </li>
+        <li class="nav-item">
+          <a id="nav-search" class="nav-link active" href="http://localhost:5000/planets/search">Search</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:5000/planets/search#">About</a>
+        </li>
+        
+          <li class="nav-item">
+            <a class="nav-link" href="http://localhost:5000/logout">Logout</a>
+          </li>
+          
+      </ul>
+    </div>
+  </nav> 
+
+    
+      <h6 id="username" hidden="">jbrem</h6>
+    
+    
+    
+    
+  <h1 class="font-weight-light">Search Exoplanets</h1>
+  <div id="nasa-cont">
+    Powered by <a href="https://www.nasa.gov/"><img id="nasa" src="./Exoplanet App_files/nasa.png" alt=""></a>
+  </div>
+    <div class="ml-1" id="search-form">
+      
+      
+      <h4 id="search-head" class="font-weight-light">Search by Name</h4>
+      <form class="ml-5" action="http://localhost:5000/planets/search" name="planet-name-form" method="POST">
+        <label for="planet-name">Planet Name</label><br>
+        <input type="text" name="pl_name" id="planet-name" required="">
+        <button class="btn btn-outline-primary">Search</button>
+      </form>
+
+      <form class="ml-5" action="http://localhost:5000/planets/search" name="star-name" method="POST">
+        <label class="mt-2" for="pl_hostname">Host Star Name</label><br>
+        <input type="text" name="pl_hostname" id="st-name" required="">
+        <button class="btn btn-outline-primary">Search</button>
+      </form>
+ 
+      <h4 class="font-weight-light mt-4">Search by One or Multiple Parameters</h4>
+      <form action="http://localhost:5000/planets/search" id="parameters" name="parameters" method="POST">
+        <input type="checkbox" name="all" id="all">
+        <label>Search All</label><button class="btn btn-outline-primary">Search</button><br> 
+        <input type="checkbox" name="habitable" id="habitable">
+        <label class="mt-4">In Habitable Zone</label>
+        <br>
+        <input type="checkbox" class="check" name="pl_masse" id="pl_masse">
+        <label class="mt-4">Planet Mass</label><br>
+        <input class="pl_masse ml-5" type="number" name="pl_masse_min" step="0.0001" placeholder="min" disabled="">
+        <input class="pl_masse" type="number" name="pl_masse_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="pl_rade" id="pl_rade">
+        <label class="mt-4">Planet Radius</label><br>
+        <input class="pl_rade ml-5" type="number" name="pl_rade_min" step="0.0001" placeholder="min" disabled="">
+        <input class="pl_rade" type="number" name="pl_rade_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="pl_orbsmax" id="pl_orbsmax">
+        <label class="mt-4">Planet Orbit</label><br>
+        <input class="pl_orbsmax ml-5" type="number" name="pl_orbsmax_min" step="0.0001" placeholder="min" disabled="">
+        <input class="pl_orbsmax" type="number" name="pl_orbsmax_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="pl_pnum" id="pl_pnum">
+        <label class="mt-4">Num of Planets in System</label><br>
+        <input class="pl_pnum ml-5" type="number" name="pl_pnum_min" step="0.0001" placeholder="min" disabled="">
+        <input class="pl_pnum" type="number" name="pl_pnum_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="st_dist" id="st_dist">
+        <label class="mt-4">Distance</label><br>
+        <input class="st_dist ml-5" type="number" name="st_dist_min" step="0.0001" placeholder="min" disabled="">
+        <input class="st_dist" type="number" name="st_dist_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="st_mass" id="st_mass">
+        <label class="mt-4">Host Star Mass</label><br>
+        <input class="st_mass ml-5" type="number" name="st_mass_min" step="0.0001" placeholder="min" disabled="">
+        <input class="st_mass" type="number" name="st_mass_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="st_rad" id="st_rad">
+        <label class="mt-4">Host Star Radius</label><br>
+        <input class="st_rad ml-5" type="number" name="st_rad_min" step="0.0001" placeholder="min" disabled="">
+        <input class="st_rad" type="number" name="st_rad_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="st_teff" id="st_teff">
+        <label class="mt-4">Host Star Surface Temp</label><br>
+        <input class="st_teff ml-5" type="number" name="st_teff_min" step="0.0001" placeholder="min" disabled="">
+        <input class="st_teff" type="number" name="st_teff_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="st_spstr" id="st_spstr">
+        <label class="mt-4">Host Star Spectral Type</label><br>
+        <input class="st_spstr ml-5" type="text" name="st_spstr_type" step="0.0001" placeholder="spectral type" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="st_bmvj" id="st_bmvj">
+        <label class="mt-4">Host Star B-V Color Index</label><br>
+        <input class="st_bmvj ml-5" type="number" name="st_bmvj_min" step="0.0001" placeholder="min" disabled="">
+        <input class="st_bmvj" type="number" name="st_bmvj_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <input type="checkbox" class="check" name="st_optmag" id="st_optmag">
+        <label class="mt-4">Host Star Optical Magnitude</label><br>
+        <input class="st_optmag ml-5" type="number" name="st_optmag_min" step="0.0001" placeholder="min" disabled="">
+        <input class="st_optmag" type="number" name="st_optmag_max" step="0.0001" placeholder="max" disabled="">
+        <br>
+        <button class="btn btn-outline-primary mt-4 ml-5 mb-5">Search</button>
+      </form>
+      
+    </div>
+    
+  
+    
+    <div id="sun-glow"></div>
+    <div id="planet-glow"></div>
+    <div id="word-def">
+      <div id="word"><b>ex·o·plan·et</b></div>
+      <div id="noun"><i>noun</i></div>
+      <div id="pronouncer">/ˈeksōˌplanət/</div>
+      <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
+    </div>
+
+    <script src="./Exoplanet App_files/jquery-3.5.1.slim.min.js.download" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="./Exoplanet App_files/popper.min.js.download" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="./Exoplanet App_files/bootstrap.min.js.download" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <!-- <script src="https://unpkg.com/jasmine-core/lib/jasmine-core/jasmine.js"></script> -->
+    <!-- <script src="https://unpkg.com/jasmine-core/lib/jasmine-core/jasmine-html.js"></script> -->
+    <!-- <script src= "https://unpkg.com/jasmine-core/lib/jasmine-core/boot.js"></script> -->
+    
+    <!-- <script src="/static/jasmine-tests/test-search.js"></script> -->
+    <script src="./Exoplanet App_files/search.js.download"></script>
+  
+  <div id="flDebug" style="">
+  <script type="text/javascript">var DEBUG_TOOLBAR_STATIC_PATH = '/_debug_toolbar/static/'</script>
+  <script type="text/javascript" src="./Exoplanet App_files/jquery.js.download"></script>
+  <script type="text/javascript" src="./Exoplanet App_files/jquery.tablesorter.js.download"></script>
+  <script type="text/javascript" src="./Exoplanet App_files/toolbar.js.download"></script>
+
+  <div style="display: none;" id="flDebugToolbar">
+    <ol id="flDebugPanelList">
+      
+      <li><a id="flHideToolBarButton" href="http://localhost:5000/planets/search#" title="Hide Toolbar">Hide »</a></li>
+      
+
+      
+      <li id="flDebugVersionPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Versions" class="flDebugVersionPanel">
+        
+
+        Versions
+        <br><small>Flask 1.1.2</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugTimerPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Resource Usage" class="flDebugTimerPanel">
+        
+
+        Time
+        <br><small>CPU: 15.62ms (11.72ms)</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugHeaderPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="HTTP Headers" class="flDebugHeaderPanel">
+        
+
+        HTTP Headers
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugRequestVarsPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Request Vars" class="flDebugRequestVarsPanel">
+        
+
+        Request Vars
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugConfigVarsPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Config" class="flDebugConfigVarsPanel">
+        
+
+        Config
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugTemplatePanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Templates" class="flDebugTemplatePanel">
+        
+
+        Templates
+        <br><small>1 rendered</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugSQLAlchemyPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="SQLAlchemy queries" class="flDebugSQLAlchemyPanel">
+        
+
+        SQLAlchemy
+        <br><small>1 query</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugLoggingPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Log Messages" class="flDebugLoggingPanel">
+        
+
+        Logging
+        <br><small>3 messages</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugRouteListPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Route List" class="flDebugRouteListPanel">
+        
+
+        Route List
+        <br><small>22 routes</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugProfilerPanel">
+        
+        <a href="http://localhost:5000/planets/search" title="Profiler not active" class="flDebugProfilerPanel">
+        
+
+        Profiler
+        <br><small>in-active</small>
+
+        
+        </a>
+        
+        
+        <span class="switch inactive" title="Enable or disable the panel"></span>
+        
+      </li>
+      
+    </ol>
+  </div>
+  <div style="" id="flDebugToolbarHandle">
+    <a title="Show Toolbar" id="flShowToolBarButton" href="http://localhost:5000/planets/search#">«</a>
+  </div>
+  
+    
+    <div id="flDebugVersionPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Versions</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <h4>Installed Packages</h4>
+
+<p>
+  Installation paths relative to:
+</p>
+<pre>/mnt/c/users/19186/desktop/Springboard/exoplanets/venv/lib/python3.8/site-packages
+</pre>
+
+<table>
+  <thead>
+    <tr>
+      <th>Package</th>
+      <th>Version</th>
+      <th>Installed Path</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>bcrypt</td>
+        <td>3.1.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>blinker</td>
+        <td>1.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>certifi</td>
+        <td>2020.4.5.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>cffi</td>
+        <td>1.14.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>chardet</td>
+        <td>3.0.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>click</td>
+        <td>7.1.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>dnspython</td>
+        <td>1.16.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>email-validator</td>
+        <td>1.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask</td>
+        <td>1.1.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Flask-Bcrypt</td>
+        <td>0.7.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask-DebugToolbar</td>
+        <td>0.11.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Flask-Mail</td>
+        <td>0.9.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask-SQLAlchemy</td>
+        <td>2.4.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Flask-WTF</td>
+        <td>0.14.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>idna</td>
+        <td>2.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>itsdangerous</td>
+        <td>1.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Jinja2</td>
+        <td>2.11.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>MarkupSafe</td>
+        <td>1.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pip</td>
+        <td>20.0.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pkg-resources</td>
+        <td>0.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>psycopg2-binary</td>
+        <td>2.8.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pycparser</td>
+        <td>2.20</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>requests</td>
+        <td>2.23.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>setuptools</td>
+        <td>44.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>six</td>
+        <td>1.15.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>SQLAlchemy</td>
+        <td>1.3.17</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>urllib3</td>
+        <td>1.25.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Werkzeug</td>
+        <td>1.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>WTForms</td>
+        <td>2.3.1</td>
+        <td></td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugTimerPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Resource Usage</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+  <colgroup>
+    <col style="width:20%">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Resource</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>User CPU time</td>
+        <td>0.000 msec</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>System CPU time</td>
+        <td>15.625 msec</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Total CPU time</td>
+        <td>15.625 msec</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Elapsed time</td>
+        <td>11.724 msec</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Context switches</td>
+        <td>0 voluntary, 0 involuntary</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugHeaderPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>HTTP Headers</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_ACCEPT</td>
+        <td>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_ACCEPT_ENCODING</td>
+        <td>gzip, deflate, br</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_ACCEPT_LANGUAGE</td>
+        <td>en-US,en;q=0.9</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_CONNECTION</td>
+        <td>keep-alive</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_HOST</td>
+        <td>localhost:5000</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_REFERER</td>
+        <td>http://localhost:5000/users/jbrem</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_USER_AGENT</td>
+        <td>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>QUERY_STRING</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>REMOTE_ADDR</td>
+        <td>127.0.0.1</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>REQUEST_METHOD</td>
+        <td>GET</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SCRIPT_NAME</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>SERVER_NAME</td>
+        <td>127.0.0.1</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SERVER_PORT</td>
+        <td>5000</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>SERVER_PROTOCOL</td>
+        <td>HTTP/1.1</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SERVER_SOFTWARE</td>
+        <td>Werkzeug/1.0.1</td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugRequestVarsPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Request Vars</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          
+<h4>View information</h4>
+<table>
+  <thead>
+    <tr>
+      <th>View Function</th>
+      <th>args</th>
+      <th>kwargs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>app.search_planets</td>
+      <td>[]</td>
+      <td>
+        
+          None
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+<h4>COOKIES Variables</h4>
+
+  
+<table>
+  <colgroup>
+    <col style="width:20%">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="flDebugOdd">
+      <td>'fldt'</td>
+      <td>'hide'</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>'session'</td>
+      <td>'eyJVU0VSTkFNRSI6ImpicmVtIiwiY3NyZl90b2tlbiI6ImMyMmNhMzE4NWUzNzIwNTZlOGJmMzAyY2EzOTQ0MzdjYmE5YjNmNDQifQ.XumesQ.XPeLtatcuNnoQRZj0MopdHZSDvQ'</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+<h4>SESSION Variables</h4>
+
+  
+<table>
+  <colgroup>
+    <col style="width:20%">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="flDebugOdd">
+      <td>'USERNAME'</td>
+      <td>'jbrem'</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>'csrf_token'</td>
+      <td>'c22ca3185e372056e8bf302ca394437cba9b3f44'</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+
+
+
+
+<h4>GET Variables</h4>
+
+  
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
+
+
+
+<h4>POST Variables</h4>
+
+  
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
+
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugConfigVarsPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Config</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr class="flDebugOdd">
+                <td>ADMINS</td>
+                <td><code>['jeremiahbrem@gmail.com']</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>APPLICATION_ROOT</td>
+                <td><code>'/'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>DEBUG</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG_TB_ENABLED</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>DEBUG_TB_HOSTS</td>
+                <td><code>()</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG_TB_INTERCEPT_REDIRECTS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>DEBUG_TB_PANELS</td>
+                <td><code>('flask_debugtoolbar.panels.versions.VersionDebugPanel', 'flask_debugtoolbar.panels.timer.TimerDebugPanel', 'flask_debugtoolbar.panels.headers.HeaderDebugPanel', 'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel', 'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel', 'flask_debugtoolbar.panels.template.TemplateDebugPanel', 'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel', 'flask_debugtoolbar.panels.logger.LoggingPanel', 'flask_debugtoolbar.panels.route_list.RouteListDebugPanel', 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel')</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>ENV</td>
+                <td><code>'development'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>EXPLAIN_TEMPLATE_LOADING</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>JSON_AS_ASCII</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>JSON_SORT_KEYS</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>JSONIFY_MIMETYPE</td>
+                <td><code>'application/json'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>JSONIFY_PRETTYPRINT_REGULAR</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>MAIL_PASSWORD</td>
+                <td><code>'jer24L@srt4'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>MAIL_PORT</td>
+                <td><code>465</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>MAIL_SERVER</td>
+                <td><code>'smtp.gmail.com'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>MAIL_USE_SSL</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>MAIL_USE_TLS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>MAIL_USERNAME</td>
+                <td><code>'jeremiahbrem@gmail.com'</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>MAX_CONTENT_LENGTH</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>MAX_COOKIE_SIZE</td>
+                <td><code>4093</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>PERMANENT_SESSION_LIFETIME</td>
+                <td><code>datetime.timedelta(days=31)</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>PREFERRED_URL_SCHEME</td>
+                <td><code>'http'</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>PRESERVE_CONTEXT_ON_EXCEPTION</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>PROPAGATE_EXCEPTIONS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SECRET_KEY</td>
+                <td><code>'8fdsh4sf65g4sdf65h4s6d54f5'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SEND_FILE_MAX_AGE_DEFAULT</td>
+                <td><code>datetime.timedelta(seconds=43200)</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SERVER_NAME</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_DOMAIN</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_HTTPONLY</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_NAME</td>
+                <td><code>'session'</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_PATH</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_SAMESITE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_SECURE</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_REFRESH_EACH_REQUEST</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_BINDS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_COMMIT_ON_TEARDOWN</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_DATABASE_URI</td>
+                <td><code>'postgres:///exoplanets'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_ECHO</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_ENGINE_OPTIONS</td>
+                <td><code>{}</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_MAX_OVERFLOW</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_NATIVE_UNICODE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_POOL_RECYCLE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_POOL_SIZE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_POOL_TIMEOUT</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_RECORD_QUERIES</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_TRACK_MODIFICATIONS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>TEMPLATES_AUTO_RELOAD</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>TESTING</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>TRAP_BAD_REQUEST_ERRORS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>TRAP_HTTP_EXCEPTIONS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>USE_X_SENDFILE</td>
+                <td><code>False</code></td>
+            </tr>
+        
+    </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugTemplatePanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Templates</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          
+  
+  
+    <h4>search.html</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="flDebugOdd">
+          <td>g</td>
+          <td>&lt;flask.g of 'app'&gt;</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>request</td>
+          <td>&lt;Request 'http://localhost:5000/planets/search' [GET]&gt;</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>session</td>
+          <td>&lt;SecureCookieSession {'USERNAME': 'jbrem', 'csrf_token': 'c22ca3185e372056e8bf302ca394437cba9b3f44'}&gt;</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugSQLAlchemyPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>SQLAlchemy queries</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table class="tablesorter">
+  <thead>
+    <tr>
+      <th class="header">&nbsp;(ms)</th>
+      <th class="header">Action</th>
+      <th class="header">Context</th>
+      <th class="header">Query</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>4.7863</td>
+        <td>
+        
+          <a class="remoteCall" href="http://localhost:5000/_debug_toolbar/views/sqlalchemy/sql_select?query=.eJyLVgp29XF1DlEoLU4tKtbLTFFwDIaw4zNTdKCiIDIvMTcVIQcTgakoSCwuLs8vQtINE4GpSMssKi6JRzUFIQZTlZOIoQguBFOTmpuYmYOQB3PR3RFflFqcWoLpGqh4TJ5bkL8vRA7ICfdwDXJF96utgqoGjBNvqAlSp-Dj6esZAhQvSCxKzAUJKulUKyEUKVkpZSUVpeYq6ShBVShZGdbGAgDIDn-a.oGmtYyO7kmX3a7L-jXlTvixEYZM&amp;duration=0.004786252975463867">SELECT</a><br>
+          <a class="remoteCall" href="http://localhost:5000/_debug_toolbar/views/sqlalchemy/sql_explain?query=.eJyLVgp29XF1DlEoLU4tKtbLTFFwDIaw4zNTdKCiIDIvMTcVIQcTgakoSCwuLs8vQtINE4GpSMssKi6JRzUFIQZTlZOIoQguBFOTmpuYmYOQB3PR3RFflFqcWoLpGqh4TJ5bkL8vRA7ICfdwDXJF96utgqoGjBNvqAlSp-Dj6esZAhQvSCxKzAUJKulUKyEUKVkpZSUVpeYq6ShBVShZGdbGAgDIDn-a.oGmtYyO7kmX3a7L-jXlTvixEYZM&amp;duration=0.004786252975463867">EXPLAIN</a><br>
+        
+        </td>
+        <td title="/mnt/c/users/19186/desktop/Springboard/exoplanets/app.py:39 (add_user_to_g)">
+                    ./app.py:39 (add_user_to_g)
+        </td>
+        <td class="syntax">
+          <div class="flDebugSqlWrap">
+            <div class="flDebugSql">SELECT users.id AS users_id, users.username AS users_username, users.password AS users_password, users.first_name AS users_first_name, users.last_name AS users_last_name, users.email AS users_email, users.password_reset AS users_password_reset 
+FROM users 
+WHERE users.username = %(username_1)s 
+ LIMIT %(param_1)s</div>
+          </div>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugLoggingPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Log Messages</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          
+  <table>
+    <thead>
+      <tr>
+        <th>Level</th>
+        <th>Time</th>
+        <th>Message</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr class="flDebugOdd">
+          <td>INFO</td>
+          <td>2020-06-17 00:12:29.310470</td>
+          <td>BEGIN (implicit)</td>
+          <td title="/mnt/c/users/19186/desktop/Springboard/exoplanets/venv/lib/python3.8/site-packages/sqlalchemy/log.py:110">./venv/lib/python3.8/site-packages/sqlalchemy/log.py:110</td>
+        </tr>
+      
+        <tr class="flDebugEven">
+          <td>INFO</td>
+          <td>2020-06-17 00:12:29.312912</td>
+          <td>SELECT users.id AS users_id, users.username AS users_username, users.password AS users_password, users.first_name AS users_first_name, users.last_name AS users_last_name, users.email AS users_email, users.password_reset AS users_password_reset 
+FROM users 
+WHERE users.username = %(username_1)s 
+ LIMIT %(param_1)s</td>
+          <td title="/mnt/c/users/19186/desktop/Springboard/exoplanets/venv/lib/python3.8/site-packages/sqlalchemy/log.py:110">./venv/lib/python3.8/site-packages/sqlalchemy/log.py:110</td>
+        </tr>
+      
+        <tr class="flDebugOdd">
+          <td>INFO</td>
+          <td>2020-06-17 00:12:29.315315</td>
+          <td>{'username_1': 'jbrem', 'param_1': 1}</td>
+          <td title="/mnt/c/users/19186/desktop/Springboard/exoplanets/venv/lib/python3.8/site-packages/sqlalchemy/log.py:110">./venv/lib/python3.8/site-packages/sqlalchemy/log.py:110</td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugRouteListPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Route List</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+  <thead>
+    <tr>
+      <th>URL route</th>
+      <th>Endpoint name</th>
+      <th>HTTP methods</th>
+      <th>Is alias</th>
+      <th>Redirect to</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      
+        <tr>
+          <td>/</td>
+          <td>get_home_page</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/login</td>
+          <td>show_login</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/logout</td>
+          <td>logout</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/password/check_email</td>
+          <td>show_check_email</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/password/email</td>
+          <td>show_enter_email</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/password/reset</td>
+          <td>show_reset</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/planets/&lt;planet_name&gt;</td>
+          <td>get_details</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/planets/habitable</td>
+          <td>get_habitable_results</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/planets/results/&lt;int:page&gt;</td>
+          <td>get_search_results</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/planets/search</td>
+          <td>search_planets</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/signup</td>
+          <td>get_signup_page</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/static/&lt;path:filename&gt;</td>
+          <td>static</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users</td>
+          <td>direct_users</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;</td>
+          <td>show_user_details</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/delete</td>
+          <td>delete_user_confirm</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/edit</td>
+          <td>get_edit_form</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/favorites/add</td>
+          <td>add_planet</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/favorites/delete</td>
+          <td>delete_planet</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/lists</td>
+          <td>direct_lists</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/lists/&lt;int:list_id&gt;</td>
+          <td>show_list</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/lists/&lt;int:list_id&gt;/edit</td>
+          <td>show_edit_list</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/users/&lt;username&gt;/lists/create</td>
+          <td>show_create_list</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugProfilerPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/planets/search" class="flDebugClose">Close</a>
+        <h3>Profiler not active</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          The profiler is not activated, activate it to use it
+        </div>
+      </div>
+    </div>
+    
+  
+  <div id="flDebugWindow" class="panelContent" style="display: none;"></div>
+</div>
+</body></html>

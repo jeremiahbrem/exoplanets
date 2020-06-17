@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1 id="welcome" class="font-weight-lighter mb-5">Welcome to the Exoplanet App</h1>
+<h1 id="welcome" class="font-weight-light mb-5">Welcome to the Exoplanet App</h1>
 <h3 id="login-head" class="font-weight-light ml-3">Login to your account</h1>
 {% for message in get_flashed_messages() %}
 <h4>{{ message }}</h4>
@@ -16,7 +16,7 @@
     </p>
 
     {% endfor %}
-    <button class="btn btn-primary btn-sm" type="submit">Login</button>
+    <button class="btn btn-outline-primary" type="submit">Login</button>
   </form>
 </div>
 

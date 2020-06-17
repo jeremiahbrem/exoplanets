@@ -6,11 +6,11 @@
 
   {% block content %}
 
-    <h4>Are you sure you want to delete your account?</h4>
+    <h4 id="user-delete-head" class="font-weight-light ml-3">Are you sure you want to delete your account?</h4>
     {% for message in get_flashed_messages() %}
       <h4>{{ message }}</h4>
     {% endfor %}
-    <form id="delete_form" method="POST"> 
+    <form class="mb-4 ml-4" id="user-delete-form" method="POST"> 
       {{ form.hidden_tag() }}
   
       {% for field in form
@@ -26,8 +26,8 @@
           </p>
   
     {% endfor %}
-    <button class="btn btn-success btn-sm" type="submit">Confirm</button>
+    <button class="btn btn-outline-danger" type="submit">Confirm</button>
   </form>
-  <a href="/users/{{ user.username }}/edit">Cancel</a>
+  <a class="ml-4" href="/users/{{ user.username }}/edit">Cancel</a>
 
 {% endblock %}

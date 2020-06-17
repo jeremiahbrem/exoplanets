@@ -121,6 +121,7 @@ def get_edit_form(username):
 
         db.session.commit()
         session["USERNAME"] = user.username
+        flash("Account updated.")
 
         return redirect(f"/users/{user.username}")
 

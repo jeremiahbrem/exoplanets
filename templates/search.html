@@ -7,19 +7,22 @@
   {% block content %}
     
   <h1 class="font-weight-light">Search Exoplanets</h1>
+  <div id="nasa-cont">
+    Powered by <a href="https://www.nasa.gov/"><img id="nasa"src="/static/images/nasa.png" alt=""></a>
+  </div>
     <div class="ml-1" id="search-form">
       
       {% for message in get_flashed_messages() %}  
         <h4>{{ message }}</h4>
       {% endfor %}
       <h4 id="search-head" class="font-weight-light">Search by Name</h4>
-      <form action="/planets/search" name="planet-name-form" method="POST">
+      <form class="ml-5" action="/planets/search" name="planet-name-form" method="POST">
         <label for="planet-name">Planet Name</label><br>
         <input type="text" name="pl_name" id="planet-name" required>
         <button class="btn btn-outline-primary">Search</button>
       </form>
 
-      <form action="/planets/search" name="star-name" method="POST">
+      <form class="ml-5" action="/planets/search" name="star-name" method="POST">
         <label class="mt-2" for="pl_hostname">Host Star Name</label><br>
         <input type="text" name="pl_hostname" id="st-name" required>
         <button class="btn btn-outline-primary">Search</button>
@@ -38,57 +41,57 @@
         <input class="pl_masse" type="number" name="pl_masse_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="pl_rade" id="pl_rade">
-        <label class="mt-4">Planet Radius</label>
+        <label class="mt-4">Planet Radius</label><br>
         <input class="pl_rade ml-5" type="number" name="pl_rade_min" step="0.0001" placeholder="min" disabled>
         <input class="pl_rade" type="number" name="pl_rade_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="pl_orbsmax" id="pl_orbsmax">
-        <label class="mt-4">Planet Orbit</label>
+        <label class="mt-4">Planet Orbit</label><br>
         <input class="pl_orbsmax ml-5" type="number" name="pl_orbsmax_min" step="0.0001" placeholder="min" disabled>
         <input class="pl_orbsmax" type="number" name="pl_orbsmax_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="pl_pnum" id="pl_pnum">
-        <label class="mt-4">Num of Planets in System</label>
+        <label class="mt-4">Num of Planets in System</label><br>
         <input class="pl_pnum ml-5" type="number" name="pl_pnum_min" step="0.0001" placeholder="min" disabled>
         <input class="pl_pnum" type="number" name="pl_pnum_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="st_dist" id="st_dist">
-        <label class="mt-4">Distance</label>
+        <label class="mt-4">Distance</label><br>
         <input class="st_dist ml-5" type="number" name="st_dist_min" step="0.0001" placeholder="min" disabled>
         <input class="st_dist" type="number" name="st_dist_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="st_mass" id="st_mass">
-        <label class="mt-4">Host Star Mass</label>
+        <label class="mt-4">Host Star Mass</label><br>
         <input class="st_mass ml-5" type="number" name="st_mass_min" step="0.0001" placeholder="min" disabled>
         <input class="st_mass" type="number" name="st_mass_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="st_rad" id="st_rad">
-        <label class="mt-4">Host Star Radius</label>
+        <label class="mt-4">Host Star Radius</label><br>
         <input class="st_rad ml-5" type="number" name="st_rad_min" step="0.0001" placeholder="min" disabled>
         <input class="st_rad" type="number" name="st_rad_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="st_teff" id="st_teff">
-        <label class="mt-4">Host Star Surface Temp</label>
+        <label class="mt-4">Host Star Surface Temp</label><br>
         <input class="st_teff ml-5" type="number" name="st_teff_min" step="0.0001" placeholder="min" disabled>
         <input class="st_teff" type="number" name="st_teff_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="st_spstr" id="st_spstr">
-        <label class="mt-4">Host Star Spectral Type</label>
+        <label class="mt-4">Host Star Spectral Type</label><br>
         <input class="st_spstr ml-5" type="text" name="st_spstr_type" step="0.0001" placeholder="spectral type" disabled>
         <br>
         <input type="checkbox" class="check" name="st_bmvj" id="st_bmvj">
-        <label class="mt-4">Host Star B-V Color Index</label>
+        <label class="mt-4">Host Star B-V Color Index</label><br>
         <input class="st_bmvj ml-5" type="number" name="st_bmvj_min" step="0.0001" placeholder="min" disabled>
         <input class="st_bmvj" type="number" name="st_bmvj_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="st_optmag" id="st_optmag">
-        <label class="mt-4">Host Star Optical Magnitude</label>
+        <label class="mt-4">Host Star Optical Magnitude</label><br>
         <input class="st_optmag ml-5" type="number" name="st_optmag_min" step="0.0001" placeholder="min" disabled>
         <input class="st_optmag" type="number" name="st_optmag_max" step="0.0001" placeholder="max" disabled>
         <br>
-        <button class="btn btn-outline-primary mt-4 ml-3 mb-5">Search</button>
+        <button class="btn btn-outline-primary mt-4 ml-5 mb-5">Search</button>
       </form>
-
+      
     </div>
     
   {% endblock %}
