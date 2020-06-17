@@ -30,7 +30,7 @@ class ProcessSearch:
             max_value = self.parameters.get(f"{key}_max", None)
             
             if key != "habitable":
-                if value == 'on' and key == 'st_spstr':
+                if value == 'on' and key == 'st_spstr' and self.parameters['st_spstr_type']:
                     if count > 1:
                         where = where + " and "
                     where = where + f"st_spstr like '{self.parameters['st_spstr_type']}%25'"

@@ -1,3 +1,11 @@
+$('#word-def').hide();
+
+// event handler for select all
+$("#all-check").click(function(){
+  $(".checkboxes").prop('checked', $(this).prop('checked'));
+
+});
+
 const pageNum = parseInt($("#page-num").val());
 const resultTotal = parseInt($("#result-length").val());
 

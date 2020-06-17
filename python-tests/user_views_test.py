@@ -76,7 +76,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser", html)
+            self.assertIn("Test's page", html)
             self.assertIn("testplanets", html)
             del session["USERNAME"]
 
@@ -96,7 +96,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser2's page", html)
+            self.assertIn("Jerry's page", html)
 
     def test_signup_duplicate_username(self):
         """Testing invalid signup, duplicate username"""
@@ -158,7 +158,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
 
     def test_invalid_password(self):
         """Testing invalid password login"""
@@ -192,7 +192,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertNotIn("testuser", html)
+            self.assertNotIn("Test's Page", html)
             self.assertIn("Welcome to the Exoplanet App", html)
             del change_session["USERNAME"]
 
@@ -217,7 +217,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
             self.assertIn("testplanets", html)
             del change_session["USERNAME"]
 
@@ -253,7 +253,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
             self.assertIn("testplanets", html)
             self.assertIn("Unauthorized access", html)
             del change_session["USERNAME"]
@@ -304,7 +304,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
             self.assertIn("Unauthorized access", html)
             del change_session["USERNAME"]
 
@@ -359,7 +359,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
             self.assertIn("Unauthorized access", html)
             del change_session["USERNAME"]
 
@@ -439,7 +439,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("testuser's page", html)
+            self.assertIn("Test's page", html)
             self.assertIn("Unauthorized access", html)
             del change_session["USERNAME"]
 
@@ -464,7 +464,7 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("newusername's page", html)
+            self.assertIn("Jerry's page", html)
             self.assertEqual(self.user.email, "new@example.com")
             self.assertEqual(self.user.first_name, "Jerry")
            

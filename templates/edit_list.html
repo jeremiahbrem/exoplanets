@@ -6,20 +6,28 @@
 
 {% block content %}
 
-<h3 class="font-weight-light mt-5">Edit List</h3>
-<div class="col-sm-6 col-md-8 mb-2">
-  <form id="list-edit-form" method="POST">
-    {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
-    'hidden' %}
+  <div class="ml-2" id="edit-list">
+    <h3 class="font-weight-light mt-5">Edit List</h3>
+    <form id="list-edit-form" method="POST">
+      {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+        'hidden' %}
 
-    <p>
-      {{ field.label }} {{ field (class="form-control form-control-sm")}} {% for
-      error in field.errors %} {{ error }} {% endfor %}
-    </p>
+      <p>
+        {{ field.label }} {{ field (class="form-control form-control-sm")}} {% for
+        error in field.errors %} {{ error }} {% endfor %}
+      </p>
 
-    {% endfor %}
-    <button class="btn btn-outline-primary" type="submit">Add</button>
-  </form>
-</div>
+      {% endfor %}
+      <button class="btn btn-outline-primary" type="submit">Add</button>
+    </form>
+    <div id="edit-buttons">
+      <form action="/users/{{ user_list.user.username }}/lists/{{ user_list.id }}/delete" method="POST">
+        <button class="btn btn-outline-danger btn-sm ml-4 mb-5" href="">Delete</button>
+      </form>
+      <a class="ml-4" href="/users/{{ user_list.user.username }}/lists/{{ user_list.id }}">Cancel</a>
+    </div>
+    
+  </div>
+
 
 {% endblock %}

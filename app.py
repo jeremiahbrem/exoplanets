@@ -249,7 +249,7 @@ def show_edit_list(username, list_id):
 
         return redirect(f"/users/{user.username}/lists/{user_list.id}")
 
-    return render_template("edit_list.html", form=form)
+    return render_template("edit_list.html", form=form, user_list=user_list)
 
 @app.route("/users/<username>/lists/<int:list_id>")
 def show_list(username, list_id):
@@ -261,7 +261,22 @@ def show_list(username, list_id):
 
     user_list = List.query.get(list_id)
 
-    return render_template("list.html", user_list=user_list)  
+    return render_template("list.html", user_list=user_list)
+
+@app.route("/users/<username>/lists/<int:list_id>/delete", methods=["POST"])
+def delete_list(username, list_id):
+    """Deletes user list"""
+
+    if not g.user or g.user.username != username:
+        flash("Unauthorized access.")
+        return redirect("/")
+
+    user_list = List.query.get(list_id)
+    db.session.delete(user_list)
+    db.session.commit()
+    flash("List deleted.")
+
+    return redirect("/")    
 
 @app.route("/users/<username>/favorites/add", methods=["POST"]) 
 def add_planet(username):

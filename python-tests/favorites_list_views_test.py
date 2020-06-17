@@ -235,20 +235,33 @@ class FavoriteListViewsTestCase(TestCase):
         """Testing show list if not logged in"""  
 
         with app.test_client() as client:
+
+            resp = client.get(f"/users/testuser/lists/{self.list.id}", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            self.assertIn("Unauthorized access.", html)
+
+    def test_show_list_unauthorized(self): 
+        """Testing access to list on another users page"""
+
+        with app.test_client() as client:
+
             user2 = User.signup(
                     username="testuser2", 
                     first_name="Test2", 
                     last_name="User2", 
                     email="test2@test.com", 
                     password="testpassword2"
-                    )
-
+                    )         
+        
             db.session.commit()
 
             with client.session_transaction() as change_session:
                 change_session["USERNAME"] = "testuser2"
 
-            db.session.add(self.list)    
+            db.session.add(self.list)
 
             resp = client.get(f"/users/testuser/lists/{self.list.id}", follow_redirects=True)
             html = resp.get_data(as_text=True)
@@ -256,7 +269,7 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Test2's page", html)
             self.assertIn("Unauthorized access.", html)
-            del change_session["USERNAME"]
+            del change_session["USERNAME"]            
 
     def test_show_planet(self):
         """Testing rendering of planet details page"""
@@ -302,6 +315,7 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(favorites['list'], "testplanets")
             self.assertIn("11 Com b", favorites['planets'])
             self.assertEqual(len(self.list.favorites), 2)
+            del change_session["USERNAME"]
 
     def test_add_planets(self):
         """Testing adding multiple planets to a user's list"""
@@ -321,7 +335,8 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertIn("11 Com b", favorites['planets'])         
             self.assertIn("16 Cyg B b", favorites['planets'])         
             self.assertIn("GJ 229 A c", favorites['planets'])
-            self.assertEqual(len(self.list.favorites), 4)     
+            self.assertEqual(len(self.list.favorites), 4)
+            del change_session["USERNAME"]     
 
     def test_add_planet_unauthorized(self):
         """Testing adding a planet to another user's list"""
@@ -350,6 +365,7 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Test2's page", html)
             self.assertIn("Unauthorized access", html)
+            del change_session["USERNAME"]
 
     def test_add_planet_not_logged_in(self):
         """Testing adding a planet to a user's list while not logged in"""
@@ -382,6 +398,7 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 201)
             self.assertEqual(message, "GJ 876 c deleted from list.")
             self.assertEqual(len(self.list.favorites), 0)
+            del change_session["USERNAME"]
 
     def test_delete_favorite_unauthorized(self):
         """Testing deleting a planet from another user's list"""
@@ -410,3 +427,80 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Test2's page", html)
             self.assertIn("Unauthorized access", html)
+            del change_session["USERNAME"]
+
+    def test_delete_favorite_not_logged_in(self):
+        """Testing deleting a planet while not logged in"""
+
+        with app.test_client() as client:
+
+            db.session.add(self.list)
+
+            data = {"list_id": self.list.id, "planets": ["11 Com b"]}
+            resp = client.post(f"/users/testuser/favorites/delete", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            self.assertIn("Unauthorized access", html)        
+
+    def test_delete_list(self):
+        """Testing deletion of list"""
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            db.session.add(self.list)
+
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/delete", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+        
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("List deleted.", html)
+            self.assertIsNone(List.query.get(self.list.id))
+            del change_session["USERNAME"]
+
+    def test_delete_list_unauthorized(self):
+        """Testing deleting a list from another user"""
+
+        with app.test_client() as client:
+
+            user2 = User.signup(
+                    username="testuser2", 
+                    first_name="Test2", 
+                    last_name="User2", 
+                    email="test2@test.com", 
+                    password="testpassword2"
+                    )
+
+            db.session.commit()
+
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser2"
+
+            db.session.add(self.list)    
+
+            data = {"list_id": self.list.id}
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/delete", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+        
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Test2's page", html)
+            self.assertIn("Unauthorized access", html)
+            del change_session["USERNAME"]
+
+    def test_delete_favorite_not_logged_in(self):
+        """Testing deleting a planet while not logged in"""
+
+        with app.test_client() as client:
+
+            db.session.add(self.list)
+
+            data = {"list_id": self.list.id}
+            resp = client.post(f"/users/testuser/lists/{self.list.id}/delete", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Welcome to the Exoplanet App", html)
+            self.assertIn("Unauthorized access", html)                

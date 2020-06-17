@@ -16,7 +16,7 @@
   
       {% for list in user.lists %}
 
-          <a href="/users/{{ user.username }}/lists/{{ list.id }}">{{ list.name }}</a>
+          <a href="/users/{{ user.username }}/lists/{{ list.id }}">{{ list.name }} ({{ list.favorites | length }})</a>
           <p id="{{ list.name }}">{{ list.description }}</p>
   
       {% endfor %}  

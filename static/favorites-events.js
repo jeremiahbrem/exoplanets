@@ -22,12 +22,12 @@ async function handleAdd(evt) {
 }
 
 // add event listener to delete buttons
-$(".delete-planet").on("click", handleDelete);
+$(".fas").on("click", handleDelete);
 
 // handles delete button click, sends delete request to database, and deletes from page
 async function handleDelete(evt) {
   const listID = $("#list-id").val();
-  const planet = evt.target.previousElementSibling.text;
+  const planet = evt.target.nextElementSibling.text;
   evt.target.parentElement.remove();
   await Favorites.deleteFavorite(listID, planet);
 }

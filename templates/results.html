@@ -6,20 +6,21 @@
 
 {% block content %}
 
-<h3>Planet Search Results</h3>
-<label for="lists">Add to List:</label>
+<div id="results-data">
+  <h3 class="ml-4 font-weight-light" id="result-head">Planet Search Results</h3>
+<label class="ml-4" for="lists">Add to List:</label>
 <h5 id="message"></h5>
 
-<select name="lists" id="lists">
+<select class="ml-4" name="lists" id="lists">
   {% for list in g.user.lists %}
     <option class="listIDs" value="{{ list.id }}">{{ list.name }}</option>
   {% endfor %}  
 </select>
-<button id="add-planets">Add</button>
+<button class="btn btn-outline-primary btn-sm" id="add-planets">Add</button>
 
-<h6>result count: {{ planets | length }}</h6>
-<table>
-  <th></th>
+<h6 class="ml-4 font-weight-light">result count: {{ planets | length }}</h6>
+<table class="ml-3">
+  <th><input id="all-check" class="checkboxes" type="checkbox"/></th>
   <th>Planet</th>
   {% for key, value in parameters.items() if value == 'on' and key not in
     ['pl_name','all','habitable'] %}
@@ -49,6 +50,8 @@
 
 <input type="hidden" id="page-num" value="{{ page }}" />
 <input type="hidden" id="result-length" value="{{ planets | length }}" />
+</div>
+
 
 {% endblock %}
 {% block scripts %}
