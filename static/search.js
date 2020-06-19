@@ -1,3 +1,5 @@
+$("check").prop("checked", false);
+
 // adds event listener to check
 $(".check").change(enableSearchOption);
 

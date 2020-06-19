@@ -6,13 +6,13 @@
 
   {% block content %}
    
-    <div id="list-planet">
+    <div class="mt-5" id="list-planet">
       <h1 class="font-weight-light ml-4" id="list-name">{{ user_list.name }}
         <a href="/users/{{ user_list.user.username }}/lists/{{ user_list.id }}/edit" class="btn btn-outline-primary btn-sm ml-3">Edit</a>
       </h1>
       <h5 id="list-d" class="font-weight-light ml-4">{{ user_list.description }}</h5>
 
-      <h3 class="font-weight-light ml-4">Planets</h3>
+      <h3 class="font-weight-light mt-4 ml-4">Planets</h3>
       <ul>
         {% for favorite in user_list.favorites %}
           <li>
@@ -32,5 +32,5 @@
     <script src="/static/favorites-class.js"></script>
     <script src="/static/favorites-events.js"></script>
   {% endblock %}  
-    
+  {% include "planet-sun.html" %}
     

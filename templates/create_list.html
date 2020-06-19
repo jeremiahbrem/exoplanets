@@ -6,7 +6,8 @@
 
 {% block content %}
 
-<h3 id="create-list-head" class="font-weight-light">Create New Planet List</h3>
+<div id="create-list">
+  <h3 id="create-list-head" class="font-weight-light">Create New Planet List</h3>
   <form class="ml-4" id="create-list-form" method="POST">
     {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
     'hidden' %}
@@ -20,6 +21,7 @@
     <button class="btn btn-outline-primary" type="submit">Add</button>
     <a class="ml-4" href="/users/{{ g.user.username }}">Cancel</a>
   </form>
+</div>
 
-
+{% include "planet-sun.html" %}
 {% endblock %}

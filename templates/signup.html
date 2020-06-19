@@ -20,7 +20,15 @@
   </form>
 </div>
 <a id="login" href="/login">Login</a>
+<div id="word-def">
+  <div id="word"><b>ex·o·plan·et</b></div>
+  <div id="noun"><i>noun</i></div>
+  <div id="pronouncer">/ˈeksōˌplanət/</div>
+  <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
+</div>
+{% include "planet-sun.html" %}
 
-{% endblock %} {% block tests %}
-<!-- <script src="/static/jasmine-tests/create-test-user.js"></script> -->
+{% endblock %} 
+{% block tests %}
+  <!-- <script src="/static/jasmine-tests/create-test-user.js"></script> -->
 {% endblock %}

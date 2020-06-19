@@ -88,7 +88,7 @@
         <input class="st_bmvj" type="number" name="st_bmvj_max" step="0.0001" placeholder="max" disabled>
         <br>
         <input type="checkbox" class="check" name="st_optmag" id="st_optmag">
-        <label class="mt-4">Host Star Optical Magnitude</label><br>
+        <label class="mt-4">Star Optical Magnitude</label><br>
         <input class="st_optmag ml-5" type="number" name="st_optmag_min" step="0.0001" placeholder="min" disabled>
         <input class="st_optmag" type="number" name="st_optmag_max" step="0.0001" placeholder="max" disabled>
         <br>
@@ -96,9 +96,10 @@
       </form>
       
     </div>
-    
+  {% include "planet-sun.html" %}
   {% endblock %}
   {% block scripts %}
     <!-- <script src="/static/jasmine-tests/test-search.js"></script> -->
     <script src="/static/search.js"></script>
   {% endblock %}
+  

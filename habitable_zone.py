@@ -66,7 +66,7 @@ class HabitableZoneCheck:
         bol_corr = self.get_bolometric_correction(self.spec_type)
         luminosity = self.calculate_luminosity(self.opt_mag, self.distance, bol_corr)
 
-        if luminosity:
+        if luminosity and bol_corr and self.orbit:
             inner_bound = math.sqrt(luminosity / 1.1)
             outer_bound = math.sqrt(luminosity / 0.53)
 

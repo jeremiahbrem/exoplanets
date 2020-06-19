@@ -18,7 +18,7 @@
       </p>
 
       {% endfor %}
-      <button class="btn btn-outline-primary" type="submit">Add</button>
+      <button class="btn btn-outline-primary" type="submit">Save</button>
     </form>
     <div id="edit-buttons">
       <form action="/users/{{ user_list.user.username }}/lists/{{ user_list.id }}/delete" method="POST">
@@ -29,5 +29,5 @@
     
   </div>
 
-
+  {% include "planet-sun.html" %}
 {% endblock %}

@@ -1,3 +1,10 @@
+// zoomout animation when planet clicked
+$('.planet-list-items').on("click", () =>
+{
+  $('#pl-sn').css("transition", "transform 1s");
+  $('#pl-sn').css("transform", "scale(.001)");
+})
+
 // adds event listener to add button for adding planets to selected list
 $("#add-planets").on("click", handleAdd);
 
@@ -31,3 +38,4 @@ async function handleDelete(evt) {
   evt.target.parentElement.remove();
   await Favorites.deleteFavorite(listID, planet);
 }
+

@@ -2,28 +2,37 @@
 
   {% block content %}
 
-    <h3>Enter Your Email to Reset Password</h3>
-    {% for message in get_flashed_messages() %}
-      <h5>{{ message }}</h5>
-    {% endfor %}  
-    <form id="enter_email_form" method="POST"> 
-      {{ form.hidden_tag() }}
+    <div class="ml-4 mt-5" id="enter-email">
+      <h3 class="font-weight-light">Enter Your Email to Reset Password</h3>
+      {% for message in get_flashed_messages() %}
+        <h5>{{ message }}</h5>
+      {% endfor %}  
+      <form id="enter_email_form" method="POST"> 
+        {{ form.hidden_tag() }}
     
-        {% for field in form
-          if field.widget.input_type != 'hidden' %}
+          {% for field in form
+            if field.widget.input_type != 'hidden' %}
     
-          <p>
-            {{ field.label }} 
-            {{ field }}     
+            <p>
+              {{ field.label }} 
+              {{ field }}     
            
-            {% for error in field.errors %}
-              {{ error }}
-            {% endfor %}
-          </p>
+              {% for error in field.errors %}
+                {{ error }}
+              {% endfor %}
+            </p>
     
-        {% endfor %}
-      <button type="submit">Submit</button>
-      <a href="/login">Go Back</a>
-    </form>
-
+          {% endfor %}
+        <button class="btn btn-outline-primary ml-5 mb-4" type="submit">Submit</button>
+      </form>
+      <a class="ml-5" href="/login">Go Back</a>
+    </div>
+    <div id="word-def">
+      <div id="word"><b>ex·o·plan·et</b></div>
+      <div id="noun"><i>noun</i></div>
+      <div id="pronouncer">/ˈeksōˌplanət/</div>
+      <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
+    </div>
+    {% include "planet-sun.html" %}
   {% endblock %}  
+  

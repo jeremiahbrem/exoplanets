@@ -16,8 +16,15 @@
     </p>
 
     {% endfor %}
-    <button class="btn btn-outline-primary" type="submit">Login</button>
+    <button class="btn btn-outline-primary mr-4" type="submit">Login</button>
+    <a href="/password/email">Forgot your password?</a>
   </form>
 </div>
-
+<div id="word-def">
+  <div id="word"><b>ex·o·plan·et</b></div>
+  <div id="noun"><i>noun</i></div>
+  <div id="pronouncer">/ˈeksōˌplanət/</div>
+  <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
+</div>
 {% endblock %}
+{% include "planet-sun.html" %}

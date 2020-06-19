@@ -5,47 +5,54 @@
 {% endblock %}
 
   {% block content %}
-    
-    <div id="planet-details">
-      <h3 class="font-weight-light mt-3">{{ planet['pl_name'] }}</h3>
-      <h5 id="message"></h5>
-      <ul>
-        <li>Orbit: {{ planet['pl_orbsmax'] }}</li>
-        <li>Radius: {{ planet['pl_rade'] }}</li>
-        <li>Mass: {{ planet['pl_masse'] }}</li>
-        <li>Potentially Habitable: {{ habitable }}</li>
-      </ul>
-      <h4 class="font-weight-light">Host Star: {{ planet['pl_hostname'] }}</h4>
-      <ul>
-        <li>Optical Magnitude: {{ planet['st_optmag'] }}</li>
-        <li>Distance: {{ planet['st_dist'] }}</li>
-        <li>Spectral-type: {{ planet['st_spstr'] }}</li>
-        <li>Mass: {{ planet['st_mass'] }}</li>
-        <li>Radius: {{ planet['st_rad'] }}</li>
-        <li>Temperature: {{ planet['st_teff'] }}</li>
-        <li>Color Index(B-V): {{ planet['st_bmvj'] }}</li>
-        <li>Number of Planets: {{ planet['pl_pnum'] }}</li>
-      </ul>
-      <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
+  
+    <div class="mt-4 ml-4" id="planet-details">
+      <div>
+        <h3 class="font-weight-light mt-3">{{ planet['pl_name'] }}</h3>
+        <h5 id="message"></h5>
+        <ul>
+          <li><a class="properties" id="pl_orbsmax">Orbit:</a> {{ planet['pl_orbsmax'] }}</li>
+          <li>Radius: <span id="pl_rade">{{ planet['pl_rade'] }}</span></li>
+          <li>Mass: {{ planet['pl_masse'] }}</li>
+          <li>Zone: {{ habitable }}</li>
+        </ul>
+        <h4 class="font-weight-light">Host Star: {{ planet['pl_hostname'] }}</h4>
+        <ul>
+          <li>Optical Magnitude: {{ planet['st_optmag'] }}</li>
+          <li>Distance: {{ planet['st_dist'] }}</li>
+          <li>Spectral-type: <span id="st_spstr">{{ planet['st_spstr'] }}</span></li>
+          <li>Mass: {{ planet['st_mass'] }}</li>
+          <li><a class="properties" data-toggle="modal" data-target="#exampleModal" id="st_rad">Radius</a> {{ planet['st_rad'] }}</li>
+          <li>Temperature: {{ planet['st_teff'] }}</li>
+          <li>Color Index(B-V): <span id="st_bmvj">{{ planet['st_bmvj'] }}</span></li>
+          <li>Number of Planets: {{ planet['pl_pnum'] }}</li>
+        </ul>
+      </div>
+      
+
+      <div style="display: flex; background-color: black; width: 265px; height: 175px;">
+        <div style=" min-width: 160px; ">
+          <img id="earth" style="position: relative; top: 40px; left: 60px;" src="/static/images/earth.jpg" alt="">
+          <p style="position: absolute; bottom: 0px; left: 40px;">Earth</p>
+        </div>
+        <div style="width: 160px; overflow:hidden">
+          <img id="exo" style="position: relative; filter: hue-rotate(45deg);" src="/static/images/exoplanet-hab.png" alt="">
+          <p style="position: absolute; bottom: 0px; right: 40px;">16 Cyg B b</p>
+        </div>            
+      </div>
+      
+      
+    </div>
+    <div id="exoplanet">
+      <div id="sun-glow"></div>
+      <div id="planet">
+        <div class="box-shadow">
+          <img style="width: 200px; border-radius: 50%;object-position: 5px;"src="/static/images/exoplanet-hab.png" />
         </div>
       </div>
     </div>
-    
-
   {% endblock %}  
+  {% block scripts %}
+    <script src="/static/planet.js"></script>
+  {% endblock %}
+  

@@ -363,15 +363,9 @@ def search_planets():
     if request.form:
         resp = request.form
         parameters = {}
-        if resp.get("all", None):
-            parameters["all"] = "on"
-        elif resp.get('pl_name', None):
-            parameters["pl_name"] = resp["pl_name"]
-        elif resp.get('pl_hostname', None):
-            parameters["pl_hostname"] = resp["pl_hostname"] 
-        else:
-            for key,value in request.form.items():
-                parameters[key] = value
+        
+        for key,value in request.form.items():
+            parameters[key] = value
         
         session["PARAMETERS"] = parameters
     
