@@ -1,4 +1,7 @@
-$("check").prop("checked", false);
+// clear checkboxes on page load or cached load
+window.onpageshow = () => {
+  $('.check').prop('checked', false);
+}
 
 // adds event listener to check
 $(".check").change(enableSearchOption);

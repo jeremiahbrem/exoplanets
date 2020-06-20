@@ -22,29 +22,47 @@
           <li>Distance: {{ planet['st_dist'] }}</li>
           <li>Spectral-type: <span id="st_spstr">{{ planet['st_spstr'] }}</span></li>
           <li>Mass: {{ planet['st_mass'] }}</li>
-          <li><a class="properties" data-toggle="modal" data-target="#exampleModal" id="st_rad">Radius</a> {{ planet['st_rad'] }}</li>
-          <li>Temperature: {{ planet['st_teff'] }}</li>
+          <li>Radius: <span id="st_rad">{{ planet['st_rad'] }}</span></li>
+          <li>Temperature: <span id="st_teff">{{ planet['st_teff'] }}</span></li>
           <li>Color Index(B-V): <span id="st_bmvj">{{ planet['st_bmvj'] }}</span></li>
           <li>Number of Planets: {{ planet['pl_pnum'] }}</li>
         </ul>
       </div>
       
-
-      <div style="display: flex; background-color: black; width: 265px; height: 175px;">
-        <div style=" min-width: 160px; ">
-          <img id="earth" style="position: relative; top: 40px; left: 60px;" src="/static/images/earth.jpg" alt="">
-          <p style="position: absolute; bottom: 0px; left: 40px;">Earth</p>
+      
+      <div class="mb-4" id="pl-size-comp" style="display: flex; background-color: black; width: 265px; height: 175px;">
+        <div style=" width: 160px; height: 200px; ">
+          <p>Earth</p>
+          <img id="earth" style="position: relative; top: 20px; left: 30px;" src="/static/images/earth.jpg" alt="">
         </div>
         <div style="width: 160px; overflow:hidden">
+          <p >{{ planet['pl_name'] }}</p>
           <img id="exo" style="position: relative; filter: hue-rotate(45deg);" src="/static/images/exoplanet-hab.png" alt="">
-          <p style="position: absolute; bottom: 0px; right: 40px;">16 Cyg B b</p>
         </div>            
+      </div>
+  
+      
+      <div id="st-size-comp" style="overflow: hidden; display: flex; background-color: black; width: 265px; height: 175px;">
+        <div style="width: 160px; overflow:hidden">
+          <div id="sun" style="left: 20px; top: 40px; z-index: 1; transform: scale(0.5)"></div>
+        </div>       
+        <div style="width: 160px; overflow:hidden">
+          <div id="exo-sun-small" style="left: 20px; top: 40px; z-index: 1; transform: scale(0.5)"></div>
+        </div>              
+      </div>
+      <div style="width: 320px;" class="row">
+        <div class="col-6 text-center">
+          <p>Sun</p>
+        </div>
+        <div class="col-5 text-center">
+          <p>{{ planet['pl_hostname'] }}</p>
+        </div>     
       </div>
       
       
     </div>
     <div id="exoplanet">
-      <div id="sun-glow"></div>
+      <div id="exo-sun-glow"></div>
       <div id="planet">
         <div class="box-shadow">
           <img style="width: 200px; border-radius: 50%;object-position: 5px;"src="/static/images/exoplanet-hab.png" />
