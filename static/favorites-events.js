@@ -1,6 +1,7 @@
 // zoomout animation when planet clicked
 $('.planet-list-items').on("click", () =>
 {
+  $(".loader").show();
   $('#pl-sn').css("transition", "transform 1s");
   $('#pl-sn').css("transform", "scale(.001)");
 })
@@ -54,6 +55,7 @@ async function handleAdd(evt) {
     $("#message").text("");
   }, 3000)
   $('.checkboxes').prop("checked",false);
+  $('#all-check').prop("checked",false);
 }
 
 // add event listener to delete buttons

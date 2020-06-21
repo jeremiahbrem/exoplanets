@@ -6,6 +6,10 @@ window.onpageshow = () => {
 // adds event listener to check
 $(".check").change(enableSearchOption);
 
+$("button").on("click", () => {
+  $(".loader").show();
+})
+
 // event listener for select all
 $("#select-all").click(function(){
   $(".check").prop('checked', $(this).prop('checked'));
