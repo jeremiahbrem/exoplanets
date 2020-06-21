@@ -1,0 +1,139 @@
+{% extends 'base.html' %} 
+
+{% block navbar %} 
+  {% include "nav-bar.html" %} 
+{% endblock %} 
+
+{% block content %}
+
+<h1 id="welcome" class="font-weight-light mb-5 ml-4">About Exoplanet App</h1>
+<div id="about" class="ml-4 row">
+  <div>
+    <h3 class="font-weight-light mt-3 mb-5">Learn About Other Star Systems</h3>
+    <p class="mt-4">You now have access to NASA's extensive exoplanet database, with over 4000 confirmed planets.
+      You'also learn about the different properties of planets and their host stars, and how they compare to our
+      own solar system. For most planet-star systems, if the data is available, you'll see visual simulations of 
+      how the host star size and color compare to the sun, as well as some exoplanet size comparisons to the earth.
+    </p>
+  </div>  
+  
+  <div>
+    <h4 class="font-weight-light mb-4">Create Planet Lists</h4>
+    <p>Start off your journey by creating a list to add some of your favorite planets found in your search.
+      Create different lists for different search categories for particular planet or star properties you
+      are looking for. For example, you could create a list called "Hot stars", with a description "Host stars with
+      surface temps over 10000K".
+    </p>
+    <img style="width: 300px" src="/static/images/search.jpg" alt="">
+  </div>
+  
+  <div>
+    <h4 class="font-weight-light mb-4 mt-4">Search Planets</h4>
+    <p>Search exoplanets by name, host star name, or by single or multiple parameters.  Check the options
+        you want to search, and narrow your results by limiting values (optional). The results table will include all planets
+        that meet your criteria and will include values for the parameters you've checked. Select a list and add your
+        favorites planets.
+    </p>
+    <img style="width: 300px" src="/static/images/parameter.jpg" alt="">
+    <img style="width: 300px" src="/static/images/results.jpg" alt="">
+  </div>  
+
+  <div>
+    <h5 class="font-weight-light mb-4 mt-4">Parameter Options</h4>
+    <h6 class="font-weight-light"><u>In Habitable Zone</u></h6>
+    <p>The habitable zone of a star includes the minimum and maximum boundaries within which liquid water
+        can be present, and could theoretically have the potential to host life. If an exoplanet in NASA's database
+        includes star optical magnitude, star spectral type, distance, and planet orbit, then the habitable zone 
+        has been calculated.
+    </p>
+    <h6 class="font-weight-light"><u>Planet Mass</u></h6>
+    <p>Planet mass is like the weight of the planet, or the amount of material gravitationally bound together. It is 
+        measured in earth masses, with a value of 1 equal to the mass of our own planet.
+    </p>
+    <h6 class="font-weight-light"><u>Planet Radius</u></h6>
+    <p>Planet radius is a measure of the size of the planet, and a value of 1 is equal to 1 earth radius, or 6378 km.
+    </p>
+    <h6 class="font-weight-light"><u>Planet Orbit</u></h6>
+    <p>A planet's orbit data is the semi-major axis of the planet's orbit around it's host star. It is
+        measured in astronomical units(AU), with 1 AU being the distance from the earth to the sun, or about 150 million km.
+    </p>
+    <h6 class="font-weight-light"><u>Number of Planets in System</u></h6>
+    <p>This parameter indicates the number of planets in a particular exoplanet's star system. Many stars, like the sun, 
+        have multiple planets that orbit them.
+    </p>
+    <h6 class="font-weight-light"><u>Distance</u></h6>
+    <p>The distance for an exoplanet indicates the distance from our solar system to the host star. It is measured in parsecs,
+        with 1 parsec equal to about 3.26 light years, or about 19 trillion miles.
+    </p>
+    <h6 class="font-weight-light"><u>Host Star Radius</u></h6>
+    <p>Host star radius is a measure of the size of an exoplanet's host star. It is measured in solar radii, with 1 solar radius being 
+        the radius of the sun, or 696340 km.
+    </p>
+    <h6 class="font-weight-light"><u>Host Star Radius</u></h6>
+    <p>The habitable zone of a star includes the minimum and maximum boundaries within which liquid water
+        can be present, and could theoretically have the potential to host life. If an exoplanet in NASA's database
+        includes star optical magnitude, star spectral type, distance, and planet orbit, then the habitable zone 
+        has been calculated.
+    </p>
+    <h6 class="font-weight-light"><u>Host Star Surface Temp</u></h6>
+    <p>The surface temperature of a star is measured in kelvin(K). The surface temperature of our sun is 5778 K, or
+        9941 degrees Fahrenheit.
+    </p>
+    <h6 class="font-weight-light"><u>Host Star Spectral Type</u></h6>
+    <p>The spectral type of a star is a classification of the star's light spectrum characteristics. Most stars are classified
+        as O, B, A, F, G, K, and M, with a number from 0 to 9, in order from hottest to coolest. Most spectral types also 
+        include a luminosity class, designated by Ia, Iab, Ib, IIb, II, III, IV, V, sd, or D, in order from most to least 
+        luminous. The luminosity of a star is the amount of energy emitted from the star. The spectral type of the sun is G2V.
+    </p>
+    <h6 class="font-weight-light"><u>Host Star B-V Index</u></h6>
+    <img style="width: 275px" src="/static/images/colors-hotter.jpg" alt="">
+    <div class="row">
+      <div class="color-data">B0</div>
+      <div class="color-data">A0</div>
+      <div class="color-data">F0</div>
+    </div>
+    <div class="row">
+      <div class="color-data">B-V: -0.3</div>
+      <div class="color-data">B-V: -0.02</div>
+      <div class="color-data">B-V: 0.3</div>
+    </div>
+    <div class="row mb-4">
+      <div class="color-data">30000 K</div>
+      <div class="color-data">9790 K</div>
+      <div class="color-data">7300 K</div>
+    </div>
+    <img style="width: 275px" src="/static/images/colors-cooler.jpg" alt="">
+    <div class="row">
+        <div class="color-data">G0</div>
+        <div class="color-data">K0</div>
+        <div class="color-data">M0</div>
+      </div>
+      <div class="row">
+        <div class="color-data">B-V: 0.58</div>
+        <div class="color-data">B-V: 0.81</div>
+        <div class="color-data">B-V: 1.4</div>
+      </div>
+      <div class="row mb-4">
+        <div class="color-data">5940 K</div>
+        <div class="color-data">5150 K</div>
+        <div class="color-data">3840 K</div>
+      </div>   
+    <p>The B-V index is a measure of the visual color appearance of a star. A high index indicates a star with a cooler
+        surface temperature and more reddish in color. A low index indicates a star with a hotter surface temperature and 
+        more bluish in color. Sometimes a hot, blue star may be obscured with dust and therefore appear more reddish. For most 
+        planets on this site, you'll see a beautiful color representation of the appearance of the host star compared to our sun, 
+        which has a B-V index of 0.656 and appears yellow-white in color.
+    </p>
+    <h6 class="font-weight-light"><u>Star Optical Magnitude</u></h6>
+    <p>A stars optical magnitude is a measure of the visual brightness of the star as it appears to the naked eye. 
+        A high number indicates a dimmer star, while a lower number indicates a brighter star. The naked eye limit 
+        in good seeing conditions is about 6 or 7, while the limit with a 5 inch telescope is about 13. The brightest
+        star in the night sky is Sirius, with an optical magnitude of -1.46. Venus, the brightest planet, can reach -4.
+    </p>
+  </div>
+  
+</div>
+
+
+{% include "planet-sun.html" %}
+{% endblock %}

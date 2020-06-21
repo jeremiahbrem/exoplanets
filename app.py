@@ -75,6 +75,15 @@ def get_signup_page():
 
     return render_template("signup.html", form=form)
 
+@app.route("/about")
+def show_about():
+    """Renders about page"""
+
+    if not g.user:
+        return redirect("/")
+
+    return render_template("about.html")    
+
 @app.route("/users/<username>")
 def show_user_details(username):
     """Renders user details page"""

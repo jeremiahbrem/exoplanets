@@ -3,7 +3,7 @@
 <h1 id="welcome" class="font-weight-lighter mb-5 ml-3">Welcome to the Exoplanet App</h1>
 <h3 id="signup-head" class="font-weight-light ml-3">Sign Up to Search Other Worlds</h3>
 {% for message in get_flashed_messages() %}
-<h4>{{ message }}</h4>
+<h4 class="ml-4">{{ message }}</h4>
 {% endfor %}
 <div class="col-sm-6 col-md-8 mb-2 mr-5">
   <form id="signup-form" method="POST">

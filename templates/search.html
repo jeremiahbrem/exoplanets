@@ -13,7 +13,7 @@
     <div class="ml-1" id="search-form">
       
       {% for message in get_flashed_messages() %}  
-        <h4>{{ message }}</h4>
+        <h4 class="ml-4">{{ message }}</h4>
       {% endfor %}
       <h4 id="search-head" class="font-weight-light">Search by Name</h4>
       <form class="ml-5" action="/planets/search" name="planet-name-form" method="POST">

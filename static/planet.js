@@ -10,7 +10,7 @@ const habitable = $('#habitable').text();
 const orbit = parseFloat($('#pl_orbsmax').text());
 
 // adds image for exoplanet
-const pic = getPlanetPic(planetMass, habitable, orbit);
+const pic = getPlanetPic(planetMass, habitable, orbit, planetRadius);
 $('#exo').attr("src", pic);
 $('#big-exo-image').attr("src", pic);
 
@@ -52,24 +52,27 @@ function getRGBFromBV(colorIndex) {
   }
 }
 
-// returns a planet pic depending on habitable zone, mass, and orbitg
-function getPlanetPic(mass, habitability, orbit) {
+// returns a planet pic depending on habitable zone, mass, orbit, radius
+function getPlanetPic(mass, habitability, orbit, radius) {
   if (habitability == "Habitable") {
     return "/static/images/exoplanet-hab.png"
   }
   else if ((habitability == "Unknown") && (!mass || mass <= 10)) {
     return "/static/images/exoplanet-hab.png"
   }
-  else if ((habitability == "Too cold") && (!mass || mass <= 10)) {
-    return "/static/images/cold-planet.jpg"
-  }
-  else if (((habitability == "Too cold") || orbit > 20) && (mass > 10)) {
+  else if (((habitability == "Too cold") && orbit > 20) && (!mass || (mass > 10 && mass < 50))) {
     return "/static/images/cold-giant.jpg"
+  }
+  else if ((habitability == "Too cold") && (!mass || mass <= 10) && (!radius || radius < 5) && orbit < 20) {
+    return "/static/images/cold-planet.jpg"
   }
   else if (habitability == "Too hot" && (!mass || mass <= 10)) {
     return "/static/images/hot-planet.jpg"
   }
   else if (habitability == "Too hot" || (mass > 10)) {
+    return "/static/images/gas-giant.jpg"
+  }
+  else {
     return "/static/images/gas-giant.jpg"
   }
 }
