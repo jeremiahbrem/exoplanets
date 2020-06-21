@@ -11,10 +11,10 @@
         <h3 class="font-weight-light mt-3">{{ planet['pl_name'] }}</h3>
         <h5 id="message"></h5>
         <ul>
-          <li><a class="properties" id="pl_orbsmax">Orbit:</a> {{ planet['pl_orbsmax'] }}</li>
+          <li>Orbit: <span id="pl_orbsmax">{{ planet['pl_orbsmax'] }}</span></li>
           <li>Radius: <span id="pl_rade">{{ planet['pl_rade'] }}</span></li>
-          <li>Mass: {{ planet['pl_masse'] }}</li>
-          <li>Zone: {{ habitable }}</li>
+          <li>Mass: <span id="pl_masse">{{ planet['pl_masse'] }}</span></li>
+          <li>Habitability Zone: <span id="habitable">{{ habitable }}</span></li>
         </ul>
         <h4 class="font-weight-light">Host Star: {{ planet['pl_hostname'] }}</h4>
         <ul>
@@ -29,35 +29,35 @@
         </ul>
       </div>
       
-      
-      <div class="mb-4" id="pl-size-comp" style="display: flex; background-color: black; width: 265px; height: 175px;">
-        <div style=" width: 160px; height: 200px; ">
-          <p>Earth</p>
-          <img id="earth" style="position: relative; top: 20px; left: 30px;" src="/static/images/earth.jpg" alt="">
+      <div id="comparisons">
+        <div class="mb-4" id="pl-size-comp" style="display: flex; background-color: black; width: 265px; height: 175px;">
+          <div style=" width: 160px; height: 200px; ">
+            <p>Earth</p>
+            <img id="earth" style="position: relative; top: 20px; left: 30px;" src="/static/images/earth.jpg" alt="">
+          </div>
+          <div style="width: 160px; overflow:hidden">
+            <p >{{ planet['pl_name'] }}</p>
+            <img id="exo" style="position: relative; filter: hue-rotate(45deg);" alt="">
+          </div>            
+        </div>        
+        <div id="st-size-comp" style="overflow: hidden; display: flex; background-color: black; width: 265px; height: 175px;">
+          <div style="width: 160px; overflow:hidden">
+            <div id="sun" style="left: 20px; top: 40px; z-index: 1; transform: scale(0.5)"></div>
+          </div>       
+          <div style="width: 160px; overflow:hidden">
+            <div id="exo-sun-small" style="left: 20px; top: 40px; z-index: 1; transform: scale(0.5)"></div>
+          </div>              
         </div>
-        <div style="width: 160px; overflow:hidden">
-          <p >{{ planet['pl_name'] }}</p>
-          <img id="exo" style="position: relative; filter: hue-rotate(45deg);" src="/static/images/exoplanet-hab.png" alt="">
-        </div>            
-      </div>
-  
-      
-      <div id="st-size-comp" style="overflow: hidden; display: flex; background-color: black; width: 265px; height: 175px;">
-        <div style="width: 160px; overflow:hidden">
-          <div id="sun" style="left: 20px; top: 40px; z-index: 1; transform: scale(0.5)"></div>
-        </div>       
-        <div style="width: 160px; overflow:hidden">
-          <div id="exo-sun-small" style="left: 20px; top: 40px; z-index: 1; transform: scale(0.5)"></div>
-        </div>              
-      </div>
-      <div style="width: 320px;" class="row">
-        <div class="col-6 text-center">
-          <p>Sun</p>
+        <div style="width: 320px;" class="row">
+          <div class="col-6 text-center">
+            <p>Sun</p>
+          </div>
+          <div class="col-5 text-center">
+            <p>{{ planet['pl_hostname'] }}</p>
+          </div>     
         </div>
-        <div class="col-5 text-center">
-          <p>{{ planet['pl_hostname'] }}</p>
-        </div>     
       </div>
+      
       
       
     </div>
@@ -65,12 +65,13 @@
       <div id="exo-sun-glow"></div>
       <div id="planet">
         <div class="box-shadow">
-          <img style="width: 200px; border-radius: 50%;object-position: 5px;"src="/static/images/exoplanet-hab.png" />
+          <img id="big-exo-image" style="width: 200px; border-radius: 50%;object-position: 5px;" />
         </div>
       </div>
     </div>
   {% endblock %}  
   {% block scripts %}
+    <!-- <script src="/static/jasmine-tests/planet-test.js"></script> -->
     <script src="/static/planet.js"></script>
   {% endblock %}
   

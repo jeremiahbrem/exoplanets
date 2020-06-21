@@ -298,7 +298,7 @@ def add_planet(username):
             db.session.add(favorite)
             favorites.append(planet)
         else:
-            flash(f"{planet} already in list.")
+            favorites.append(f"You already added {planet} to list.")    
     
     db.session.commit()    
 
@@ -376,7 +376,7 @@ def search_planets():
         
     return render_template("search.html")
 
-@app.route("/planets/results/<int:page>")
+@app.route("/planets/results/<int:page>", methods=["GET", "POST"])
 def get_search_results(page):
     """Render search results"""
 
@@ -385,9 +385,17 @@ def get_search_results(page):
         return redirect("/")
 
     parameters = session["PARAMETERS"]
+    
+    if request.form:
+        resp = request.form['sort']
+        parameters["sort_by"] = resp
+        session["PARAMETERS"] = parameters
+        return redirect("/planets/results/1")
+
     search = ProcessSearch(parameters)
 
     session["SEARCH"] = search.create_api_query()
+    print(search.create_api_query())
     try:
         resp = requests.get(search.create_api_query())
     except ConnectionError:

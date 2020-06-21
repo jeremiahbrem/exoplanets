@@ -2,61 +2,128 @@
 
 {% block navbar %} 
   {% include "nav-bar.html" %} 
-{% endblock %}
+{% endblock %} 
 
 {% block content %}
 
-<div id="results-data">
+<div class="mt-3" id="results-data">
   <h3 class="ml-4 font-weight-light" id="result-head">Planet Search Results</h3>
-<label class="ml-4" for="lists">Add to List:</label>
-<h5 id="message"></h5>
+  <h5 id="message"></h5>
 
-<select class="ml-4" name="lists" id="lists">
-  {% for list in g.user.lists %}
+  <select class="ml-4" name="lists" id="lists">
+    <option value="" disabled selected>Add to list</option>
+    {% for list in g.user.lists %}
     <option class="listIDs" value="{{ list.id }}">{{ list.name }}</option>
-  {% endfor %}  
-</select>
-<button class="btn btn-outline-primary btn-sm" id="add-planets">Add</button>
+    {% endfor %}
+  </select>
+  <button class="btn btn-outline-primary btn-sm" id="add-planets">Add</button>
+  <button class="btn btn-outline-primary btn-sm" id="go-to-list">Go To List</button>
 
-<h6 class="ml-4 font-weight-light">result count: {{ planets | length }}</h6>
-<table class="ml-3">
-  <th><input id="all-check" class="checkboxes" type="checkbox"/></th>
-  <th>Planet</th>
-  {% for key, value in parameters.items() if value == 'on' and key not in
-    ['pl_name','all','habitable'] %}
-    <th>{{ key }}</th>
-  {% endfor %} 
-  {% for num in range((page*100-100), (page*100 if ((planets |
-    length) >= page*100) else (planets | length))) %}
-    <tr>
-      <td><input id="{{ planets[num].pl_name }}" class="checkboxes" type="checkbox"/></td>
-      <td>
-        <a class="planet-list-items" href="/planets/{{ planets[num].pl_name }}"
-          >{{ planets[num].pl_name }}</a
-        >
-      </td>
+  <form action="/planets/results/1" method="POST">
+    <select class="ml-4 mt-2" name="sort" id="sort">
+      <option value="" disabled selected>Sort by</option>
       {% for key, value in parameters.items() if value == 'on' and key not in
-        ['pl_name','all','habitable'] %}
-        <td>{{ planets[num][key] }}</td>
-      {% endfor %}
-    </tr>
-  {% endfor %}
-</table>
+      ['all','habitable', 'select-all'] %} 
+      {% if key == 'pl_masse' %}
+        <option value="pl_masse">Planet Mass</option>
+      {% elif key == 'pl_rade' %}
+        <option value="pl_rade">Planet Radius</option>
+      {% elif key == 'pl_orbsmax' %}
+        <option value="pl_orbsmax">Orbit</option>
+      {% elif key == 'pl_pnum' %}
+        <option value="pl_pnum">Num of Planets</option>
+      {% elif key == 'st_bmvj' %}
+        <option value="st_bmvj">Color Index</option>
+      {% elif key == 'st_dist' %}
+        <option value="st_dist">Distance</option>
+      {% elif key == 'st_optmag' %}
+        <option value="st_optmag">Optical Mag</option>
+      {% elif key == 'st_mass' %}
+        <option value="st_mass">Star Mass</option>
+      {% elif key == 'st_rad' %}
+        <option value="st_rad">Star Radius</option>
+      {% elif key == 'st_teff' %}
+        <option value="st_teff">Star Temp</option>
+      {% elif key == 'st_spstr' %}
+        <option value="st_spstr">Spectral Type</option>
+      {% endif %} 
+    {% endfor %} 
+    </select>
+    <button class="btn btn-outline-primary btn-sm">Sort</button>
+  </form>
 
-<div id="pages"><a id="previous" href=""></a></div>
-<div class="ml-2"><a id="next" href=""></a></div>
+  <h6 class="ml-4 font-weight-light">result count: {{ planets | length }}</h6>
+  <table class="ml-3">
+    <th><input id="all-check" type="checkbox" /></th>
+    <th>Planet</th>
+    {% for key, value in parameters.items() if value == 'on' and key not in
+    ['pl_name','all','habitable', 'select-all'] %} 
+      {% if key == 'pl_masse' %}
+        <th>Planet Mass</th>
+      {% elif key == 'pl_rade' %}
+        <th>Planet Radius</th>
+      {% elif key == 'pl_orbsmax' %}
+        <th>Orbit</th>
+      {% elif key == 'pl_pnum' %}
+        <th>Num of Planets</th>
+      {% elif key == 'st_bmvj' %}
+        <th>Color Index</th>
+      {% elif key == 'st_dist' %}
+        <th>Distance</th>
+      {% elif key == 'st_optmag' %}
+        <th>Optical Mag</th>
+      {% elif key == 'st_mass' %}
+        <th>Star Mass</th>
+      {% elif key == 'st_rad' %}
+        <th>Star Radius</th>
+      {% elif key == 'st_teff' %}
+        <th>Star Temp</th>
+      {% elif key == 'st_spstr' %}
+        <th>Spectral Type</th>
+      {% endif %} 
+    {% endfor %} 
+    {% for num in range((page*100-100), (page*100 if
+      ((planets | length) >= page*100) else (planets | length))) %}
+      <tr>
+        <td>
+          <input
+            id="{{ planets[num].pl_name }}"
+            class="checkboxes"
+            type="checkbox"
+          />
+        </td>
+        <td>
+          <a class="planet-list-items" href="/planets/{{ planets[num].pl_name }}"
+            >{{ planets[num].pl_name }}</a
+          >
+        </td>
+        {% for key, value in parameters.items() if value == 'on' and key not in
+          ['pl_name','all','habitable','select-all'] %}
+          <td>{{ planets[num][key] }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+
+  <div id="pages"></div>
+  <div class="row ml-2">
+    <a class="mr-3" id="start" href=""></a>
+    <a class="mr-3" id="previous" href=""></a>
+    <a class="mr-3" id="next" href=""></a>
+    <a id="last" href=""></a>
+  </div>
 
 
-
-<input type="hidden" id="page-num" value="{{ page }}" />
-<input type="hidden" id="result-length" value="{{ planets | length }}" />
+  <input type="hidden" id="page-num" value="{{ page }}" />
+  <input type="hidden" id="result-length" value="{{ planets | length }}" />
 </div>
 
-{% include "planet-sun.html" %}
-{% endblock %}
+{% include "planet-sun.html" %} 
+{% endblock %} 
+
 {% block scripts %}
-  <!-- <script src="/static/jasmine-tests/paginate-test.js"></script> -->
-  <script src="/static/paginate.js"></script>
-  <script src="/static/favorites-class.js"></script>
-  <script src="/static/favorites-events.js"></script>
+<!-- <script src="/static/jasmine-tests/paginate-test.js"></script> -->
+<script src="/static/paginate.js"></script>
+<script src="/static/favorites-class.js"></script>
+<script src="/static/favorites-events.js"></script>
 {% endblock %}

@@ -94,7 +94,6 @@ class Favorite(db.Model):
                                         )
 
     planet_name = db.Column(db.Text, nullable=False)
-    photo = db.Column(db.Text)
 
     fav_list = db.relationship("List")
 

@@ -1,25 +1,45 @@
+// zoom in to planet and star *** COMMENT THIS OUT FOR JASMINE TESTS ***
 window.onload = function() {
   $('#exoplanet').css("transform", "scale(1)");
 }
 
 const planetRadius = parseFloat($('#pl_rade').text());
 const starRadius = parseFloat($('#st_rad').text());
+const planetMass = parseFloat($('#pl_masse').text());
+const habitable = $('#habitable').text();
+const orbit = parseFloat($('#pl_orbsmax').text());
 
+// adds image for exoplanet
+const pic = getPlanetPic(planetMass, habitable, orbit);
+$('#exo').attr("src", pic);
+$('#big-exo-image').attr("src", pic);
+
+// add widths to planet images
 if (planetRadius) {
-  comparePlanetSize(planetRadius);
+  const planetWidths = comparePlanetSize(planetRadius);
+  $('#earth').css("width", `${planetWidths.earthWidth}px`)
+  $('#exo').css({
+          "width": `${planetWidths.exoWidth}px`,
+          "top": "10px"
+          })
 }
 else {
   $('#pl-size-comp').hide();
 }
 
-compareStarSize(starRadius);
+// get star comparison scale sizes
+const starScales = compareStarSize(starRadius);
+
+// add scale sizes to screen
+$('#exo-sun-small').css("transform", `scale(${starScales.exoScale})`);
+$('#sun').css("transform", `scale(${starScales.sunScale})`);
 
 
 // converts B-V color index to rgb value
 function getRGBFromBV(colorIndex) {
   const color = parseFloat(colorIndex);
   if (color >= 0.81) {
-    const g = 255 - (color - 0.81) * 65.0558;
+    const g = 255 - (color - 0.81) * 150;
     return `rgb(255,${g},0)`
   }    
   else if (color < 0.81 && color >0.43) {
@@ -29,6 +49,28 @@ function getRGBFromBV(colorIndex) {
   else if (color <= 0.43) {
     const r = 254 - (0.43 - color) * 223.0769;
     return `rgb(${r},${r},255)`
+  }
+}
+
+// returns a planet pic depending on habitable zone, mass, and orbitg
+function getPlanetPic(mass, habitability, orbit) {
+  if (habitability == "Habitable") {
+    return "/static/images/exoplanet-hab.png"
+  }
+  else if ((habitability == "Unknown") && (!mass || mass <= 10)) {
+    return "/static/images/exoplanet-hab.png"
+  }
+  else if ((habitability == "Too cold") && (!mass || mass <= 10)) {
+    return "/static/images/cold-planet.jpg"
+  }
+  else if (((habitability == "Too cold") || orbit > 20) && (mass > 10)) {
+    return "/static/images/cold-giant.jpg"
+  }
+  else if (habitability == "Too hot" && (!mass || mass <= 10)) {
+    return "/static/images/hot-planet.jpg"
+  }
+  else if (habitability == "Too hot" || (mass > 10)) {
+    return "/static/images/gas-giant.jpg"
   }
 }
 
@@ -70,7 +112,7 @@ function getBVFromSpectral(spectralType) {
   }
   if (firstChar == "K") {
     if (secondChar > 0) {
-      return 0.81 + secondChar * .059
+      return 0.81 + secondChar * .08
     }
     else {
       return 0.81
@@ -78,23 +120,24 @@ function getBVFromSpectral(spectralType) {
   }
   if (firstChar == "M") {
     if (secondChar > 0) {
-      return 1.4 + secondChar * .06
+      return 1.4 + secondChar * .185
     }
     else {
-      return 0.06
+      return 1.4
     }
   }
 }
 
+// return B-V index calculated from star surface temp
 function getBVFromTemp(temp) {
   const num1 = .27 / 20210;
   const num2 = .32 / 2490;
   const num3 = .28 / 1360;
   const num4 = .23 / 790;
   const num5 = .59 / 1310;
-  const num6 = .6 / 840;
+  const num6 = 1 / 840;
 
-  if (temp < 30000 && temp > 9790) {
+  if (temp > 9790) {
     return -0.3 + (30000 - temp) * num1;
   }
   else if (temp <= 9790 && temp > 7300) {
@@ -114,26 +157,24 @@ function getBVFromTemp(temp) {
   }
 }
 
-// brown dwarf
+// brown dwarf star
 if (parseInt($('#st_teff').text()) < 1000) {
   addRGB("rgb(43,24,2)")
 }
 // use B-V index for star color
 else if ($('#st_bmvj').text() != "None") {
-  console.log("hi")
   const rgb = getRGBFromBV($('#st_bmvj').text());
-  addRGB(rgb);
-}
-// use spectral type for star color
-
-else if ($('#st_spstr').text() != "None") {
-  const bv = getBVFromSpectral($('#st_spstr').text());
-  const rgb = getRGBFromBV(bv);
   addRGB(rgb);
 }
 // use surfac temp for star color
 else if ($('#st_teff').text() != "None") {
   const bv = getBVFromTemp($('#st_teff').text());
+  const rgb = getRGBFromBV(bv);
+  addRGB(rgb);
+}
+// use spectral type for star color
+else if ($('#st_spstr').text() != "None") {
+  const bv = getBVFromSpectral($('#st_spstr').text());
   const rgb = getRGBFromBV(bv);
   addRGB(rgb);
 }
@@ -148,41 +189,38 @@ function addRGB(rgb) {
   document.getElementById("exo-sun-small").style.boxShadow = values;
 }  
 
+// returns scale sizes for stars
 function compareStarSize(starRadius) {
   let exoRadius;
+  let exoScale;
   let sunRadius;
+  let sunScale;
   if (starRadius > 1) {
+    exoScale = 0.5;
     $('#exo-sun-small').css("transform", "scale(0.5)");
-    sunRadius = 1 / (starRadius * 2)
+    sunScale = 1 / (starRadius * 2) 
     $('#sun').css("transform", `scale(${sunRadius})`);
   }
   else {
-    $('#sun').css("transform", "scale(0.5)");
-    exoRadius = starRadius / 2;
-    $('#exo-sun-small').css("transform", `scale(${exoRadius})`)
+    sunScale = 0.5;
+    exoScale = starRadius / 2;
   }
+  return {"sunScale": sunScale, "exoScale": exoScale}
 }
 
-
+// return image widths for planets
 function comparePlanetSize(planetRadius) {
   let exoRadius;
   let earthRadius;
+  let exoWidth;
+  let earthWidth;
   if (planetRadius >= 6) {
-    $('#exo').css({
-          "width": "300px",
-          "top": "10px"
-          });
-    exoRadius = $('#exo').css("width").slice(0,-2);
-    earthRadius = parseFloat(exoRadius) / parseFloat(planetRadius)
-    $('#earth').css("width", `${earthRadius}px`);     }       
+    exoWidth = 300;
+    earthWidth = exoWidth / parseFloat(planetRadius);
+  }    
   else {
-    $('#earth').css("width", "50px");
-    earthRadius = $('#earth').css("width").slice(0,-2);
-    exoRadius = parseFloat(earthRadius) * parseFloat(planetRadius);
- 
-    $('#exo').css({
-        "width": `${exoRadius}px`,
-        "top": "10px"
-        })
+    earthWidth = 50;
+    exoWidth =  earthWidth * parseFloat(planetRadius);
   }          
+  return {"earthWidth": earthWidth, "exoWidth": exoWidth}
 }

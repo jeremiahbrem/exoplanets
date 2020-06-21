@@ -21,7 +21,7 @@ describe("testing Favorites class functions", () => {
         await Favorites.deleteFavorite($listID, "testPlanet3");
     })
 
-    it ("should delete favorites from page and from database", async function() {
+    it ("should delete favorites from page and from database with deleteFavorite", async function() {
         const addResp = await Favorites.addFavorites($listID, ["testPlanet4"]);
         const deleteResp = await Favorites.deleteFavorite($listID, "testPlanet4")
         expect(deleteResp).toEqual("testPlanet4 deleted from list.")

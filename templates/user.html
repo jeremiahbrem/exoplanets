@@ -13,13 +13,15 @@
 
   <div id="user-lists" class="text-center mb-4">
     <h3 class="font-weight-light">My Lists</h3>
-  
-      {% for list in user.lists %}
-
-          <a href="/users/{{ user.username }}/lists/{{ list.id }}">{{ list.name }} ({{ list.favorites | length }})</a>
-          <p id="{{ list.name }}">{{ list.description }}</p>
-  
+      <ul id="my-lists" class="mr-4">
+        {% for list in user.lists %}
+          <li id="{{ list.name }}"> 
+            <a href="/users/{{ user.username }}/lists/{{ list.id }}">{{ list.name }} ({{ list.favorites | length }})</a>
+            <p id="{{ list.name }}">{{ list.description }}</p>
+          </li>
       {% endfor %}  
+      </ul>
+      
   </div>
   <div id="user-buttons">
     <a id="user-search-button" class="btn btn-outline-primary" href="/planets/search">Search Planets</a><br>
@@ -33,4 +35,5 @@
 
 {% block scripts %}
   <script src="/static/jasmine-tests/create-test-list.js"></script>
+  <script src="/static/user-list.js"></script>
 {% endblock %}

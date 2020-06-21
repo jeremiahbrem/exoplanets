@@ -16,7 +16,7 @@ class ProcessSearch:
         where = "&where="
         
         if self.parameters.get('all', None):
-            return (f"{self.base_query}&format=json")
+            return (f"{self.base_query}&format=json")   
 
         if self.parameters.get('pl_name', None):
             if "+" in self.parameters.get('pl_name'):
@@ -38,7 +38,8 @@ class ProcessSearch:
                     if count > 1:
                         where = where + " and "
                     where = where + f"st_spstr like '{self.parameters['st_spstr_type']}%25'"
-                if value == 'on' and (min_value or max_value):
+                    count += 1
+                elif value == 'on' and (min_value or max_value):
                     if count > 1:
                         where = where + " and "
                     where = where + f"{key}"
@@ -48,6 +49,10 @@ class ProcessSearch:
                         where = where + f">{min_value}" 
                     elif max_value:
                         where = where + f"<{max_value}"
-                count += 1        
+                    count += 1                   
 
-        return f"{self.base_query}{where}&order=pl_name&format=json" 
+        order = "pl_name"
+        if self.parameters.get('sort_by', None):
+            order = self.parameters.get('sort_by')          
+
+        return f"{self.base_query}{where}&order={order}&format=json" 

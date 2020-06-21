@@ -3,6 +3,11 @@ body {
     color: lightgray;
 }    
 
+#container {
+    position: relative;
+    min-height: 100vh;
+}
+
 .page-buttons {
     width: 27px;
     border: solid 1px black;
@@ -82,10 +87,6 @@ td, th {
     top: 150px;
 }
 
-dsgsd {
-    color: red;
-}
-
 a {
     color:rgb(68, 164, 228);
 }
@@ -119,7 +120,7 @@ hr {
         0 0 60px 30px rgb(255,255,103),
         0 0 120px 60px rgb(255,255,103),
         0 0 240px 120px rgb(255,255,103);
-    z-index: -2;
+    z-index: -1;
     position: relative;
     left: 100px;
 }
@@ -139,16 +140,23 @@ hr {
         0 0 60px 30px rgb(255,80,0),
         0 0 120px 60px rgb(255,80,0),
         0 0 240px 120px rgb(255,80,0);
-    z-index: -2;
+    z-index: -1;
     position: relative;
     left: 100px;
+    
+}
+
+#planet-img {
+    width: 200px; 
+    border-radius: 50%;
+    object-position: 5px;
 }
 
 #exo-sun-glow {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    z-index: -2;
+    z-index: -1;
     position: relative;
     left: 100px;
 }
@@ -157,7 +165,7 @@ hr {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    z-index: -2;
+    z-index: -1;
     position: relative;
     left: 100px;
 }
@@ -234,7 +242,7 @@ hr {
 
 #signup-form, #login-form, #user-edit-form, 
 #user-delete-form, #create-list-form, #edit-list, 
-#enter-email, #check-email, #reset-pwd  {
+#enter-email, #check-email, #reset-pwd, #planet-details {
     width: 300px;
 }
 
@@ -254,12 +262,17 @@ hr {
     left: 50px;
 }
 
-test {
-    color: rgb(255, 255, 0)
+.jasmine_html-reporter {
+    position: absolute;
+    
 }
 
-.modal {
-    color: black;
+@media only screen and (min-width: 1050px) {
+    #comparisons {
+        position: relative;
+        left: 300px;
+        bottom: 400px;
+    }
 }
 
 @media only screen and (min-width: 750px) {

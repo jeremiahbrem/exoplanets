@@ -26,9 +26,9 @@ describe ("Testing pagination functions", () => {
     })
     
     it ("should return start of previous set of 10 pages with getPreviousPageSet", () => {
-        expect(getPreviousPageSet(20)).toEqual(1);        
-        expect(getPreviousPageSet(10)).toBeUndefined();        
-        expect(getPreviousPageSet(40)).toEqual(20);        
-    })    
-    
+        expect(getPreviousPageSet(10)).toEqual(1);        
+        expect(getPreviousPageSet(20)).toEqual(10);        
+        expect(getPreviousPageSet(40)).toEqual(30);      
+        expect(getPreviousPageSet(1)).toBeUndefined();      
+    })     
 })
