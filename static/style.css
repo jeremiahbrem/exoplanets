@@ -3,15 +3,41 @@ body {
     color: lightgray;
 }    
 
-#container {
-    position: relative;
-    min-height: 100vh;
-}
-
 .page-buttons {
     width: 27px;
     border: solid 1px black;
     padding: 2px;
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#search-head {
+    text-align: center;
+}
+
+#enter-email {
+    text-align: center;
+}
+
+#check-email {
+    width: 320px;
+    text-align: center;
+}
+
+#signup {
+    width: 300px;
+}
+
+#about {
+    max-width: 800px;
+}
+#user-head, #user-lists {
+    width: 310px;
     text-align: center;
 }
 
@@ -29,9 +55,6 @@ ul {
 }
 
 #user-buttons {
-    position: absolute;
-    top: 200px;
-    right: 500px;
     text-align: center;
 }
 
@@ -40,13 +63,11 @@ ul {
     border-color: rgb(148, 12, 148);
     box-shadow: 0 0 5px 5px rgb(148, 12, 148);
     width: 200px;
-    margin-bottom: 30px;
 }
 
 #user-create-button, #user-edit-button {
     box-shadow: 0 0 5px 5px rgb(68, 164, 228);
     width: 200px;
-    margin-bottom: 30px;
 }
 
 #user-search-button:hover {
@@ -58,10 +79,18 @@ ul {
     color: white;
 }
 
+#edit-list {
+    width: 290px;
+}
+
+#lists-div {
+    display: flex;
+    justify-content: center;
+    padding: 55px;
+    /* text-align: center; */
+}
+
 #user-lists {
-    position: absolute;
-    margin-left: 20px;
-    top: 200px;
     width: 200px;
     border: 1px solid rgb(68, 164, 228);
     padding: 10px;
@@ -75,16 +104,6 @@ td, th {
     border: 1px solid rgb(68, 164, 228);
     background-color: rgb(3, 3, 32);;
     text-align: center;
-}
-
-#login-head, #user-edit-head, #create-list-head {
-    margin-top: 100px;
-}
-
-#results-data, #list-planet, #planet-details, #edit-list, 
-#enter-email, #check-email, #reset-pwd, #about {
-    position: absolute;
-    top: 150px;
 }
 
 a {
@@ -141,15 +160,19 @@ hr {
         0 0 120px 60px rgb(255,80,0),
         0 0 240px 120px rgb(255,80,0);
     z-index: -1;
-    position: relative;
-    left: 100px;
-    
+    position: absolute;
+    left: 0px;
 }
 
-#planet-img {
+#planet {
+    position: absolute;
+    left: 100px;
+}
+
+#planet-img, #big-exo-image {
     width: 200px; 
     border-radius: 50%;
-    object-position: 5px;
+    object-position: -10px;
 }
 
 #exo-sun-glow {
@@ -158,7 +181,6 @@ hr {
     border-radius: 50%;
     z-index: -1;
     position: relative;
-    left: 100px;
 }
 
 #exo-sun-small {
@@ -170,11 +192,12 @@ hr {
     left: 100px;
 }
 
-#pl-sn {
+.exoplanet {
     z-index: -1;
-    position: absolute;
-    right: 200px;
-    top: 150px;
+    position: relative;
+    width: 310px;
+    top: 50px;
+    height: 310px;
 }
 
 #exoplanet {
@@ -186,20 +209,14 @@ hr {
     transition: transform 3s;
 }
 
-#planet {
-    position: absolute;
-    right: 25px;
-    top: 0px;
-}
-
 .box-shadow::after {
     box-shadow:
-        inset 105px 0 40px rgb(3, 13, 46),
+        inset -105px 0 40px rgb(3, 13, 46),
         inset -30px 0 40px transparent,
-        inset 30px 0 150px rgb(3, 13, 46),
+        inset -30px 0 150px rgb(3, 13, 46),
         inset -10px 0 150px transparent,
         0 0 5px white,
-        -2px 0 5px cyan;
+        0px 0 5px cyan;
     bottom: 0;
     content: "";
     display: block;
@@ -211,21 +228,20 @@ hr {
 
 #word-def {
     position: absolute;
-    right: 100px;
-    top: 400px;
+    left: 1px;
+    top: 175px;
     text-shadow: 0 0 1.75px white;
     color:transparent;
-    z-index: -1;
 }
 
 #login {
-    margin-left: 20px;
-    font-size: 20px;
+    position: relative;
+    left: 125px;
+    bottom: 37px;
 }
 
 #nasa-cont {
     font-size: 15px;
-    text-align: left;
 }
 
 #nasa {
@@ -240,18 +256,6 @@ hr {
     margin-right: 10px;
 }
 
-#signup-form, #login-form, #user-edit-form, 
-#user-delete-form, #create-list-form, #edit-list, 
-#enter-email, #check-email, #reset-pwd, #planet-details,
-#about {
-    width: 300px;
-}
-
-#search-form {
-    position: absolute;
-    top: 400px;
-}
-
 #list-d {
     width: 300px;
 }
@@ -260,18 +264,23 @@ hr {
     display: flex;
     position: relative;
     bottom: 35px;
-    left: 50px;
+    left: 60px;
 }
 
 .jasmine_html-reporter {
     position: absolute;
-    
 }
 
 .color-data {
     text-align: center;
     font-size: 12px;
     width: 95px;
+}
+
+#results-data {
+    position: absolute;
+    top: 350px;
+    left: 5px;
 }
 
 .loader {
@@ -282,92 +291,44 @@ hr {
     height: 40px;
     animation: spin 2s linear infinite;
     display: none;
-  }
+}
   
-  @keyframes spin {
+@keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
+}
 
-@media only screen and (min-width: 1050px) {
-    #comparisons {
-        position: relative;
-        left: 300px;
-        bottom: 400px;
+@media only screen and (min-width: 768px) {
+    #user-head {
+        margin-top: 50px;
     }
-    #about {
-        width: 600px;
+    #search-head {
+        width: 50%;
+        padding-top: 75px;
+    }
+
+    #reset-pwd, #create-list, #edit-account, #user-delete, #list-planet, #edit-list {
+        margin-left: 75px;
+        margin-top: 80px;
     }
 }
 
-@media only screen and (min-width: 750px) {
-    #search-form {
-        top: 200px;
-    }    
-}
-
-@media only screen and (max-width: 625px) {
-    #word-def {
-        top: 200px;
-        right: 10px;
+@media only screen and (min-width: 576px) {
+    #signup {
+        width: 350px;
     }
-  }
+}
 
 @media only screen and (max-width: 350px) {
     #signup-head {
         font-size:25px;
     }
-
-    #signup-form, #login-form, #user-edit-form, #user-delete-form, 
-    #create-list-form, #list-d, #edit-list, #about {
-        width: 270px;
-    }
 }  
-
-@media only screen and (max-width: 1000px) {
-    #user-lists {
-        position: absolute;
-        top: 500px;
-        right: 500px;
-        margin-left: 0;
-    }
-}
-
-@media only screen and (max-width: 750px) {
-    #user-buttons {
-        position: absolute;
-        top: 400px;
-        left: 50px;
-    }
-
-    #user-lists {
-        top: 640px;
-        left: 50px;
-        margin-left: 0;
-    }
-}
 
 @media only screen and (max-width: 540px) {
     #welcome {
         font-size: 35px;
         text-align: center;
-        margin-top: 5px;
     }
-     #signup-head, #login-head, #user-edit-head, #user-delete-head, 
-     #create-list-head {
-         margin-top: 330px;
-     }
-}
+}    
 
-@media only screen and (max-width: 580px) {
-    #results-data, #list-planet, #planet-details, #edit-list, #list-planet, 
-    #create-list, #enter-email, #check-email, #reset-pwd, #about {
-        top: 330px;
-    }
-}  
-
-@media only screen and (max-width: 430px) {
-    #pl-sn, #exoplanet {
-        right: 100px;
-    }
-}

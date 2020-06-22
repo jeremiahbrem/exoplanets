@@ -5,31 +5,34 @@
 {% endblock %}
 
   {% block content %}
+    {% include "planet-sun.html" %}
+    <div id="edit-account">
+      <h1 id="user-edit-head" class="font-weight-light">Edit Your Account</h1>
+      {% for message in get_flashed_messages() %}
+        <h4 class="ml-4">{{ message }}</h4>
+      {% endfor %}  
+      <form class="ml-4 mb-4" id="user-edit-form" method="POST"> 
+        {{ form.hidden_tag() }}
 
-    <h1 id="user-edit-head" class="font-weight-light">Edit Your Account</h1>
-    {% for message in get_flashed_messages() %}
-      <h4 class="ml-4">{{ message }}</h4>
-    {% endfor %}  
-    <form class="ml-4 mb-4" id="user-edit-form" method="POST"> 
-      {{ form.hidden_tag() }}
+        {% for field in form
+          if field.widget.input_type != 'hidden' %}
 
-      {% for field in form
-        if field.widget.input_type != 'hidden' %}
-
-          <p>
-            {{ field.label }} 
-            {{ field (class="form-control form-control-sm")}}     
+            <p>
+              {{ field.label }} 
+              {{ field (class="form-control form-control-sm")}}     
        
-            {% for error in field.errors %}
-              {{ error }}
-            {% endfor %}
-          </p>
+              {% for error in field.errors %}
+                {{ error }}
+              {% endfor %}
+            </p>
 
-       {% endfor %}
-       <button class="btn btn-outline-primary" type="submit">Save</button>
-       <a class="text-danger ml-4 mb-5" href="/users/{{ user.username }}/delete">Delete Account</a>
-       <a class="ml-4" href="/users/{{ user.username }}">Cancel</a>
+         {% endfor %}
+        <button class="btn btn-outline-primary" type="submit">Save</button>
+        <a class="text-danger ml-4 mb-5" href="/users/{{ user.username }}/delete">Delete Account</a>
+        <a class="ml-4" href="/users/{{ user.username }}">Cancel</a>
      </form>
-     {% include "planet-sun.html" %}
+    </div>
+    
+     
   {% endblock %}
   

@@ -5,8 +5,17 @@
 {% endblock %}
 
   {% block content %}
+
+    <div class="exoplanet">
+      <div id="exo-sun-glow"></div>
+      <div id="planet">
+        <div class="box-shadow">
+          <img id="big-exo-image"/>
+        </div>
+      </div>
+    </div>
   
-    <div class="mt-4 ml-4" id="planet-details">
+    <div style="width: 290px;" class="mt-4 ml-4" id="planet-details">
       <div>
         <h3 class="font-weight-light mt-3">{{ planet['pl_name'] }}</h3>
         <h5 id="message"></h5>
@@ -28,8 +37,10 @@
           <li>Number of Planets: {{ planet['pl_pnum'] }}</li>
         </ul>
       </div>
+    </div>  
       
-      <div id="comparisons">
+    <div class="mt-4">
+      <div id="pl-comparisons">
         <div class="mb-4" id="pl-size-comp" style="display: flex; background-color: black; width: 265px; height: 175px;">
           <div style=" width: 160px; height: 200px; ">
             <p>Earth</p>
@@ -39,7 +50,9 @@
             <p >{{ planet['pl_name'] }}</p>
             <img id="exo" style="position: relative; filter: hue-rotate(45deg);" alt="">
           </div>            
-        </div>        
+        </div>  
+      </div>
+      <div id="st-comparisons">
         <div id="st-size-comp" style="overflow: hidden; display: flex; background-color: black; width: 265px; height: 175px;">
           <div style="width: 160px; overflow:hidden">
             <div id="sun" style="left: 20px; top: 40px; z-index: 1; transform: scale(0.5)"></div>
@@ -56,19 +69,9 @@
             <p>{{ planet['pl_hostname'] }}</p>
           </div>     
         </div>
-      </div>
-      
-      
-      
+      </div>        
     </div>
-    <div id="exoplanet">
-      <div id="exo-sun-glow"></div>
-      <div id="planet">
-        <div class="box-shadow">
-          <img id="big-exo-image" style="width: 200px; border-radius: 50%;object-position: 5px;" />
-        </div>
-      </div>
-    </div>
+    
   {% endblock %}  
   {% block scripts %}
     <!-- <script src="/static/jasmine-tests/planet-test.js"></script> -->

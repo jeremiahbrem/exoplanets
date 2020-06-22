@@ -6,22 +6,22 @@
 
 {% block content %}
 
-<div id="create-list">
-  <h3 id="create-list-head" class="font-weight-light">Create New Planet List</h3>
-  <form class="ml-4" id="create-list-form" method="POST">
-    {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
-    'hidden' %}
+  {% include "planet-sun.html" %}
 
-    <p>
-      {{ field.label }} {{ field (class="form-control form-control-sm")}} {% for
-      error in field.errors %} {{ error }} {% endfor %}
-    </p>
+  <div id="create-list">
+    <h3 id="create-list-head" class="font-weight-light">Create New Planet List</h3>
+    <form class="ml-4" id="create-list-form" method="POST">
+      {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+      'hidden' %}
 
-    {% endfor %}
-    <button class="btn btn-outline-primary" type="submit">Add</button>
-    <a class="ml-4" href="/users/{{ g.user.username }}">Cancel</a>
-  </form>
-</div>
+      <p>
+        {{ field.label }} {{ field (class="form-control form-control-sm")}} {% for
+        error in field.errors %} {{ error }} {% endfor %}
+      </p>
 
-{% include "planet-sun.html" %}
+      {% endfor %}
+      <button class="btn btn-outline-primary" type="submit">Add</button>
+      <a class="ml-4" href="/users/{{ g.user.username }}">Cancel</a>
+    </form>
+  </div>
 {% endblock %}

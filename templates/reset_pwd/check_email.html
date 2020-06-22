@@ -2,9 +2,10 @@
 
   {% block content %}
 
-    <div id="check-email">
-      <h4 class="mt-5 ml-4 font-weight-light">Please check your email for a link to reset your password</h4>
-      <a class="ml-5 btn btn-outline-primary" href="/login">login</a>
+    {% include "planet-sun.html" %}
+    <div class="mt-4" id="check-email">
+      <h4 class="mt-5 font-weight-light">Please check your email for a link to reset your password</h4>
+      <a class="btn btn-outline-primary" href="/login">login</a>
     </div>
     
     
@@ -14,5 +15,5 @@
       <div id="pronouncer">/ˈeksōˌplanət/</div>
       <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
     </div>
-    {% include "planet-sun.html" %}
+    
 {% endblock %}

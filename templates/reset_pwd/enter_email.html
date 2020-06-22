@@ -2,7 +2,8 @@
 
   {% block content %}
 
-    <div class="ml-4 mt-5" id="enter-email">
+    {% include "planet-sun.html" %}
+    <div class="mt-5" id="enter-email">
       <h3 class="font-weight-light">Enter Your Email to Reset Password</h3>
       {% for message in get_flashed_messages() %}
         <h5>{{ message }}</h5>
@@ -33,6 +34,6 @@
       <div id="pronouncer">/ˈeksōˌplanət/</div>
       <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
     </div>
-    {% include "planet-sun.html" %}
+    
   {% endblock %}  
   

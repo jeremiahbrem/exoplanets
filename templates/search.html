@@ -5,17 +5,20 @@
 {% endblock %}  
 
   {% block content %}
-    
-  <h1 class="font-weight-light">Search Exoplanets</h1>
-  <div id="nasa-cont">
-    Powered by <a href="https://www.nasa.gov/"><img id="nasa"src="/static/images/nasa.png" alt=""></a>
-  </div>
+  
+  {% include "planet-sun.html" %}
+    <div class="mb-5"id="search-head">
+      <h1 class="font-weight-light">Search Exoplanets</h1>
+      <div id="nasa-cont">
+        Powered by <a href="https://www.nasa.gov/"><img id="nasa"src="/static/images/nasa.png" alt=""></a>
+      </div>
+    </div>
     <div class="ml-1" id="search-form">
       
       {% for message in get_flashed_messages() %}  
         <h4 class="ml-4">{{ message }}</h4>
       {% endfor %}
-      <h4 id="search-head" class="font-weight-light">Search by Name</h4>
+      <h4 class="font-weight-light">Search by Name</h4>
       <form class="ml-5" action="/planets/search" name="planet-name-form" method="POST">
         <label for="planet-name">Planet Name</label><br>
         <input type="text" name="pl_name" id="planet-name" required>
@@ -95,9 +98,9 @@
         <button class="btn btn-outline-primary mt-4 ml-5 mb-5">Search</button>
         <div style="position: fixed; bottom: 50px; left: 300px;" class="loader"></div>
       </form>
-      
     </div>
-  {% include "planet-sun.html" %}
+  
+  
   {% endblock %}
   {% block scripts %}
     <!-- <script src="/static/jasmine-tests/test-search.js"></script> -->

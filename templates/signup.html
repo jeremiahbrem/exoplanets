@@ -1,32 +1,38 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
 
-<h1 id="welcome" class="font-weight-lighter mb-5 ml-3">Welcome to the Exoplanet App</h1>
-<h3 id="signup-head" class="font-weight-light ml-3">Sign Up to Search Other Worlds</h3>
-{% for message in get_flashed_messages() %}
-<h4 class="ml-4">{{ message }}</h4>
-{% endfor %}
-<div class="col-sm-6 col-md-8 mb-2 mr-5">
-  <form id="signup-form" method="POST">
-    {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
-    'hidden' %}
+{% block content %}
 
-    <p>
-      {{ field.label }} {{ field (class="form-control form-control-sm") }} {%
-      for error in field.errors %} {{ error }} {% endfor %}
-    </p>
-
+  {% include "planet-sun.html" %}
+  <h1 id="welcome" class="font-weight-lighter mb-5 mt-5">Welcome to the Exoplanet App</h1>
+  <div id="signup">
+    <h3 id="signup-head" class="font-weight-light">Sign Up to Search Other Worlds</h3>
+    {% for message in get_flashed_messages() %}
+      <h4 class="ml-4">{{ message }}</h4>
     {% endfor %}
-    <button class="btn btn-outline-primary" type="submit">Signup</button>
-  </form>
-</div>
-<a id="login" href="/login">Login</a>
+    <form id="signup-form" method="POST">
+      {{ form.hidden_tag() }} 
+      {% for field in form if field.widget.input_type != 'hidden' %}
+
+        <p>
+          {{ field.label }} {{ field (class="form-control form-control-sm") }} 
+          {% for error in field.errors %} 
+            {{ error }} 
+          {% endfor %}
+        </p>
+
+      {% endfor %}
+      <button class="btn btn-outline-primary" type="submit">Signup</button>
+    </form>
+    <a class="btn btn-outline-success" id="login" href="/login">Login</a>
+  </div>
+  
 <div id="word-def">
   <div id="word"><b>ex·o·plan·et</b></div>
   <div id="noun"><i>noun</i></div>
   <div id="pronouncer">/ˈeksōˌplanət/</div>
   <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
 </div>
-{% include "planet-sun.html" %}
+
 
 {% endblock %} 
 {% block tests %}

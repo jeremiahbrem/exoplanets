@@ -507,6 +507,9 @@ def show_reset():
     user = User.query.filter_by(password_reset=token).first()
 
     if form.validate_on_submit():
+        if not user:
+            flash("Invalid request")
+            return redirect("/")
         password = form.password.data
         user.password = User.change_password(password)
         user.password_reset = None

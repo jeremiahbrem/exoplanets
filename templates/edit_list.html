@@ -6,8 +6,9 @@
 
 {% block content %}
 
-  <div class="ml-2" id="edit-list">
-    <h3 class="font-weight-light mt-5">Edit List</h3>
+  {% include "planet-sun.html" %}
+  <div id="edit-list">
+    <h3 class="font-weight-light">Edit List</h3>
     <form id="list-edit-form" method="POST">
       {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
         'hidden' %}
@@ -29,5 +30,5 @@
     
   </div>
 
-  {% include "planet-sun.html" %}
+  
 {% endblock %}
