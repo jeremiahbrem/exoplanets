@@ -8,10 +8,11 @@ from process_search import ProcessSearch
 from forms import SearchForm, SignUpForm, LoginForm, CreateListForm, EditAccountForm, ResetPasswordForm, EnterEmailForm, EditListForm
 import requests
 from requests import ConnectionError
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL","postgres:///exoplanets")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -290,7 +291,8 @@ def delete_list(username, list_id):
 
     return redirect("/")    
 
-@app.route("/users/<username>/favorites/add", methods=["POST"]) 
+@app.route("/users/<username>/favorites/add", methods=["POST"])
+@cross_origin()
 def add_planet(username):
     """Adds a planet to a user list and redirects to search results page"""
 
@@ -323,7 +325,8 @@ def add_planet(username):
 
     return (jsonify(response), 201)   
 
-@app.route("/users/<username>/favorites/delete", methods=["POST"])       
+@app.route("/users/<username>/favorites/delete", methods=["POST"])
+@cross_origin()     
 def delete_planet(username):
     """Deletes planet from user list"""
 
