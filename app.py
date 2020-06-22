@@ -8,8 +8,10 @@ from process_search import ProcessSearch
 from forms import SearchForm, SignUpForm, LoginForm, CreateListForm, EditAccountForm, ResetPasswordForm, EnterEmailForm, EditListForm
 import requests
 from requests import ConnectionError
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL","postgres:///exoplanets")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
