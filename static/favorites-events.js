@@ -2,8 +2,8 @@
 $('.planet-list-items').on("click", () =>
 {
   $(".loader").show();
-  $('#pl-sn').css("transition", "transform 1s");
-  $('#pl-sn').css("transform", "scale(.001)");
+  $('.exoplanet').css("transition", "transform 1s");
+  $('.exoplanet').css("transform", "scale(.001)");
 })
 
 $('#go-to-list').on("click", () => {

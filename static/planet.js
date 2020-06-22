@@ -1,6 +1,6 @@
 // zoom in to planet and star *** COMMENT THIS OUT FOR JASMINE TESTS ***
 window.onload = function() {
-  $('#exoplanet').css("transform", "scale(1)");
+  $('.exoplanet-zoom').css("transform", "scale(1)");
 }
 
 const planetRadius = parseFloat($('#pl_rade').text());
@@ -16,15 +16,13 @@ $('#big-exo-image').attr("src", pic);
 
 // add widths to planet images
 if (planetRadius) {
+  $('#pl-comparisons').show()
   const planetWidths = comparePlanetSize(planetRadius);
   $('#earth').css("width", `${planetWidths.earthWidth}px`)
   $('#exo').css({
           "width": `${planetWidths.exoWidth}px`,
           "top": "10px"
           })
-}
-else {
-  $('#pl-size-comp').hide();
 }
 
 // get star comparison scale sizes

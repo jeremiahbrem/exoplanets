@@ -479,7 +479,7 @@ def show_enter_email():
 
         msg = Message('Reset Password', sender = 'jeremiahbrem@gmail.com', recipients = [user.email])
         msg.body = """Cick on the link to reset your password:
-                http://localhost:5000/password/reset?key=""" + token                  
+                https://exoplanet-jbrem.herokuapp.com/password/reset?key=""" + token                  
         mail.send(msg)    
 
         return redirect(f"/password/check_email")
