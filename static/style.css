@@ -29,6 +29,11 @@ body {
     text-align: center;
 }
 
+.check, #all {
+    margin-left: 10px;
+    margin-right: 10px
+}
+
 #signup {
     width: 300px;
 }
@@ -251,7 +256,7 @@ hr {
 }
 
 #parameters > input {
-    width: 100px;
+    width: 145px;
 }
 
 #parameters > label {
