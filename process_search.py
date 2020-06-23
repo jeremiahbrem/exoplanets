@@ -19,11 +19,15 @@ class ProcessSearch:
             return (f"{self.base_query}&format=json")   
 
         if self.parameters.get('pl_name', None):
-            if "+" in self.parameters.get('pl_name'):
-                formatted_string = self.parameters.get('pl_name').replace("+", f"%2b")
-                return (f"{self.base_query}&where=pl_name like '{formatted_string}%25'&order=pl_name&format=json")
-            else:
-                return (f"{self.base_query}&where=pl_name like '{self.parameters.get('pl_name')}%25'&order=pl_name&format=json")    
+            # if "+" in self.parameters.get('pl_name'):
+            formatted_string = self.parameters.get('pl_name').replace("+", f"%2b")
+            formatted_string = formatted_string.split("'")[0]
+                # return (f"{self.base_query}&where=pl_name like '{formatted_string}%25'&order=pl_name&format=json")
+            # elif "'" in self.parameters.get('pl_name'):
+                # formatted_string = self.parameters.get('pl_name').replace("'", f"%27")
+            return (f"{self.base_query}&where=pl_name like '{formatted_string}%25'&order=pl_name&format=json")
+            # else:
+                # return (f"{self.base_query}&where=pl_name like '{self.parameters.get('pl_name')}%25'&order=pl_name&format=json")    
 
         if self.parameters.get('pl_hostname', None):
             return (f"{self.base_query}&where=pl_hostname like '{self.parameters['pl_hostname']}%25'&order=pl_hostname&format=json")

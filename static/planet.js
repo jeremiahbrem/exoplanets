@@ -159,7 +159,7 @@ function getBVFromTemp(temp) {
 }
 
 // brown dwarf star
-if (parseInt($('#st_teff').text()) < 1000) {
+if (parseInt($('#st_teff').text()) < 1000 || ["L","T","Y"].some(l => $('#st_spstr').text().includes(l))) {
   addRGB("rgb(43,24,2)")
 }
 // use B-V index for star color
