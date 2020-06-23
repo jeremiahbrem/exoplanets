@@ -19,41 +19,38 @@ class ProcessSearch:
             return (f"{self.base_query}&format=json")   
 
         if self.parameters.get('pl_name', None):
-            # if "+" in self.parameters.get('pl_name'):
             formatted_string = self.parameters.get('pl_name').replace("+", f"%2b")
             formatted_string = formatted_string.split("'")[0]
-                # return (f"{self.base_query}&where=pl_name like '{formatted_string}%25'&order=pl_name&format=json")
-            # elif "'" in self.parameters.get('pl_name'):
-                # formatted_string = self.parameters.get('pl_name').replace("'", f"%27")
+          
             return (f"{self.base_query}&where=pl_name like '{formatted_string}%25'&order=pl_name&format=json")
-            # else:
-                # return (f"{self.base_query}&where=pl_name like '{self.parameters.get('pl_name')}%25'&order=pl_name&format=json")    
 
         if self.parameters.get('pl_hostname', None):
-            return (f"{self.base_query}&where=pl_hostname like '{self.parameters['pl_hostname']}%25'&order=pl_hostname&format=json")
+            formatted_string = self.parameters.get('pl_hostname').replace("+", f"%2b")
+            formatted_string = formatted_string.split("'")[0]
+
+            return (f"{self.base_query}&where=pl_hostname like '{formatted_string}%25'&order=pl_hostname&format=json")
 
         count = 1
         for key,value in self.parameters.items():
             min_value = self.parameters.get(f"{key}_min", None)
             max_value = self.parameters.get(f"{key}_max", None)
             
-            if key != "habitable":
-                if value == 'on' and key == 'st_spstr' and self.parameters['st_spstr_type']:
-                    if count > 1:
-                        where = where + " and "
-                    where = where + f"st_spstr like '{self.parameters['st_spstr_type']}%25'"
-                    count += 1
-                elif value == 'on' and (min_value or max_value):
-                    if count > 1:
-                        where = where + " and "
-                    where = where + f"{key}"
-                    if min_value and max_value:
-                        where = where + f">{min_value} and {key}<{max_value}"
-                    elif min_value:
-                        where = where + f">{min_value}" 
-                    elif max_value:
-                        where = where + f"<{max_value}"
-                    count += 1                   
+            if value == 'on' and key == 'st_spstr' and self.parameters['st_spstr_type']:
+                if count > 1:
+                    where = where + " and "
+                where = where + f"st_spstr like '{self.parameters['st_spstr_type']}%25'"
+                count += 1
+            elif value == 'on' and (min_value or max_value):
+                if count > 1:
+                    where = where + " and "
+                where = where + f"{key}"
+                if min_value and max_value:
+                    where = where + f">{min_value} and {key}<{max_value}"
+                elif min_value:
+                    where = where + f">{min_value}" 
+                elif max_value:
+                    where = where + f"<{max_value}"
+                count += 1                   
 
         order = "pl_name"
         if self.parameters.get('sort_by', None):
