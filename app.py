@@ -410,7 +410,7 @@ def get_search_results(page):
     search = ProcessSearch(parameters)
 
     session["SEARCH"] = search.create_api_query()
-    print(search.create_api_query())
+  
     try:
         resp = requests.get(search.create_api_query())
     except ConnectionError:
