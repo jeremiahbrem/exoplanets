@@ -5,6 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Favorite, List
 from habitable_zone import HabitableZoneCheck
 from process_search import ProcessSearch
+from flask_talisman import Talisman
 from forms import SearchForm, SignUpForm, LoginForm, CreateListForm, EditAccountForm, ResetPasswordForm, EnterEmailForm, EditListForm
 import requests
 from requests import ConnectionError
@@ -12,6 +13,7 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app)
+Talisman(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL","postgres:///exoplanets")
