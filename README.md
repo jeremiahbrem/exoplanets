@@ -23,7 +23,10 @@ The Exoplanet App allows a user to fill out a simple search form for chosen para
 - Sorting results table data and adding selected planets to user list   
 
 ##### Visual effects
-Many people are unaware of how beautiful it is to view the color contrast between two stars with different surface temperatures.  A goal of this site was to give users a beautiful representation of star color contrast and how the view might look from an exoplanet with different properties than our own. Most stars on the site include visual simulations of color comparisons with the sun, based off B-V index, surface temperature, or spectral-type. If data is available, this site also includes visual simulations star size comparisons with the sun, and planet size comparisons with the earth. Exoplanet images are simulated based off planet mass, radius, habitability, or orbital distance.
+Many people are unaware of how beautiful it is to view the color contrast between two stars with different surface temperatures.  A goal of this site was to give users a beautiful representation of star color contrast and how the view might look from an exoplanet with different properties than our own. Most stars on the site include visual simulations of color comparisons with the sun, based off B-V index, surface temperature, or spectral-type. If data is available, this site also includes visual simulations of star size comparisons with the sun, and planet size comparisons with the earth. Exoplanet images are simulated based off planet mass, radius, habitability, or orbital distance.  
+
+##### Testing
+This project was guided by test-driven development and includes Python-Flask and Jasmine-JavaScript unit and integration tests.  
 
 ##### Resources:  
 - NASA Exoplanet API  
@@ -39,3 +42,4 @@ Many people are unaware of how beautiful it is to view the color contrast betwee
 - Bootstrap  
 - HTML/CSS  
 - JQuery
+- Axios
