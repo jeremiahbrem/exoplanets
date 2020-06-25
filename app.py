@@ -12,6 +12,16 @@ from requests import ConnectionError
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+csp = {
+    'default-src': [
+        '\'self\'',
+        '\'unsafe-inline\'',
+        'stackpath.bootstrapcdn.com',
+        'code.jquery.com',
+        'cdn.jsdelivr.net'
+    ]
+}
+talisman = Talisman(app, content_security_policy=csp)
 cors = CORS(app)
 Talisman(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -48,6 +58,7 @@ def add_user_to_g():
         g.user = None
 
 @app.route("/")
+@talisman
 def get_home_page():
     """Redirects to signup or user detail page"""
 
