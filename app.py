@@ -23,7 +23,7 @@ csp = {
 }
 talisman = Talisman(app, content_security_policy=csp)
 cors = CORS(app)
-Talisman(app)
+# Talisman(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL","postgres:///exoplanets")
