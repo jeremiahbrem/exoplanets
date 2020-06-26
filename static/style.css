@@ -42,9 +42,12 @@ body {
     width: 80px;
     position: absolute;
     left: 24px;
-    top: 42px;
+    top: 1px;
 }
 
+#list-select {
+    position: relative;
+}
 .check, #all {
     margin-left: 10px;
     margin-right: 10px
@@ -312,6 +315,10 @@ hr {
 
 #message {
     font-size: 15px;
+}
+test {
+    color: rgb(255,-223,5);
+
 }
 
 .loader {

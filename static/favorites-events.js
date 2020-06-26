@@ -47,8 +47,8 @@ async function handleAdd(evt) {
   );
   planets = checked.map((checkbox) => checkbox.id);
   const resp = await Favorites.addFavorites(id, planets)
- 
-  for (let message in resp.data.messages) {
+  console.log(resp.data.messages[0])
+  for (let message of resp.data.messages) {
     $('#message').append(`<p>${message}</p>`).css("margin", "0");
   }
   setTimeout(() => {
