@@ -22,6 +22,7 @@ class Favorites {
     return resp.data;
   }
 
+  // creates new favorites list from results and planet details page
   static async createList(name) {
     const data = { name: name };
     const resp = await axios.post(

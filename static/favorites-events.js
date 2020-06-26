@@ -19,12 +19,14 @@ $("#lists").change(() => {
   if ($('#lists').val() == "create-list") {
     $('#create-text').prop("hidden", false);
     $('#add-planets').prop("hidden", true);
+    $('#add-planet').prop("hidden", true);
     $('#go-to-list').prop("hidden", true);
     $('#create-list-btn').prop("hidden", false);
   }
   else {
     $('#create-text').prop("hidden", true);
     $('#add-planets').prop("hidden", false);
+    $('#add-planet').prop("hidden", false);
     $('#go-to-list').prop("hidden", false);
     $('#create-list-btn').prop("hidden", true);
   }
@@ -45,6 +47,7 @@ $('#create-list-btn').on("click", async function() {
       sortList()
       $('#create-text').prop("hidden", true);
       $('#add-planets').prop("hidden", false);
+      $('#add-planet').prop("hidden", false);
       $('#go-to-list').prop("hidden", false);
       $('#create-list-btn').prop("hidden", true);
       $('#lists').val("");
@@ -96,14 +99,15 @@ async function handleAdd(evt) {
     $("#message").html("");
   }, 3000)
   $('.checkboxes').prop("checked",false);
-  $('#all-check').prop("checked",false);
+  $('#all-check').prop("checked",false); 
 }
 
 // handles add button click on planet details page
 async function handleAddPlanet(evt) {
   const id = $('#lists').val();
-  const planet = $('h3').text();
-  const resp = await Favorites.addFavorites(id, planet)
+  const planet = $('#planet-name').text();
+  const planetArray = [planet]
+  const resp = await Favorites.addFavorites(id, planetArray)
   for (let message of resp.data.messages) {
     $('#message').append(`<p>${message}</p>`).css("margin", "0");
   }

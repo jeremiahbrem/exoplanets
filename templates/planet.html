@@ -26,12 +26,12 @@
       <button class="btn btn-outline-primary btn-sm" id="create-list-btn" hidden>Create</button>
       <button class="btn btn-outline-primary btn-sm" id="add-planet">Add</button>
       <button class="btn btn-outline-primary btn-sm" id="go-to-list">Go To List</button>
+      <div class="ml-4" id="message"></div>
     </div>
-    <div class="ml-4" id="message"></div>
   
     <div style="width: 290px;" class="mt-4 ml-4" id="planet-details">
       <div>
-        <h3 class="font-weight-light mt-3">{{ planet['pl_name'] }}</h3>
+        <h3 id="planet-name" class="font-weight-light mt-3">{{ planet['pl_name'] }}</h3>
         <h5 id="message"></h5>
         <ul>
           <li>Orbit: <span id="pl_orbsmax">{{ planet['pl_orbsmax'] }}</span></li>
