@@ -59,6 +59,9 @@ $('#create-list-btn').on("click", async function() {
 // adds event listener to add button for adding planets to selected list
 $("#add-planets").on("click", handleAdd);
 
+// addes event lister for add button on planet details page
+$("#add-planet").on("click", handleAddPlanet);
+
 // sort select list
 sortList()
 
@@ -86,6 +89,21 @@ async function handleAdd(evt) {
   planets = checked.map((checkbox) => checkbox.id);
   const resp = await Favorites.addFavorites(id, planets)
 
+  for (let message of resp.data.messages) {
+    $('#message').append(`<p>${message}</p>`).css("margin", "0");
+  }
+  setTimeout(() => {
+    $("#message").html("");
+  }, 3000)
+  $('.checkboxes').prop("checked",false);
+  $('#all-check').prop("checked",false);
+}
+
+// handles add button click on planet details page
+async function handleAddPlanet(evt) {
+  const id = $('#lists').val();
+  const planet = $('h3').text();
+  const resp = await Favorites.addFavorites(id, planet)
   for (let message of resp.data.messages) {
     $('#message').append(`<p>${message}</p>`).css("margin", "0");
   }

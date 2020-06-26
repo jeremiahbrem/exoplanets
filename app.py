@@ -391,6 +391,7 @@ def delete_planet(username):
 
 @app.route("/planets/<planet_name>")
 def get_details(planet_name):
+    """Renders planet details page"""
     
     if not g.user:
         flash("You must be logged in.")
@@ -408,9 +409,8 @@ def get_details(planet_name):
                                     planet['pl_orbsmax']
                                     )
    
-    return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone().value) 
+    return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone().value)
 
-@app.route("/planets/search", methods=["GET","POST"])
 def search_planets():
     """Renders search form page and processes form"""
 
