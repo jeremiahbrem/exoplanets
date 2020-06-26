@@ -16,9 +16,40 @@ $('#go-to-list').on("click", () => {
 $("#lists").change(() => {
   if ($('#lists').val() == "create-list") {
     $('#create-text').prop("hidden", false);
+    $('#add-planets').prop("hidden", true);
+    $('#go-to-list').prop("hidden", true);
+    $('#create-list-btn').prop("hidden", false);
   }
   else {
     $('#create-text').prop("hidden", true);
+    $('#add-planets').prop("hidden", false);
+    $('#go-to-list').prop("hidden", false);
+    $('#create-list-btn').prop("hidden", true);
+  }
+})
+
+$('#create-list-btn').on("click", async function() {
+  let message;
+  if ($('#create-text').val()) {
+    const resp = await Favorites.createList($('#create-text').val());
+    if (resp == "List already exists") {
+      message = resp;
+    }
+    else {
+      $('#lists').append(`<option value="${resp.list_id}"> 
+          ${resp.list_name}</option>`);
+      message = "List created";
+      sortList()
+      $('#create-text').prop("hidden", true);
+      $('#add-planets').prop("hidden", false);
+      $('#go-to-list').prop("hidden", false);
+      $('#create-list-btn').prop("hidden", true);
+      $('#lists').val("");
+    }
+    $('#message').append(`<p>${message}</p>`).css("margin", "0");
+    setTimeout(() => {
+      $("#message").html("");
+    }, 3000)
   }
 })
 
@@ -26,17 +57,21 @@ $("#lists").change(() => {
 $("#add-planets").on("click", handleAdd);
 
 // sort select list
-const myOptions = $("#lists option");
-const selected = $("#lists").val();
+sortList()
 
-myOptions.sort(function(a,b) {
+function sortList() {
+  const myOptions = $("#lists option");
+  const selected = $("#lists").val();
+
+  myOptions.sort(function(a,b) {
     if (a.text > b.text && a.text) return 1;
     if (a.text < b.text && b.text != "Create list") return -1;
     return 0
-})
+  })
 
-$("#lists").empty().append(myOptions);
-$("#lists").val(selected);
+  $("#lists").empty().append(myOptions);
+  $("#lists").val(selected);
+}
 
 // handles add button click for adding planets to selected list
 async function handleAdd(evt) {
@@ -47,7 +82,7 @@ async function handleAdd(evt) {
   );
   planets = checked.map((checkbox) => checkbox.id);
   const resp = await Favorites.addFavorites(id, planets)
-  console.log(resp.data.messages[0])
+
   for (let message of resp.data.messages) {
     $('#message').append(`<p>${message}</p>`).css("margin", "0");
   }
@@ -68,4 +103,6 @@ async function handleDelete(evt) {
   evt.target.parentElement.remove();
   await Favorites.deleteFavorite(listID, planet);
 }
+
+
 

@@ -13,17 +13,17 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 # prevents flask talisman from crashing the following tools
-csp = {
-    'default-src': [
-        '\'self\'',
-        '\'unsafe-inline\'',
-        'use.fontawesome.com',
-        'unpkg.com',
-    ],
-    'img-src': '\'self\' data:',
-}
+# csp = {
+#     'default-src': [
+#         '\'self\'',
+#         '\'unsafe-inline\'',
+#         'use.fontawesome.com',
+#         'unpkg.com',
+#     ],
+#     'img-src': '\'self\' data:',
+# }
 # forces https
-Talisman(app, content_security_policy=csp)
+# Talisman(app, content_security_policy=csp)
 # enables cross site reference for axios requests
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -305,24 +305,40 @@ def delete_list(username, list_id):
 
     return redirect("/")    
 
-# @app.route("users/<username>/favorites/create", methods=["POST"]) 
+@app.route("/users/<username>/favorites/create-list", methods=["POST"]) 
 # @cross_origin()
-# def create_list_from_results(username)
-#     """Accepts axios request to create a new list from results page"""
+def create_list_from_results(username):
+    """Accepts axios request to create a new list from results page"""
 
-#     if not g.user or g.user.username != username:
-#         flash("Unauthorized access.")
-#         return redirect("/")
+    if not g.user or g.user.username != username:
+        flash("Unauthorized access.")
+        return redirect("/")
 
-#     name = request.json["name"]
-#     user_id = request.json["user_id"]
+    name = request.json["name"]
+    user = User.query.filter_by(username=username).first()
+    
+    if List.query.filter_by(name=name, user_id=user.id).first():
+        return(jsonify("List already exists"))    
 
-#     response = {}
-#     if user_id != g.user.id:
-#         response = {}
+    new_list = List(
+                        name=request.json["name"],
+                        user_id=user.id
+                    )
+
+    db.session.add(new_list)
+    db.session.commit()
+
+    get_list = List.query.filter_by(name=name, user_id=user.id).first()
+
+    response = {
+                "list_name": name,
+                "list_id" : get_list.id
+    }                
+
+    return (jsonify(response), 201) 
 
 @app.route("/users/<username>/favorites/add", methods=["POST"])
-@cross_origin()
+# @cross_origin()
 def add_planet(username):
     """Adds a planet to a user list and redirects to search results page"""
 
@@ -353,7 +369,7 @@ def add_planet(username):
     return (jsonify(resp), 201)   
 
 @app.route("/users/<username>/favorites/delete", methods=["POST"])
-@cross_origin()
+# @cross_origin()
 def delete_planet(username):
     """Deletes planet from user list"""
 

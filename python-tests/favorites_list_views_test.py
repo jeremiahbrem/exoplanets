@@ -284,7 +284,7 @@ class FavoriteListViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("GJ 876 c", html)
             self.assertIn("Host Star: GJ 876", html)
-            self.assertIn("Potentially Habitable: Habitable", html)
+            self.assertIn('Habitability Zone: <span id="habitable">Habitable</span>', html)
             del change_session["USERNAME"]      
 
     def test_show_planet_not_logged_in(self):
@@ -309,11 +309,10 @@ class FavoriteListViewsTestCase(TestCase):
 
             data = {"list_id": self.list.id, "planets": ["11 Com b"]}
             resp = client.post(f"/users/testuser/favorites/add", json=data, follow_redirects=True)
-            favorites = resp.json["new_favorites"]
+            messages = resp.json["messages"]
 
             self.assertEqual(resp.status_code, 201)
-            self.assertEqual(favorites['list'], "testplanets")
-            self.assertIn("11 Com b", favorites['planets'])
+            self.assertIn("11 Com b added to testplanets", messages)
             self.assertEqual(len(self.list.favorites), 2)
             del change_session["USERNAME"]
 
@@ -328,13 +327,12 @@ class FavoriteListViewsTestCase(TestCase):
 
             data = {"list_id": self.list.id, "planets": ["11 Com b", "16 Cyg B b", "GJ 229 A c"]}
             resp = client.post(f"/users/testuser/favorites/add", json=data, follow_redirects=True)
-            favorites = resp.json["new_favorites"]
+            messages = resp.json["messages"]
         
             self.assertEqual(resp.status_code, 201)
-            self.assertEqual(favorites['list'], "testplanets")
-            self.assertIn("11 Com b", favorites['planets'])         
-            self.assertIn("16 Cyg B b", favorites['planets'])         
-            self.assertIn("GJ 229 A c", favorites['planets'])
+            self.assertIn("11 Com b added to testplanets", messages)
+            self.assertIn("16 Cyg B b added to testplanets", messages)
+            self.assertIn("GJ 229 A c added to testplanets", messages)
             self.assertEqual(len(self.list.favorites), 4)
             del change_session["USERNAME"]     
 
@@ -503,4 +501,25 @@ class FavoriteListViewsTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Welcome to the Exoplanet App", html)
-            self.assertIn("Unauthorized access", html)                
+            self.assertIn("Unauthorized access", html)
+
+    def test_create_list_axios(self):              
+        """Testing creating a list from results page axios request"""   
+
+        with app.test_client() as client:
+            with client.session_transaction() as change_session:
+                change_session["USERNAME"] = "testuser"
+
+            db.session.add(self.user)
+
+            data = {"name": "testlist2"}
+            resp = client.post(f"/users/testuser/favorites/create-list", json=data, follow_redirects=True)
+            new_list = resp.json
+
+            get_list = List.query.filter_by(name=new_list["list_name"], user_id=self.user.id).first()
+
+            self.assertEqual(resp.status_code, 201)
+            self.assertEqual(new_list['list_id'], get_list.id)
+            self.assertEqual(new_list['list_name'], "testlist2")
+            self.assertEqual(len(self.user.lists), 2)
+            del change_session["USERNAME"]     

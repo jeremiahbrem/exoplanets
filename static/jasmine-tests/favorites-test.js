@@ -14,7 +14,7 @@ describe("testing Favorites class functions", () => {
     
     it ("should submit multiple favorite planets to user list and receive response with addFavorite", async function() {
         const resp = await Favorites.addFavorites($listID, ["testPlanet2", "testPlanet3"]);
-        console.log(resp)
+        
         expect(resp.data.messages).toContain(`testPlanet2 added to ${$listName}`);
         expect(resp.data.messages).toContain(`testPlanet3 added to ${$listName}`);
 
@@ -35,8 +35,10 @@ describe("testing Favorites class functions", () => {
         expect(deleteResp).toEqual("testPlanet5 deleted from list.")
     })
 
-    // it ("should create favorites list and get response from back-end with createList", async function() {
-    //     const resp = await Favorites.createList("myList", userID);
-    //     expect
-    // })
+    it ("should create favorites list and get response from back-end with createList", async function() {
+        const resp = await Favorites.createList("myList");
+        console.log(resp)
+        expect(resp.list_id).toBeInstanceOf(Number);
+        expect(resp.list_name).toEqual("myList")
+    })
 })

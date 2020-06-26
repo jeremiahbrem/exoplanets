@@ -22,13 +22,13 @@ class Favorites {
     return resp.data;
   }
 
-//   static async createList(name, userID) {
-//     const data = { name: name, user_id: userID};
-//     const resp = await axios.post(
-//       // `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/lists/create`,
-//       `https://localhost:5000/users/${$("#username").text()}/favorites/delete`,
-//       data
-//     );
-//     return resp.data;
-//   }
+  static async createList(name) {
+    const data = { name: name };
+    const resp = await axios.post(
+      // `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/lists/create`,
+      `http://localhost:5000/users/${$("#username").text()}/favorites/create-list`,
+      data
+    );
+    return resp.data;
+  }
 }
