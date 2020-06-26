@@ -208,7 +208,7 @@ hr {
 #planet-img, #big-exo-image {
     width: 200px; 
     border-radius: 50%;
-    object-position: -10px;
+    object-position: -5px -2px;
 }
 
 #exo-sun-glow {
