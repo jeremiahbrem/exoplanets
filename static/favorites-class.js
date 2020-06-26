@@ -4,8 +4,7 @@ class Favorites {
   static async addFavorites(listID, planetNames) {
     const data = { list_id: listID, planets: planetNames };
     const resp = await axios.post(
-      // `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/favorites/add`,
-      `http://localhost:5000/users/${$("#username").text()}/favorites/add`,
+      `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/favorites/add`,
       data
     );
     return resp;
@@ -15,8 +14,7 @@ class Favorites {
   static async deleteFavorite(listID, planet) {
     const data = { list_id: listID, planet: planet };
     const resp = await axios.post(
-      // `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/favorites/delete`,
-      `http://localhost:5000/users/${$("#username").text()}/favorites/delete`,
+      `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/favorites/delete`,
       data
     );
     return resp.data;
