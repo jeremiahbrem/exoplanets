@@ -14,6 +14,19 @@
         </div>
       </div>
     </div>
+    <div class="mt-5" id="list-select">
+      <select class="ml-4" name="lists" id="lists">
+        <option value="" disabled selected hidden>Add to list</option>
+        <option value="create-list">Create list</option>
+        {% for list in g.user.lists %}
+        <option class="listIDs" value="{{ list.id }}">{{ list.name }}</option>
+        {% endfor %}
+      </select>
+      <input id="create-text" type="text" placeholder="Enter list" hidden>
+      <button class="btn btn-outline-primary btn-sm" id="create-list-btn" hidden>Create</button>
+      <button class="btn btn-outline-primary btn-sm" id="add-planets">Add</button>
+      <button class="btn btn-outline-primary btn-sm" id="go-to-list">Go To List</button>
+    </div>
   
     <div style="width: 290px;" class="mt-4 ml-4" id="planet-details">
       <div>

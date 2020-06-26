@@ -338,7 +338,7 @@ def create_list_from_results(username):
     return (jsonify(response), 201) 
 
 @app.route("/users/<username>/favorites/add", methods=["POST"])
-# @cross_origin()
+@cross_origin()
 def add_planet(username):
     """Adds a planet to a user list and redirects to search results page"""
 
@@ -369,7 +369,7 @@ def add_planet(username):
     return (jsonify(resp), 201)   
 
 @app.route("/users/<username>/favorites/delete", methods=["POST"])
-# @cross_origin()
+@cross_origin()
 def delete_planet(username):
     """Deletes planet from user list"""
 
