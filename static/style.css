@@ -339,6 +339,7 @@ hr {
     margin-right: auto;
     animation: rotation 2s infinite linear;
     display: none;
+    z-index: 2;
 }
 
 @keyframes rotation {
@@ -365,10 +366,10 @@ hr {
         0 0 60px 30px rgb(0,150,255),
         0 0 120px 60px rgb(0,150,255),
         0 0 240px 120px rgb(0,150,255);
-    z-index: 1;
     position: absolute;
     top: 59px;
     right: 0;
+    z-index: -1;
     left: 0;
     margin-left: auto;
     margin-right: auto;
