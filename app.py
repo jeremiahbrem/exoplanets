@@ -21,7 +21,7 @@ csp = {
         'cdn.jsdelivr.net',
         'use.fontawesome.com',
         'ajax.googleapis.com',
-        'unpkg.com'
+        'unpkg.com',
         'www.w3.org'
     ]
 }
