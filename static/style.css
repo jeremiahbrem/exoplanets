@@ -45,6 +45,12 @@ body {
     top: 1px;
 }
 
+#planet-list-select {
+    position: absolute;
+    left: 10px;
+    top: 350px;
+}
+
 #lists {
     width: 120px;
     height: 25px;

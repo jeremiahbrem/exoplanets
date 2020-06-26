@@ -6,7 +6,7 @@
 
   {% block content %}
 
-    <div class="exoplanet-zoom">
+    <div class="exoplanet-zoom mb-5">
       <div id="exo-sun-glow"></div>
       <div id="planet">
         <div class="box-shadow">
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="mt-5" id="list-select">
+    <div class="mt-5" id="planet-list-select">
       <select class="ml-4" name="lists" id="lists">
         <option value="" disabled selected hidden>Add to list</option>
         <option value="create-list">Create list</option>
@@ -27,6 +27,7 @@
       <button class="btn btn-outline-primary btn-sm" id="add-planets">Add</button>
       <button class="btn btn-outline-primary btn-sm" id="go-to-list">Go To List</button>
     </div>
+    <div class="ml-4" id="message"></div>
   
     <div style="width: 290px;" class="mt-4 ml-4" id="planet-details">
       <div>
@@ -89,5 +90,7 @@
   {% block scripts %}
     <!-- <script src="/static/jasmine-tests/planet-test.js"></script> -->
     <script src="/static/planet.js"></script>
+    <script src="/static/favorites-class.js"></script>
+    <script src="/static/favorites-events.js"></script>
   {% endblock %}
   

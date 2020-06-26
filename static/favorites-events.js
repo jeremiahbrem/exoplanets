@@ -6,6 +6,7 @@ $('.planet-list-items').on("click", () =>
   $('.exoplanet').css("transform", "scale(.001)");
 })
 
+// redirect to list page
 $('#go-to-list').on("click", () => {
   if ($('#lists').val()) {
     const username = $('#username').text();
