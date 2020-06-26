@@ -13,17 +13,17 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 # prevents flask talisman from crashing the following tools
-# csp = {
-#     'default-src': [
-#         '\'self\'',
-#         '\'unsafe-inline\'',
-#         'use.fontawesome.com',
-#         'unpkg.com',
-#     ],
-#     'img-src': '\'self\' data:',
-# }
+csp = {
+    'default-src': [
+        '\'self\'',
+        '\'unsafe-inline\'',
+        'use.fontawesome.com',
+        'unpkg.com',
+    ],
+    'img-src': '\'self\' data:',
+}
 # forces https
-# Talisman(app, content_security_policy=csp)
+Talisman(app, content_security_policy=csp)
 # enables cross site reference for axios requests
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -306,7 +306,7 @@ def delete_list(username, list_id):
     return redirect("/")    
 
 @app.route("/users/<username>/favorites/create-list", methods=["POST"]) 
-# @cross_origin()
+@cross_origin()
 def create_list_from_results(username):
     """Accepts axios request to create a new list from results page"""
 

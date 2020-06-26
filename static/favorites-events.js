@@ -13,6 +13,7 @@ $('#go-to-list').on("click", () => {
   }
 })
 
+// enables text input to create list
 $("#lists").change(() => {
   if ($('#lists').val() == "create-list") {
     $('#create-text').prop("hidden", false);
@@ -28,6 +29,7 @@ $("#lists").change(() => {
   }
 })
 
+// handler for create list button click
 $('#create-list-btn').on("click", async function() {
   let message;
   if ($('#create-text').val()) {
