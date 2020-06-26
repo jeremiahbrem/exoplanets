@@ -25,7 +25,7 @@ class Favorites {
   static async createList(name) {
     const data = { name: name };
     const resp = await axios.post(
-      `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/lists/create`,
+      `https://exoplanet-jbrem.herokuapp.com/users/${$("#username").text()}/favorites/create-list`,
       // `http://localhost:5000/users/${$("#username").text()}/favorites/create-list`,
       data
     );
