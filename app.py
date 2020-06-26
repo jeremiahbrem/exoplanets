@@ -411,7 +411,7 @@ def get_details(planet_name):
    
     return render_template("planet.html", planet=planet, habitable=check_zone.in_habitable_zone().value)
 
-@app.route("/planets/search")
+@app.route("/planets/search", methods=["GET", "POST"])
 def search_planets():
     """Renders search form page and processes form"""
 
