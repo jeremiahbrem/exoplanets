@@ -365,7 +365,7 @@ hr {
         0 0 60px 30px rgb(0,150,255),
         0 0 120px 60px rgb(0,150,255),
         0 0 240px 120px rgb(0,150,255);
-    z-index: -1;
+    z-index: 1;
     position: absolute;
     top: 59px;
     right: 0;
