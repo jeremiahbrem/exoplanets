@@ -7,7 +7,7 @@
   {% block content %}
   {% include "planet-sun.html" %}
     <div class="mt-5" id="list-planet">
-      <div style="position: fixed; bottom: 50px; left: 300px;" class="loader"></div>
+      {% include "orbital.html" %}
       <div id="list-head">
         <h1 class="font-weight-light" id="list-name">{{ user_list.name }}</h1>
         <a id="list-edit-btn" href="/users/{{ user_list.user.username }}/lists/{{ user_list.id }}/edit" class="btn btn-outline-primary btn-sm ml-3 mt-2">Edit</a>
