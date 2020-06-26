@@ -353,7 +353,7 @@ def add_planet(username):
     return (jsonify(resp), 201)   
 
 @app.route("/users/<username>/favorites/delete", methods=["POST"])
-# @cross_origin()     
+@cross_origin()
 def delete_planet(username):
     """Deletes planet from user list"""
 

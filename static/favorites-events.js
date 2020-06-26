@@ -48,24 +48,14 @@ async function handleAdd(evt) {
   planets = checked.map((checkbox) => checkbox.id);
   const resp = await Favorites.addFavorites(id, planets)
  
-  for (let entry in resp.data.messages) {
-    if (entry.slice(0,18) == "You already added") {
-      $('#message').text(entry);
-      setTimeout(() => {
-        $('#message').text("")
-      }, 4000);
-    }
+  for (let message in resp.data.messages) {
+    $('#message').append(`<p>${entry}</p>`).css("margin", "0");
   }
-//   if (planets.length > 1) {
-//     $("#message").text("Planets added to list.");
-//   } else if (planets.length == 1) {
-//     $("#message").text("Planet added to list.");
-//   }
-//   setTimeout(() => {
-//     $("#message").text("");
-//   }, 3000)
-//   $('.checkboxes').prop("checked",false);
-//   $('#all-check').prop("checked",false);
+  setTimeout(() => {
+    $("#message").html("");
+  }, 3000)
+  $('.checkboxes').prop("checked",false);
+  $('#all-check').prop("checked",false);
 }
 
 // add event listener to delete buttons
