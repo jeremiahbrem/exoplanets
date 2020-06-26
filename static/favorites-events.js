@@ -49,7 +49,7 @@ async function handleAdd(evt) {
   const resp = await Favorites.addFavorites(id, planets)
  
   for (let message in resp.data.messages) {
-    $('#message').append(`<p>${entry}</p>`).css("margin", "0");
+    $('#message').append(`<p>${message}</p>`).css("margin", "0");
   }
   setTimeout(() => {
     $("#message").html("");
