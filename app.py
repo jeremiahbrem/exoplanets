@@ -22,6 +22,7 @@ csp = {
         'use.fontawesome.com',
         'ajax.googleapis.com',
         'unpkg.com'
+        'www.w3.org'
     ]
 }
 # forces https
