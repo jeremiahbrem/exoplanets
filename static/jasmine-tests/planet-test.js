@@ -1,7 +1,7 @@
 describe("testing planet page functions", () => {
     
     it ("should return rgb value from getRGBFromBV", () => {
-        expect(getRGBFromBV(3)).toEqual("rgb(255,112.52779799999999,0)");
+        expect(getRGBFromBV(3)).toEqual("rgb(255,-73.5,0)");
         expect(getRGBFromBV(-0.4)).toEqual("rgb(68.846173,68.846173,255)");
         expect(getRGBFromBV(0)).toEqual("rgb(158.076933,158.076933,255)");
     })
@@ -22,15 +22,15 @@ describe("testing planet page functions", () => {
         expect(getBVFromSpectral("G")).toEqual(0.58);
         expect(getBVFromSpectral("G1")).toEqual(0.603);
         expect(getBVFromSpectral("K")).toEqual(0.81);
-        expect(getBVFromSpectral("K9")).toEqual(1.341);
+        expect(getBVFromSpectral("K9")).toEqual(1.53);
         expect(getBVFromSpectral("M")).toEqual(1.4);
-        expect(getBVFromSpectral("M5")).toEqual(1.7);
+        expect(getBVFromSpectral("M5")).toEqual(2.325);
     })
 
     it ("should return B-V index value from temperature with getBVFromTemp", () => {
         expect(getBVFromTemp(30000)).toEqual(-0.3);
         expect(getBVFromTemp(58000)).toEqual(-0.6740722414646215);
-        expect(getBVFromTemp(2300)).toEqual(2.5);
+        expect(getBVFromTemp(2300)).toEqual(3.2333333333333334);
     })    
 
     it ("should return scale sizes for stars from given radius with compareStarSize", () => {

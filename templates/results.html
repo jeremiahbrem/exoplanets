@@ -9,21 +9,24 @@
   {% include "planet-sun.html" %} 
   <div id="results-data">
     <h3 class="ml-4 font-weight-light" id="result-head">Planet Search Results</h3>
-    <h5 class="ml-4" id="message"></h5>
+    <div class="ml-4" id="message"></div>
     <div style="position: fixed; bottom: 50px; left: 300px;" class="loader"></div>
 
+    
     <select class="ml-4" name="lists" id="lists">
-      <option value="" disabled selected>Add to list</option>
+      <option value="" disabled selected hidden>Add to list</option>
+      <option value="create-list">Create list</option>
       {% for list in g.user.lists %}
       <option class="listIDs" value="{{ list.id }}">{{ list.name }}</option>
       {% endfor %}
     </select>
+    <input id="create-text" type="text" placeholder="Enter list">
     <button class="btn btn-outline-primary btn-sm" id="add-planets">Add</button>
     <button class="btn btn-outline-primary btn-sm" id="go-to-list">Go To List</button>
 
     <form action="/planets/results/1" method="POST">
       <select class="ml-4 mt-2" name="sort" id="sort">
-        <option value="" disabled selected>Sort by</option>
+        <option value="" disabled selected hidden>Sort by</option>
         {% for key, value in parameters.items() if value == 'on' and key not in
         ['all','habitable', 'select-all'] %} 
         {% if key == 'pl_masse' %}
@@ -118,6 +121,7 @@
 
     <input type="hidden" id="page-num" value="{{ page }}" />
     <input type="hidden" id="result-length" value="{{ planets | length }}" />
+    <input type="hidden" id="user-id" value="{{ g.user.id }}" />
   </div>
 
 {% endblock %} 

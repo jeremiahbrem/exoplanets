@@ -12,21 +12,22 @@ from requests import ConnectionError
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+# prevents flask talisman from crashing the following tools
 csp = {
     'default-src': [
         '\'self\'',
         '\'unsafe-inline\'',
         'stackpath.bootstrapcdn.com',
-        'code.jquery.com',
         'cdn.jsdelivr.net',
         'use.fontawesome.com',
         'ajax.googleapis.com',
         'unpkg.com'
     ]
 }
+# forces https
 Talisman(app, content_security_policy=csp)
+# enables cross site reference for axios requests
 cors = CORS(app)
-Talisman(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL","postgres:///exoplanets")
@@ -254,7 +255,7 @@ def show_create_list(username):
 
         return redirect(f"/users/{user.username}")
 
-    return render_template("create_list.html", form=form)
+    return render_template("create_list.html", form=form)    
 
 @app.route("/users/<username>/lists/<int:list_id>/edit", methods=["GET", "POST"])  
 def show_edit_list(username, list_id):
@@ -306,6 +307,22 @@ def delete_list(username, list_id):
 
     return redirect("/")    
 
+# @app.route("users/<username>/favorites/create", methods=["POST"]) 
+# @cross_origin()
+# def create_list_from_results(username)
+#     """Accepts axios request to create a new list from results page"""
+
+#     if not g.user or g.user.username != username:
+#         flash("Unauthorized access.")
+#         return redirect("/")
+
+#     name = request.json["name"]
+#     user_id = request.json["user_id"]
+
+#     response = {}
+#     if user_id != g.user.id:
+#         response = {}
+
 @app.route("/users/<username>/favorites/add", methods=["POST"])
 @cross_origin()
 def add_planet(username):
@@ -315,7 +332,7 @@ def add_planet(username):
         flash("Unauthorized access.")
         return redirect("/")
 
-    favorites = []
+    messages = []
     list_id = request.json["list_id"]
     planets = request.json["planets"]
     user_list = List.query.get(list_id)
@@ -325,23 +342,20 @@ def add_planet(username):
         if Favorite.query.filter_by(list_id=list_id, planet_name=planet).first() == None:
             favorite = (Favorite(planet_name=planet, list_id=list_id))
             db.session.add(favorite)
-            favorites.append(planet)
+            messages.append(f"{planet} added to {user_list.name}")
         else:
-            favorites.append(f"You already added {planet} to list.")    
+            messages.append(f"{planet} already exists in {user_list.name}")    
     
-    db.session.commit()    
+    db.session.commit()
 
-    response = {
-                 "new_favorites": {
-                   "list" : user_list.name,
-                   "planets" : favorites
-                 }
-               }
+    resp = {
+             "messages": messages
+           }
 
-    return (jsonify(response), 201)   
+    return (jsonify(resp), 201)   
 
 @app.route("/users/<username>/favorites/delete", methods=["POST"])
-@cross_origin()     
+# @cross_origin()     
 def delete_planet(username):
     """Deletes planet from user list"""
 

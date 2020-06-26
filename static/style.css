@@ -29,6 +29,22 @@ body {
     text-align: center;
 }
 
+#list-head {
+    display: flex;
+}
+
+#list-edit-btn {
+    height: 30px;
+}
+
+#create-text {
+    height: 25px;
+    width: 80px;
+    position: absolute;
+    left: 24px;
+    top: 42px;
+}
+
 .check, #all {
     margin-left: 10px;
     margin-right: 10px
@@ -292,6 +308,10 @@ hr {
 
 #login-div {
     width: 290px;
+}
+
+#message {
+    font-size: 15px;
 }
 
 .loader {

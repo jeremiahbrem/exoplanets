@@ -13,6 +13,15 @@ $('#go-to-list').on("click", () => {
   }
 })
 
+$("#lists").change(() => {
+  if ($('#lists').val() == "create-list") {
+    $('#create-text').prop("hidden", false);
+  }
+  else {
+    $('#create-text').prop("hidden", true);
+  }
+})
+
 // adds event listener to add button for adding planets to selected list
 $("#add-planets").on("click", handleAdd);
 
@@ -21,8 +30,8 @@ const myOptions = $("#lists option");
 const selected = $("#lists").val();
 
 myOptions.sort(function(a,b) {
-    if (a.text > b.text) return 1;
-    if (a.text < b.text) return -1;
+    if (a.text > b.text && a.text) return 1;
+    if (a.text < b.text && b.text != "Create list") return -1;
     return 0
 })
 
@@ -38,7 +47,8 @@ async function handleAdd(evt) {
   );
   planets = checked.map((checkbox) => checkbox.id);
   const resp = await Favorites.addFavorites(id, planets)
-  for (let entry in resp) {
+ 
+  for (let entry in resp.data.messages) {
     if (entry.slice(0,18) == "You already added") {
       $('#message').text(entry);
       setTimeout(() => {
@@ -46,16 +56,16 @@ async function handleAdd(evt) {
       }, 4000);
     }
   }
-  if (planets.length > 1) {
-    $("#message").text("Planets added to list.");
-  } else if (planets.length == 1) {
-    $("#message").text("Planet added to list.");
-  }
-  setTimeout(() => {
-    $("#message").text("");
-  }, 3000)
-  $('.checkboxes').prop("checked",false);
-  $('#all-check').prop("checked",false);
+//   if (planets.length > 1) {
+//     $("#message").text("Planets added to list.");
+//   } else if (planets.length == 1) {
+//     $("#message").text("Planet added to list.");
+//   }
+//   setTimeout(() => {
+//     $("#message").text("");
+//   }, 3000)
+//   $('.checkboxes').prop("checked",false);
+//   $('#all-check').prop("checked",false);
 }
 
 // add event listener to delete buttons
