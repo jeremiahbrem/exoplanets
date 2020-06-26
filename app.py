@@ -17,13 +17,10 @@ csp = {
     'default-src': [
         '\'self\'',
         '\'unsafe-inline\'',
-        'stackpath.bootstrapcdn.com',
-        'cdn.jsdelivr.net',
         'use.fontawesome.com',
-        'ajax.googleapis.com',
         'unpkg.com',
-        'www.w3.org'
-    ]
+    ],
+    'img-src': '\'self\' data:',
 }
 # forces https
 Talisman(app, content_security_policy=csp)
