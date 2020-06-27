@@ -6,7 +6,7 @@ window.onpageshow = () => {
 // adds event listener to check
 $(".check").change(enableSearchOption);
 
-$("button").on("click", () => {
+$(".btn").on("click", () => {
   $(".loader").show();
 })
 
