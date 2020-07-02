@@ -97,9 +97,6 @@ def get_signup_page():
 def show_about():
     """Renders about page"""
 
-    if not g.user:
-        return redirect("/")
-
     return render_template("about.html")    
 
 @app.route("/users/<username>")

@@ -3,7 +3,10 @@
 {% block content %}
 
   {% include "planet-sun.html" %}
-  <h1 id="welcome" class="font-weight-lighter mb-5 mt-5">Welcome to the Exoplanet App</h1>
+  <div id="heading">
+    <h1 id="welcome" class="font-weight-lighter mb-4 mt-5">Welcome to the Exoplanet App</h1>
+    <h5 class="font-weight-lighter mb-4" id="about-link"><a href="/about">About</a></h5>
+  </div>
   <div id="signup">
     <h3 id="signup-head" class="font-weight-light">Sign Up to Search Other Worlds</h3>
     {% for message in get_flashed_messages() %}
@@ -32,6 +35,7 @@
   <div id="pronouncer">/ˈeksōˌplanət/</div>
   <div id="definition">a planet which orbits a star <br> outside the solar system.</div>
 </div>
+
 
 
 {% endblock %} 
