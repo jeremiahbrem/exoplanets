@@ -12,11 +12,14 @@ class ProcessSearch:
 
     def create_api_query(self):
         """Processes input data and returns a query for the api"""
-       
+
+        order = "pl_name"
+        if self.parameters.get('sort_by', None):
+            order = self.parameters.get('sort_by')  
         where = "&where="
         
         if self.parameters.get('all', None):
-            return (f"{self.base_query}&format=json")   
+            return (f"{self.base_query}&order={order}&format=json")   
 
         if self.parameters.get('pl_name', None):
             formatted_string = self.parameters.get('pl_name').replace("+", f"%2b")
@@ -50,10 +53,6 @@ class ProcessSearch:
                     where = where + f">{min_value}" 
                 elif max_value:
                     where = where + f"<{max_value}"
-                count += 1                   
-
-        order = "pl_name"
-        if self.parameters.get('sort_by', None):
-            order = self.parameters.get('sort_by')          
+                count += 1                            
 
         return f"{self.base_query}{where}&order={order}&format=json" 

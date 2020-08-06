@@ -438,9 +438,12 @@ def get_search_results(page):
 
     if not g.user:
         flash("You must be logged in.")
-        return redirect("/")
+        return redirect("/")    
 
     parameters = session["PARAMETERS"]
+    
+    if parameters.get('habitable', None):
+        return redirect("/planets/habitable")
     
     if request.form:
         resp = request.form['sort']
