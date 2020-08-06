@@ -442,14 +442,14 @@ def get_search_results(page):
 
     parameters = session["PARAMETERS"]
     
-    if parameters.get('habitable', None):
-        return redirect("/planets/habitable")
-    
     if request.form:
         resp = request.form['sort']
         parameters["sort_by"] = resp
         session["PARAMETERS"] = parameters
         return redirect("/planets/results/1")
+
+    if parameters.get('habitable', None):
+        return redirect("/planets/habitable")    
 
     search = ProcessSearch(parameters)
 
